@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Admin - Hasil</title>
+<style>
+body{font-family:Arial;padding:20px}
+table{border-collapse:collapse;width:100%}
+th,td{border:1px solid #999;padding:8px;text-align:center}
+th{background:#eee}
+</style>
+</head>
+<body>
+
+<h2>HASIL UBT</h2>
+<table>
+<thead>
+<tr>
+  <th>No</th>
+  <th>Nama</th>
+  <th>Paket</th>
+  <th>Nilai</th>
+  <th>Waktu</th>
+  <th>Tanggal</th>
+</tr>
+</thead>
+<tbody id="data"></tbody>
+</table>
+
+<script>
+const data=JSON.parse(localStorage.getItem("results")||"[]");
+const tb=document.getElementById("data");
+
+if(!data.length){
+  tb.innerHTML="<tr><td colspan='6'>BELUM ADA DATA</td></tr>";
+}else{
+  data.forEach((d,i)=>{
+    tb.innerHTML+=`
+      <tr>
+        <td>${i+1}</td>
+        <td>${d.name}</td>
+        <td>Paket ${d.paket}</td>
+        <td>${d.score}</td>
+        <td>${d.time}</td>
+        <td>${d.date}</td>
+      </tr>`;
+  });
+}
+</script>
+</body>
+</html>

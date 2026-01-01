@@ -1,0 +1,367 @@
+[
+  {
+    "id": 1,
+    "type": "listening",
+    "question": "들은 것을 고르십시오",
+    "options": ["이내","언니","안내","안경"],
+    "answer": 3,
+    "audio": "https://airnetcso.github.io/eps/audio/1.mp3"
+  },
+  {
+    "id": 2,
+    "type": "listening",
+    "question": "들은 것을 고르십시오",
+    "options": ["삽니다","탑니다","갑니다","잡니다"],
+    "answer": 4,
+    "audio": "https://airnetcso.github.io/eps/audio/2.mp3"
+  },
+  {
+    "id": 3,
+    "type": "listening",
+    "question": "들은 것을 고르십시오",
+    "options": ["발에 추웠어요","발이 추웠어요","발에 다쳤어요","발이 다쳤어요"],
+    "answer": 2,
+    "audio": "https://airnetcso.github.io/eps/audio/3.mp3"
+  },
+  {
+    "id": 4,
+    "type": "listening",
+    "question": "들은 것을 고르십시오",
+    "options": ["가게가 가까워요","찌개가 뜨거워요","친구가 뛰어가요","지우개가 두꺼워요"],
+    "answer": 4,
+    "audio": "https://airnetcso.github.io/eps/audio/4.mp3"
+  },
+  {
+    "id": 5,
+    "type": "listening",
+    "question": "이것은 무엇입니까 ?",
+    "options": ["","","",""],
+    "answer": 3,
+    "image": "https://airnetcso.github.io/eps/image/5.jpg",
+    "audio": "https://airnetcso.github.io/eps/audio/5.mp3"
+  },
+  {
+    "id": 6,
+    "type": "listening",
+    "question": "여기는 어떤 곳입니까 ?",
+    "options": ["","","",""],
+    "answer": 1,
+    "image": "https://airnetcso.github.io/eps/image/6.jpg",
+    "audio": "https://airnetcso.github.io/eps/audio/6.mp3"
+  },
+  {
+    "id": 7,
+    "type": "listening",
+    "question": "이 사람은 무엇으로 여행을 하려고 합니까?",
+    "options": ["","","",""],
+    "answer": 4,
+    "image": "https://airnetcso.github.io/eps/image/7.jpg",
+    "audio": "https://airnetcso.github.io/eps/audio/7.mp3"
+  },
+  {
+    "id": 8,
+    "type": "listening",
+    "question": "케이크와 카드는 모두 얼마입니까 ?",
+    "options": ["","","",""],
+    "answer": 2,
+    "image": "https://airnetcso.github.io/eps/image/8.jpg",
+    "audio": "https://airnetcso.github.io/eps/audio/8.mp3"
+  },
+  {
+    "id": 9,
+    "type": "listening",
+    "question": "우체국이 어디에 있습니까 ?",
+    "options": ["","","",""],
+    "answer": 3,
+    "image": "https://airnetcso.github.io/eps/image/9.jpg",
+    "audio": "https://airnetcso.github.io/eps/audio/9.mp3"
+  },
+  {
+    "id": 10,
+    "type": "listening",
+    "question": "다음을 듣고 질문에 알맞은 대답을 고르십시오.",
+    "options": ["떡국 만드는 법을 배웠어요.","고향에 가서 가족을 만났어요.","고향 친구들을 만나려고 해요.","추석이니까 고향에 가려고 해요."],
+    "answer": 3,
+    "audio": "https://airnetcso.github.io/eps/audio/10.mp3"
+  },
+  {
+    "id": 11,
+    "type": "listening",
+    "question": "다음을 듣고 질문에 알맞은 대답을 고르십시오.",
+    "options": ["공장에 가다가 갑자기 쓰러졌어요.","뜨거운 물은 옮길 때 조심해요.","소독약을 발랐으니까 괜챃을 거예요.","화상을 입을 할수 있어니까 조심하세요."],
+    "answer": 1,
+    "audio": "https://airnetcso.github.io/eps/audio/11.mp3"
+  },
+  {
+    "id": 12,
+    "type": "listening",
+    "question": "다음을 듣고 질문에 알맞은 대답을 고르십시오.",
+    "options": ["늦지 않으려면 미리 서둘러겠어요.","저는 집들이 선물을 미리 준비했어요.","집이 커서 많은 사람들이 초대를 받았어요.","근처에 가서 전화를 하면 데리러 나오실 거예요."],    
+    "answer": 4,
+    "audio": "https://airnetcso.github.io/eps/audio/12.mp3"
+  },
+  {
+    "id": 13,
+    "type": "listening",
+    "question": "다음을 듣고 질문에 알맞은 대답을 고르십시오.",
+    "options": ["다음 정류장에서 내리세요.","건너편에서 460 번 버스를 타세요.","여기에서 시청까지 30 분 쯤 걸려요.","1 호선을 타고 가다가 시청에서 갈아타세요."],
+    "answer": 2,
+    "audio": "https://airnetcso.github.io/eps/audio/13.mp3"
+  },
+  {
+    "id": 14,
+    "type": "listening",
+    "question": "다음은 무엇에 대한 내용인지 맞는 것을 고르십시오.",
+    "options": ["식사를 요리하는 과정","정확이 식사하는 예절","식사를 고르는 기준","한식의 무늬와 소개"],
+    "answer": 3,
+    "audio": "https://airnetcso.github.io/eps/audio/14.mp3"
+  },
+  {
+    "id": 15,
+    "type": "listening",
+    "question": "여자가 생각을 있는지 맞는 것을 고르십시오.",
+    "options": ["거리에는 쓰레기통이 많이 필요하다.","쓰레기통에 음료수를 버리면 안 되다.","길에 쓰레기를 버리는 사람들이 많다.","쓰레기통이 없으면 거리가 더 깨끗하다."],
+    "answer": 4,
+    "audio": "https://airnetcso.github.io/eps/audio/15.mp3"
+  },
+  {
+    "id": 16,
+    "type": "listening",
+    "question": "잘 듣고 들은 내용과 관계있는 그림을 고르십시오.",
+    "options": ["자동차","자전거","버스","기차"],
+    "answer": 3,
+    "image": "https://airnetcso.github.io/eps/image/16.jpg",
+    "audio": "https://airnetcso.github.io/eps/audio/16.mp3"
+  },
+  {
+    "id": 17,
+    "type": "listening",
+    "question": "잘 듣고 들은 내용과 관계있는 그림을 고르십시오.",
+    "options": ["자동차","자전거","버스","기차"],
+    "answer": 1,
+    "image": "https://airnetcso.github.io/eps/image/17.jpg",
+    "audio": "https://airnetcso.github.io/eps/audio/17.mp3"
+  },
+  {
+    "id": 18,
+    "type": "listening",
+    "question": "대화가 끝난 후 남자가 가장 먼저 할 일은 무엇입니까 ?",
+    "options": ["기숙사에서 방을 배정받는다.","신청자들 중에서 추첨을 한다.","관리실에 기숙사 신청서를 낸다.","기숙사 관리실에 보증금을 낸다."],
+    "answer": 3,
+    "audio": "https://airnetcso.github.io/eps/audio/18.mp3"
+  },
+  {
+    "id": 19,
+    "type": "listening",
+    "question": "남자가 왜 병원에 가려고 합니까?",
+    "options": ["친구를 만나려고","다리를 치료하려고","병원에서 일하려고","친구에게 부탁하려고"],
+    "answer": 1,
+    "audio": "https://airnetcso.github.io/eps/audio/19.mp3"
+  },
+  {
+    "id": 20,
+    "type": "listening",
+    "question": "여자가 댜한 설명으로 맞는 것은 무엇입니까 ?",
+    "options": ["냄새가 심해서 힘들었습니다.","냄새가 안 나서 마스크를 안 썼습니다.","페인트 작업을 별로 어렵지 않았습니다.","지금까지 자주 페인트 작업을 했습니다."],
+    "answer": 3,
+    "audio": "https://airnetcso.github.io/eps/audio/20.mp3"
+  },
+  {
+    "id": 21,
+    "type": "reading",
+    "question": "빈칸에 들어갈 가장 알맞은 것을 고르십시오.\n\n날씨가 너무 더워서 냉방을 하려고 합니다. 그래서 내일 __________ 을/를 사러 전자상가에 갑니다",
+    "options": ["난로","에어컨","환풍기","보일러"],
+    "answer": 2
+  },
+  {
+    "id": 22,
+    "type": "reading",
+    "question": "빈칸에 들어갈 가장 알맞은 것을 고르십시오.\n\n어제 산 바지가 좀 작아서 교환하려고 갔는데. 그런 바지가 모두 팔려서 __________ 을/를 받고 집에 돌아왔습니다.",
+    "options": ["교환","예금","환불","환전"],
+    "answer": 3
+  },
+  {
+    "id": 23,
+    "type": "reading",
+    "question": "빈칸에 들어갈 가장 알맞은 것을 고르십시오.\n\n다른 사람이 쓴 물건을 사면 가격이 __________ 쌉니다. 중고 가게에서는 그런 물건들이 팝니다.",
+    "options": ["제발","엄청","확실히","설마"],
+    "answer": 2
+  },
+  {
+    "id": 24,
+    "type": "reading",
+    "question": "빈칸에 들어갈 가장 알맞은 것을 고르십시오.\n\n주문한 음식을 다 먹은 후 빈 그릇은 대개 비닐봉지등에 싸서 내놓으면 __________.",
+    "options": ["포장해 줍니다.","수거해 갑니다.","배달해 줍니다.","팔아 줍니다."],
+    "answer": 2
+  },
+  {
+    "id": 25,
+    "type": "reading",
+    "question": "이 표지는 무슨 뜻입니까 ?",
+    "image": "https://airnetcso.github.io/eps/image/25.jpg",
+    "options": ["독성 위험","폭발 위험","감전 위험","저온 위험"],
+    "answer": 2
+  },
+  {
+    "id": 26,
+    "type": "reading",
+    "question": "다음 안내문의 설명으로 맞는 것은 무엇입니까?",
+    "image": "https://airnetcso.github.io/eps/image/26.jpg",
+    "options": ["주간 근무를 해야 합니다.","주말에도 일을 해야 합니다.","이력서는 이메일로 보냅니다.","연장 근무도 해야 합니다."],
+    "answer": 4
+  },
+  {
+    "id": 27,
+    "type": "reading",
+    "question": "다음 그래프에 맞는 것은 고르십시오.",
+    "image": "https://airnetcso.github.io/eps/image/27.jpg",
+    "options": ["인건비를 줄이기 위해서 쓰는 비율이 1위로 많다.","국내 근로자를 얻기 못해서 쓰는 비율이 반 이상입니다.","지시를 잘 따르다는 의미로 쓰는 비율이 제일 적다.","긴 시간 일 시킬 수 있어서 쓰는 비율이 제일 많다."],
+    "answer": 4
+  },
+  {
+    "id": 28,
+    "type": "reading",
+    "question": "이 사람의 지위는 무엇입니까 ?",
+    "image": "https://airnetcso.github.io/eps/image/28.jpg",
+    "options": ["박성현입니다.","공장장입니다.","태성입니다.","전문가입니다."],
+    "answer": 2
+  },
+  {
+  "id": 29,
+  "type": "reading",
+  "question": "빈칸에 들어갈 가장 알맞은 것을 고르십시오.\n\n가 : 교통사고를 당한 적이 있어요 ?\n나 : 어렸을 때 차에 __________ 뻔한 적이 있어요.",
+  "options": ["떨어질", "끼일", "부딪힐", "감길"],
+  "answer": 3
+  },
+  {
+    "id": 30,
+    "type": "reading",
+    "question": "빈칸에 들어갈 가장 알맞은 것을 고르십시오.\n\n저는 일요일마다 외국인력지원센터에 갑니다. 그곳에 __________ 한국어도 배우고 친구들도 사귈 수 있습니다.",
+    "options": ["가러","가면","가지만","가도록"],
+    "answer": 2
+  },
+  {
+    "id": 31,
+    "type": "reading",
+    "question": "다음 설명에 알맞은 어휘를 고르십시오.\n\n일시적으로 회사에 사정이 생겨 회사의 업무를 일정 기간 동안 쉬는 것을 말합니다.",
+    "options": ["폐업","휴업","영업","개업"],
+    "answer": 2
+  },
+  {
+    "id": 32,
+    "type": "reading",
+    "question": "다음 설명에 알맞은 어휘를 고르십시오.\n\n새집을 지어 들어가거나 이사를 한 후에 이웃과 친지를 불러 집을 구경시키고 음식을 대접하는 일입니다.",
+    "options": ["회식","제사","생일 잔치","집들이"],
+    "answer": 4
+  },
+  {
+    "id": 33,
+    "type": "reading",
+    "question": "다음 글을 읽고 내용과 같은 것을 고르십시오.\n\n휴일에 일하면 출근 시간부터 총 여덟 시간은 최저 시급의 1.5 배로 계산하며, 여덟 시간을 넘으면 2 배로 계산을 합니다. 그리고 휴일에 밤 열 시가넘으면 시급의 2.5 배로 계산하여 수당을 받습니다.",
+    "options": ["기본 시급과 연장 시급은 비슷합니다.","휴일 시급은 기본 시급보다 적습니다.","열 시 넘게 일하면 시급 수당이 제일 많습니다.","총 여덟 시간은 시급이 제일 많습니다."],
+    "answer": 3
+  },
+  {
+  "id": 34,
+  "type": "reading",
+  "question": "다음 글을 읽고 내용과 같은 것을 고르십시오.\n\n한국의 지하철은 안전하고 교통카드를 사용할 수 있어서 이용하기가 편리합니다. 요금도 다른 교통에 비해 싸고 새벽부터 밤 늦게까지 이용할 수 있습니다. 서울에는 여러 지하철이 있는데 호선마다 색이 다르기 때문에 가고 싶은 역을 쉽게 찾을 수 있습니다. 그리고 안내방송이 나오기 때문에 어느 역인지 쉽게 알 수 있습니다.",
+  "options": [
+    "현금으로만 탈 수 있어서 힘듭니다.",
+    "아침 일찍과 밤 늦게까지 탈 수 있습니다.",
+    "호선 색깔은 비슷해서 환승하기가 힘듭니다.",
+    "다른 교통보다 요금이 비쌉니다."
+  ],
+    "answer": 2
+  },
+  {
+  "id": 35,
+  "type": "reading",
+  "question": "다음 글을 읽고 무엇에 대한 글인지 고르십시오.\n\n저는 이 회사에서 2 년 더 일할 수 있지만 1 년간만의 계약을 했습니다. 계약기간 중에 근로 조건들이 잘 지키면 남은 시간에도 여기에서 일할 겁니다.",
+  "options": ["수습 기간","계약 기간","근무 시간","근로 조건"],
+  "answer": 2
+  },
+  {
+    "id": 36,
+    "type": "reading",
+    "question": "다음 글을 읽고 무엇에 대한 글인지 고르십시오.\n\n동료 아들의 첫 새일이라서 어제 회사 사름들이 모두가 친구 집에 다녀왔습니다. 맛있는 것도 많이 먹고 돌잡이도 구경했습니다. 정말재미있었습니다",
+    "options": ["백일","돌","제사","폐백"],
+    "answer": 3
+  },
+  {
+    "id": 37,
+    "type": "reading",
+    "question": "다음 단어와 관계있는 것은 무엇입니까?\n\n  숙소 , 표 , 구경하다 , 기념품",
+    "options": ["축제","교통","여행","회식"],
+    "answer": 3
+  },
+  {
+    "id": 38,
+    "type": "reading",
+    "question": "다음 단어의 반대되는 어휘를 고르십시오.\n\n  마르다",
+    "options": ["건조하다","말리다","젖다","맞다"],
+    "answer": 3
+  },
+  {
+    "id": 39,
+    "type": "reading",
+    "question": "다음 그림을 보고 맞는 단어나 문장을 고르십시오.",
+    "image": "https://airnetcso.github.io/eps/image/39.jpg",
+    "options": ["전기밥솥","도마","뚝배기","프라이팬"],
+    "answer": 3
+  },
+  {
+    "id": 40,
+    "type": "reading",
+    "question": "다음 그림을 보고 맞는 단어나 문장을 고르십시오.",
+    "image": "https://airnetcso.github.io/eps/image/40.jpg",
+    "options": ["박수를 치고 있습니다.","악수를 하고 있습니다.","인사를 하고 있습니다.","고개를 숙이고 있습니다."],
+    "answer": 2
+  }
+]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
