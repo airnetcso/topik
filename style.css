@@ -173,7 +173,7 @@ input, button {
   display: flex;
   align-items: flex-start;
   gap: 10px;              /* ← JARAK ANTAR TOMBOL DAN TEKS (dari yang sebelumnya lebih besar jadi 10px) */
-  margin: 6px 0;          /* atas-bawah lebih rapat */
+  margin: 3px 0;          /* atas-bawah lebih rapat */
   padding: 4px 0;
 }
 
