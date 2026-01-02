@@ -135,16 +135,15 @@ input, button {
 
 /* ===== JAWABAN BULAT ===== */
 .col-left {
-  padding: 15px 10px; /* sedikit padding samping biar nggak nempel tepi */
+  padding: 10px;
 }
 
 .col-left button {
-  width: 38px;                /* lebih besar sedikit biar mudah diklik */
+  width: 38px;
   height: 38px;
-  min-width: 38px;            /* biar nggak mengecil */
   border-radius: 50%;
   border: 2px solid #444;
-  background: #ffffff;
+  background: #fff;
   color: #333;
   font-weight: bold;
   font-size: 16px;
@@ -152,8 +151,8 @@ input, button {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  transition: all 0.2s ease;
   cursor: pointer;
+  transition: background .2s, border-color .2s;
 }
 
 .col-left button:hover {
@@ -165,27 +164,25 @@ input, button {
   background: #3b82f6;
   color: white;
   border-color: #3b82f6;
-  box-shadow: 0 2px 6px rgba(59,130,246,0.3);
 }
 
-/* Row setiap pilihan jawaban (yang bikin renggang) */
-.col-left > div {  /* target div yang membungkus tombol + teks jawaban */
+/* Row jawaban: dibikin lebih rapat */
+.col-left > div {
   display: flex;
   align-items: flex-start;
-  gap: 10px;              /* ← JARAK ANTAR TOMBOL DAN TEKS (dari yang sebelumnya lebih besar jadi 10px) */
-  margin: 3px 0;          /* atas-bawah lebih rapat */
-  padding: 4px 0;
+  gap: 10px;
+  margin: 4px 0;        /* ← ini yang paling pengaruh (dari 6px jadi 4px) */
+  padding: 2px 0;
 }
 
 /* Teks jawaban */
-.col-left span,
-.col-left div > *:not(button) {
-  line-height: 1.45;
+.col-left span {
+  line-height: 1.4;
   font-size: 15px;
   color: #111;
 }
 
-/* Responsif untuk layar kecil (HP) */
+/* Responsif */
 @media (max-width: 768px) {
   .col-left button {
     width: 36px;
@@ -194,14 +191,13 @@ input, button {
   }
   .col-left > div {
     gap: 8px;
-    margin: 5px 0;
+    margin: 3px 0;      /* lebih rapat lagi di HP */
   }
 }
 
-/* Optional: kalau mau lebih rapat lagi di PC besar */
 @media (min-width: 1024px) {
   .col-left > div {
-    gap: 12px;  /* sedikit lebih longgar di layar besar biar nggak terlalu padat */
+    margin: 5px 0;      /* sedikit longgar di layar besar */
   }
 }
 
