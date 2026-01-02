@@ -21,6 +21,7 @@ button{
   background:#2563eb;color:#fff;border:none;cursor:pointer
 }
 button:hover{background:#1e40af}
+#error-msg{color:#ff0000;font-weight:bold;margin-top:10px;font-size:13px}
 </style>
 </head>
 <body>
@@ -37,35 +38,57 @@ button:hover{background:#1e40af}
   </select>
 
   <button onclick="login()">LOGIN</button>
+  <div id="error-msg"></div>
 </div>
 
 <script>
-const users=[
- {username:"siswa01",password:"12345",role:"user"},
- {username:"admin",password:"admin123",role:"admin"}
+function checkStorage() {
+  try {
+    localStorage.setItem('test', 'ok');
+    localStorage.removeItem('test');
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+const users = [
+  {username:"siswa01",password:"12345",role:"user"},
+  {username:"admin",password:"admin123",role:"admin"}
 ];
 
 function login(){
-  const u=username.value.trim();
-  const p=password.value.trim();
-  const paket=paket.value;
-  const user=users.find(x=>x.username===u && x.password===p);
-  if(!user){alert("Login salah");return;}
+  const err = document.getElementById("error-msg");
+  err.innerText = "";
 
-  // CEK SYARAT PAKET
-  if(paket>1){
-    const results=JSON.parse(localStorage.getItem("results")||"[]");
-    const prev=results.find(r=>r.name===u && r.paket==paket-1);
-    if(!prev || prev.score<80){
-      alert("Harus lulus paket sebelumnya (nilai ≥ 80)");
+  if (!checkStorage()) {
+    err.innerText = "Browser memblokir localStorage (Private/Incognito?). Gunakan mode normal.";
+    return;
+  }
+
+  const u = document.getElementById("username").value.trim();
+  const p = document.getElementById("password").value.trim();
+  const paket = document.getElementById("paket").value;  // ← FIX TYPO FATAL
+
+  const user = users.find(x => x.username === u && x.password === p);
+  if (!user) {
+    err.innerText = "Username atau password salah!";
+    return;
+  }
+
+  if (Number(paket) > 1) {
+    const results = JSON.parse(localStorage.getItem("results") || "[]");
+    const prev = results.find(r => r.name === u && Number(r.paket.replace("Paket ","")) === Number(paket)-1);
+    if (!prev || prev.score < 80) {
+      err.innerText = "Harus lulus paket sebelumnya dengan nilai minimal 80";
       return;
     }
   }
 
-  localStorage.setItem("login","true");
-  localStorage.setItem("user",u);
-  localStorage.setItem("paket",paket);
-  location.href=user.role==="admin"?"admin.html":"dashboard.html";
+  localStorage.setItem("login", "true");
+  localStorage.setItem("user", u);
+  localStorage.setItem("paket", paket);
+  location.href = user.role === "admin" ? "admin.html" : "dashboard.html";
 }
 </script>
 
