@@ -6,21 +6,16 @@
 <style>
 *{box-sizing:border-box;font-family:Arial}
 body{
-  margin:0;height:100vh;display:flex;
-  justify-content:center;align-items:center;
-  background:
-    linear-gradient(rgba(0,0,0,.35),rgba(0,0,0,.35)),
-    url("https://raw.githubusercontent.com/airnetcso/eps/main/image/bg.jpg") center/cover no-repeat;
+  margin:0;height:100vh;display:flex;justify-content:center;align-items:center;
+  background:linear-gradient(rgba(0,0,0,.35),rgba(0,0,0,.35)),
+  url("https://raw.githubusercontent.com/airnetcso/eps/main/image/bg.jpg") center/cover no-repeat;
 }
 .login-box{
-  width:320px;
-  background:rgba(255,255,255,.3);
-  padding:30px 25px;
-  text-align:center;
-  backdrop-filter: blur(5px);
+  width:340px;background:rgba(255,255,255,.3);
+  padding:30px 25px;text-align:center;backdrop-filter:blur(5px)
 }
-.login-box input,select,button{
-  width:100%;padding:12px;margin-bottom:15px
+input,select,button{
+  width:100%;padding:12px;margin-bottom:12px;font-size:14px
 }
 button{
   background:#2563eb;color:#fff;border:none;cursor:pointer
@@ -32,16 +27,13 @@ button:hover{background:#1e40af}
 
 <div class="login-box">
   <h2>LOGIN UBT</h2>
-
   <input id="username" placeholder="Username">
   <input id="password" type="password" placeholder="Password">
 
-  <!-- PILIH TYPE SOAL -->
   <select id="paket">
-    <option value="">-- Pilih Paket Soal --</option>
-    <option value="1">Paket 1</option>
-    <option value="2">Paket 2</option>
-    <option value="3">Paket 3</option>
+    <option value="1">Paket Soal 1</option>
+    <option value="2">Paket Soal 2</option>
+    <option value="3">Paket Soal 3</option>
   </select>
 
   <button onclick="login()">LOGIN</button>
@@ -49,40 +41,33 @@ button:hover{background:#1e40af}
 
 <script>
 const users=[
-  {username:"siswa01",password:"12345",role:"user"},
-  {username:"siswa02",password:"12345",role:"user"},
-  {username:"admin",password:"admin123",role:"admin"}
+ {username:"siswa01",password:"12345",role:"user"},
+ {username:"admin",password:"admin123",role:"admin"}
 ];
 
 function login(){
   const u=username.value.trim();
   const p=password.value.trim();
-  const paket=paketSelect.value;
-
+  const paket=paket.value;
   const user=users.find(x=>x.username===u && x.password===p);
-  if(!user) return alert("Login salah");
+  if(!user){alert("Login salah");return;}
 
-  if(user.role==="user"){
-    if(!paket) return alert("Pilih paket soal!");
-
+  // CEK SYARAT PAKET
+  if(paket>1){
     const results=JSON.parse(localStorage.getItem("results")||"[]");
-    if(paket>1){
-      const prev=results.find(r=>r.name===u && r.paket==paket-1);
-      if(!prev || prev.score<80){
-        return alert("Paket sebelumnya belum lulus (min 80)");
-      }
+    const prev=results.find(r=>r.name===u && r.paket==paket-1);
+    if(!prev || prev.score<80){
+      alert("Harus lulus paket sebelumnya (nilai ≥ 80)");
+      return;
     }
-    localStorage.setItem("paket",paket);
   }
 
   localStorage.setItem("login","true");
   localStorage.setItem("user",u);
-  localStorage.setItem("role",user.role);
-
-  location.href = user.role==="admin" ? "admin.html" : "dashboard.html";
+  localStorage.setItem("paket",paket);
+  location.href=user.role==="admin"?"admin.html":"dashboard.html";
 }
-
-const paketSelect=document.getElementById("paket");
 </script>
+
 </body>
 </html>
