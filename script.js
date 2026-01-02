@@ -68,7 +68,7 @@ function loadQuestionPage() {
     box.appendChild(d);
   }
 
-  // AUDIO – NO AUTOPLAY, USER HARUS KLIK TOMBOl
+  // AUDIO PLAYER – HANYA PLAYER STANDAR DENGAN CONTROLS (USER KLIK ▶ SENDIRI)
   if (q.audio) {
     const container = document.createElement("div");
     container.style.margin = "25px 0";
@@ -81,30 +81,8 @@ function loadQuestionPage() {
     audio.style.width = "100%";
     audio.style.maxWidth = "420px";
     audio.style.display = "block";
-    audio.style.margin = "0 auto 15px";
+    audio.style.margin = "0 auto";
 
-    const playBtn = document.createElement("button");
-    playBtn.textContent = "▶ PUTAR AUDIO SOAL";
-    playBtn.style.padding = "12px 24px";
-    playBtn.style.background = "#2563eb";
-    playBtn.style.color = "white";
-    playBtn.style.border = "none";
-    playBtn.style.borderRadius = "8px";
-    playBtn.style.fontSize = "16px";
-    playBtn.style.fontWeight = "bold";
-    playBtn.style.cursor = "pointer";
-    playBtn.style.marginBottom = "10px";
-
-    playBtn.onclick = () => {
-      audio.play().catch(err => {
-        console.warn("Play error:", err);
-        alert("Silakan klik tombol play ▶ di player audio di bawah ini jika masih tidak berbunyi.");
-      });
-      // Optional: sembunyikan tombol setelah pertama kali diputar
-      playBtn.style.display = "none";
-    };
-
-    container.appendChild(playBtn);
     container.appendChild(audio);
     box.appendChild(container);
   }
@@ -163,7 +141,7 @@ function prevQuestion() {
 }
 
 function back() {
-  localStorage.removeItem("time"); // reset timer kalau balik
+  localStorage.removeItem("time");
   location.href = "dashboard.html";
 }
 
