@@ -1,132 +1,139 @@
-let questions=[];
-let answered=JSON.parse(localStorage.getItem("answered")||"{}");
-let currentIndex=0;
-let time=Number(localStorage.getItem("time"))||50*60;
+let questions = [];
+let answered = JSON.parse(localStorage.getItem("answered") || "{}");
+let currentIndex = 0;
 
-/* ===== LOAD SOAL SESUAI PAKET ===== */
+const paket = localStorage.getItem("paket") || "1";
+const SOAL_URL = `https://airnetcso.github.io/ubt/soal/soal${paket}.json`;
+
+/* LOAD SOAL */
 async function loadSoal(){
-  const paket=localStorage.getItem("paket");
-  const url=`https://airnetcso.github.io/ubt/soal/soal${paket}.json`;
-  const res=await fetch(url);
-  questions=await res.json();
+  const res = await fetch(SOAL_URL);
+  questions = await res.json();
   buildGrid();
 }
 
-/* ===== DASHBOARD GRID ===== */
+/* DASHBOARD GRID */
 function buildGrid(){
-  const L=document.getElementById("listen");
-  const R=document.getElementById("read");
-  if(!L||!R) return;
-  L.innerHTML=""; R.innerHTML="";
-  questions.forEach(q=>{
-    const box=document.createElement("div");
+  const L = document.getElementById("listen");
+  const R = document.getElementById("read");
+  if(!L || !R) return;
+
+  L.innerHTML = "";
+  R.innerHTML = "";
+
+  questions.forEach((q,i)=>{
+    const box = document.createElement("div");
     box.className="qbox";
     box.textContent=q.id;
+
     if(answered[q.id]) box.classList.add("done");
+
     box.onclick=()=>{
-      localStorage.setItem("current",q.id);
+      localStorage.setItem("currentIndex",i);
       location.href="question.html";
     };
-    (q.type==="listening"?L:R).appendChild(box);
+
+    q.type==="listening" ? L.appendChild(box) : R.appendChild(box);
   });
 }
 
-/* ===== QUESTION PAGE ===== */
+/* HALAMAN SOAL */
 function loadQuestionPage(){
   const qBox=document.getElementById("questionBox");
   const ans=document.getElementById("answers");
   if(!qBox||!ans) return;
 
-  const id=Number(localStorage.getItem("current"));
-  const idx=questions.findIndex(q=>q.id===id);
-  const q=questions[idx];
-  currentIndex=idx;
+  currentIndex = Number(localStorage.getItem("currentIndex")||0);
+  const q=questions[currentIndex];
+  if(!q) return;
 
-  qBox.innerHTML=`<h3>${q.id}. ${q.question}</h3>`;
+  qBox.innerHTML="";
   ans.innerHTML="";
 
+  const h=document.createElement("h3");
+  h.textContent=`${q.id}. ${q.question.split("\n")[0]}`;
+  qBox.appendChild(h);
+
   if(q.audio){
-    qBox.innerHTML+=`<audio src="${q.audio}" controls></audio>`;
-  }
-  if(q.image){
-    qBox.innerHTML+=`<img src="${q.image}">`;
+    const a=document.createElement("audio");
+    a.src=q.audio;
+    a.controls=true;
+    a.load(); // 🔥 FIX AUDIO
+    qBox.appendChild(a);
   }
 
-  q.options.forEach((o,i)=>{
+  if(q.image){
+    const img=document.createElement("img");
+    img.src=q.image;
+    qBox.appendChild(img);
+  }
+
+  q.options.forEach((opt,i)=>{
+    const row=document.createElement("div");
     const b=document.createElement("button");
     b.textContent=i+1;
-    if(answered[q.id]===i+1) b.classList.add("selected");
+    if(answered[q.id]==i+1) b.classList.add("selected");
+
     b.onclick=()=>{
       answered[q.id]=i+1;
       localStorage.setItem("answered",JSON.stringify(answered));
-      loadQuestionPage();
+      ans.querySelectorAll("button").forEach(x=>x.classList.remove("selected"));
+      b.classList.add("selected");
     };
-    const row=document.createElement("div");
-    row.appendChild(b);
-    row.appendChild(document.createTextNode(o));
+
+    row.append(b,opt);
     ans.appendChild(row);
   });
 }
 
-/* ===== NAV ===== */
+/* NAV */
 function nextQuestion(){
-  if(currentIndex+1<questions.length){
-    localStorage.setItem("current",questions[currentIndex+1].id);
+  if(currentIndex<questions.length-1){
+    localStorage.setItem("currentIndex",currentIndex+1);
     loadQuestionPage();
   }
 }
 function prevQuestion(){
   if(currentIndex>0){
-    localStorage.setItem("current",questions[currentIndex-1].id);
+    localStorage.setItem("currentIndex",currentIndex-1);
     loadQuestionPage();
   }
 }
-function back(){location.href="dashboard.html";}
+function back(){ location.href="dashboard.html"; }
 
-/* ===== TIMER ===== */
-setInterval(()=>{
-  time--;
-  localStorage.setItem("time",time);
-  const t=document.getElementById("timerBox");
-  if(t){
-    const m=String(Math.floor(time/60)).padStart(2,"0");
-    const s=String(time%60).padStart(2,"0");
-    t.textContent=`${m}:${s}`;
-  }
-  if(time<=0) finish();
-},1000);
-
-/* ===== SCORE ===== */
+/* SCORE */
 function calculateScore(){
-  let score=0;
+  let s=0;
   questions.forEach(q=>{
-    if(answered[q.id]===q.answer) score+=2.5;
+    if(answered[q.id]==q.answer) s+=2.5;
   });
-  return score;
-}
-
-function manualSubmit(){
-  if(confirm("Submit sekarang?")) finish();
+  return s;
 }
 
 function finish(){
+  const score=calculateScore();
   const results=JSON.parse(localStorage.getItem("results")||"[]");
+  const progress=JSON.parse(localStorage.getItem("progress")||"{}");
+
+  progress[paket]=score;
+
   results.push({
     name:localStorage.getItem("user"),
-    paket:localStorage.getItem("paket"),
-    score:calculateScore(),
-    time:document.getElementById("timerBox").innerText,
+    paket:`Paket ${paket}`,
+    score,
+    time:document.getElementById("timerBox")?.innerText,
     date:new Date().toLocaleString()
   });
+
   localStorage.setItem("results",JSON.stringify(results));
+  localStorage.setItem("progress",JSON.stringify(progress));
+
   localStorage.removeItem("answered");
-  localStorage.removeItem("current");
-  localStorage.removeItem("time");
+  localStorage.removeItem("currentIndex");
   location.href="index.html";
 }
 
-/* ===== INIT ===== */
-window.onload=()=>{
-  loadSoal();
+window.onload=async()=>{
+  await loadSoal();
   loadQuestionPage();
 };
