@@ -68,10 +68,10 @@ function loadQuestionPage() {
     box.appendChild(d);
   }
 
-  // AUDIO (paling aman untuk semua browser)
+  // AUDIO – NO AUTOPLAY, USER HARUS KLIK TOMBOl
   if (q.audio) {
     const container = document.createElement("div");
-    container.style.margin = "20px 0";
+    container.style.margin = "25px 0";
     container.style.textAlign = "center";
 
     const audio = document.createElement("audio");
@@ -81,33 +81,32 @@ function loadQuestionPage() {
     audio.style.width = "100%";
     audio.style.maxWidth = "420px";
     audio.style.display = "block";
-    audio.style.margin = "0 auto 12px";
+    audio.style.margin = "0 auto 15px";
 
     const playBtn = document.createElement("button");
-    playBtn.textContent = "▶ Putar Audio (klik jika tidak otomatis)";
-    playBtn.style.padding = "10px 20px";
-    playBtn.style.background = "#22c55e";
+    playBtn.textContent = "▶ PUTAR AUDIO SOAL";
+    playBtn.style.padding = "12px 24px";
+    playBtn.style.background = "#2563eb";
     playBtn.style.color = "white";
     playBtn.style.border = "none";
     playBtn.style.borderRadius = "8px";
+    playBtn.style.fontSize = "16px";
     playBtn.style.fontWeight = "bold";
     playBtn.style.cursor = "pointer";
+    playBtn.style.marginBottom = "10px";
 
     playBtn.onclick = () => {
-      audio.play().catch(() => {
-        alert("Klik tombol ▶ pada player audio di atas untuk memutar suara.");
+      audio.play().catch(err => {
+        console.warn("Play error:", err);
+        alert("Silakan klik tombol play ▶ di player audio di bawah ini jika masih tidak berbunyi.");
       });
+      // Optional: sembunyikan tombol setelah pertama kali diputar
+      playBtn.style.display = "none";
     };
 
-    container.appendChild(audio);
     container.appendChild(playBtn);
+    container.appendChild(audio);
     box.appendChild(container);
-
-    // Coba autoplay dengan trik muted (banyak browser izinkan)
-    audio.muted = true;
-    audio.play().then(() => {
-      audio.muted = false;
-    }).catch(() => {});
   }
 
   // Gambar
@@ -130,7 +129,7 @@ function loadQuestionPage() {
     b.onclick = () => {
       answered[q.id] = i + 1;
       localStorage.setItem("answered", JSON.stringify(answered));
-      buildGrid(); // update grid di dashboard kalau dibuka lagi
+      buildGrid(); // update grid kalau balik ke dashboard
       loadQuestionPage(); // refresh tampilan
     };
 
@@ -164,7 +163,7 @@ function prevQuestion() {
 }
 
 function back() {
-  localStorage.removeItem("time"); // reset timer kalau mau
+  localStorage.removeItem("time"); // reset timer kalau balik
   location.href = "dashboard.html";
 }
 
@@ -203,12 +202,6 @@ function calculateScore() {
 function finish() {
   const score = calculateScore();
 
-  // Simpan history (opsional)
-  const history = JSON.parse(localStorage.getItem("history") || "{}");
-  history[`paket${paket}`] = { score };
-  localStorage.setItem("history", JSON.stringify(history));
-
-  // Simpan hasil untuk admin
   const results = JSON.parse(localStorage.getItem("results") || "[]");
   results.push({
     name: localStorage.getItem("user"),
