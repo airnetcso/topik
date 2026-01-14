@@ -1,3 +1,7 @@
+// =======================================================
+// script.js - UBT App (update fix submit Android WebView)
+// =======================================================
+
 let questions = [];
 let answered = JSON.parse(localStorage.getItem("answered") || "{}");
 let currentIndex = 0;
@@ -5,10 +9,12 @@ let currentIndex = 0;
 const paket = localStorage.getItem("paket") || "1";
 const soalURL = `https://airnetcso.github.io/ubt/soal/soal${paket}.json?v=13`;
 
-// URL Google Sheet UBT (WA baru yang kamu kasih)
+// URL Google Sheet UBT
 const SPREADSHEET_URL = "https://script.google.com/macros/s/AKfycbzxyVIlsyLswlfnQG618eeUZgN83dd2jfCjU0r7LsNHM3A6NNiibuCIb5e3CNs9J1vVhQ/exec";
 
-// FUNGSI KIRIM SKOR UBT (FINAL - POST no-cors tanpa fallback biar nggak double)
+// =======================================================
+// FUNGSI KIRIM SKOR KE SHEET (POST no-cors SAFE)
+// =======================================================
 function sendScoreToSheet(username, paket, score) {
   console.log("🔥 Kirim skor UBT - POST no-cors SAFE FINAL");
 
@@ -38,7 +44,6 @@ function sendScoreToSheet(username, paket, score) {
 
   const formData = new URLSearchParams(dataToSend);
 
-  // POST no-cors + keepalive (request tetep jalan meski redirect)
   fetch(SPREADSHEET_URL, {
     method: "POST",
     mode: "no-cors",
@@ -46,16 +51,13 @@ function sendScoreToSheet(username, paket, score) {
     body: formData,
     redirect: "follow"
   })
-  .then(() => {
-    console.log("✅ POST sukses (no-cors - opaque OK)");
-  })
-  .catch(err => {
-    console.error("Gagal POST:", err);
-    // TIDAK ADA fallback beacon atau window.open lagi → nggak double Anonymous
-  });
+  .then(() => console.log("✅ POST sukses (no-cors - opaque OK)"))
+  .catch(err => console.error("Gagal POST:", err));
 }
 
-// SEMUA FUNGSI LAIN TETAP SAMA PERSIS
+// =======================================================
+// LOAD SOAL
+// =======================================================
 async function loadSoal() {
   try {
     const res = await fetch(soalURL);
@@ -73,6 +75,9 @@ async function loadSoal() {
   }
 }
 
+// =======================================================
+// GRID SOAL (LISTEN / READ)
+// =======================================================
 function buildGrid() {
   const L = document.getElementById("listen");
   const R = document.getElementById("read");
@@ -92,6 +97,9 @@ function buildGrid() {
   });
 }
 
+// =======================================================
+// LOAD QUESTION PAGE
+// =======================================================
 function loadQuestionPage() {
   const box = document.getElementById("questionBox");
   const ans = document.getElementById("answers");
@@ -148,10 +156,16 @@ function loadQuestionPage() {
   });
 }
 
+// =======================================================
+// NAVIGASI
+// =======================================================
 function nextQuestion() { if (currentIndex + 1 < questions.length) { localStorage.setItem("current", questions[currentIndex + 1].id); loadQuestionPage(); } }
 function prevQuestion() { if (currentIndex > 0) { localStorage.setItem("current", questions[currentIndex - 1].id); loadQuestionPage(); } }
 function back() { localStorage.removeItem("time"); location.href = "dashboard.html"; }
 
+// =======================================================
+// TIMER
+// =======================================================
 let time = Number(localStorage.getItem("time")) || 50 * 60;
 setInterval(() => {
   if (time <= 0) { finish(); return; }
@@ -161,6 +175,9 @@ setInterval(() => {
   if (t) t.textContent = `${String(Math.floor(time / 60)).padStart(2, "0")}:${String(time % 60).padStart(2, "0")}`;
 }, 1000);
 
+// =======================================================
+// SUBMIT / FINISH
+// =======================================================
 function manualSubmit() {
   if (questions.length === 0) {
     alert("Soal belum dimuat! Tunggu grid muncul dulu.");
@@ -193,14 +210,24 @@ function finish() {
   results.push({ name: user, paket, score, time: document.getElementById("timerBox")?.innerText || "00:00", date: new Date().toLocaleString("id-ID") });
   localStorage.setItem("results", JSON.stringify(results));
 
+  // =======================================================
+  // Kirim skor ke Google Sheet
+  // =======================================================
   sendScoreToSheet(user, paket, score);
 
-  localStorage.clear();
-
-  alert(`Ujian selesai!\nNilai Anda: ${score}\nData sudah dikirim ke pusat! 🎉`);
-  location.href = "index.html";
+  // =======================================================
+  // Delay 2 detik supaya fetch POST di WebView Android selesai
+  // =======================================================
+  setTimeout(() => {
+    localStorage.clear();
+    alert(`Ujian selesai!\nNilai Anda: ${score}\nData sudah dikirim ke pusat! 🎉`);
+    location.href = "index.html";
+  }, 2000);
 }
 
+// =======================================================
+// ONLOAD
+// =======================================================
 window.onload = async () => {
   console.log("🚀 UBT App mulai...");
   await loadSoal();
