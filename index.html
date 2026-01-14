@@ -27,19 +27,19 @@ body {
 }
 
 .login-box {
-  width: 300px;                 /* Lebih kecil & pendek */
-  background: rgba(255, 255, 255, 0.25);  /* Kembali semi-transparent */
-  padding: 32px 24px 24px 24px; /* Atas 32px, bawah lebih rapat 24px */
+  width: 300px;
+  background: rgba(255, 255, 255, 0.25);
+  padding: 32px 24px 20px 24px; /* bawah lebih rapat */
   text-align: center;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   animation: fadeInUp 0.7s ease-out forwards;
   backdrop-filter: blur(10px);
-  border: none;                 /* Hilangkan border */
-  border-radius: 0;             /* Kotak tajam, tanpa radius */
+  border: none;
+  border-radius: 0;
 }
 
 .login-box h2 {
-  margin: 0 0 24px 0;           /* Jarak atas lebih rapat */
+  margin: 0 0 20px 0;
   color: #ffffff;
   font-size: 22px;
   font-weight: 600;
@@ -49,9 +49,9 @@ body {
 input, select, button {
   width: 100%;
   padding: 13px;
-  margin-bottom: 14px;          /* Jarak antar elemen lebih rapat */
+  margin-bottom: 14px;
   font-size: 15px;
-  border-radius: 0;             /* Kotak tajam */
+  border-radius: 0;
   border: 1px solid rgba(255,255,255,0.4);
   outline: none;
   transition: border-color 0.25s, box-shadow 0.25s;
@@ -78,7 +78,7 @@ button {
   cursor: pointer;
   border: none;
   transition: background 0.25s;
-  margin-top: 4px;              /* Sedikit jarak dari select */
+  margin-top: 6px;
 }
 
 button:hover {
@@ -156,7 +156,7 @@ const userMapping = {
   "2026010023": "yppsdi",
   "2026010024": "Azizah27_",
   "2026010025": "mila",
-  // tambahkan sisanya sesuai daftar kamu
+  // tambahkan user lain sesuai daftar kamu
 };
 
 const validUserIDs = Object.keys(userMapping);
@@ -171,7 +171,7 @@ function checkStorage() {
   }
 }
 
-function login() {
+async function login() {
   const err = document.getElementById("error-msg");
   err.innerText = "";
 
@@ -209,13 +209,44 @@ function login() {
     }
   }
 
+  // ────────────────────────────────────────────────
+  // Force landscape + fullscreen setelah login berhasil
+  // ────────────────────────────────────────────────
+  try {
+    // Minta fullscreen dulu (required untuk lock orientation di banyak browser)
+    const elem = document.documentElement;
+    if (elem.requestFullscreen) {
+      await elem.requestFullscreen();
+    } else if (elem.webkitRequestFullscreen) { // Safari iOS
+      await elem.webkitRequestFullscreen();
+    } else if (elem.msRequestFullscreen) {
+      await elem.msRequestFullscreen();
+    }
+
+    // Lock ke landscape
+    if (screen.orientation && typeof screen.orientation.lock === 'function') {
+      await screen.orientation.lock("landscape-primary");
+      console.log("Berhasil lock landscape");
+    } else {
+      console.warn("Browser tidak support lock orientation");
+      // Optional: kasih hint ke user
+      alert("Silakan putar perangkat ke mode landscape untuk ujian terbaik.");
+    }
+  } catch (err) {
+    console.error("Gagal masuk fullscreen atau lock orientation:", err);
+    // Tidak menghentikan login, lanjut saja
+  }
+
+  // Simpan data login
   localStorage.setItem("login", "true");
   localStorage.setItem("user", realName);
   localStorage.setItem("paket", paket);
 
+  // Redirect ke dashboard
   window.location.href = "dashboard.html";
 }
 
+// Support tekan Enter
 document.addEventListener("keypress", function(e) {
   if (e.key === "Enter") login();
 });
