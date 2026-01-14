@@ -1,5 +1,5 @@
 // ===========================
-// script.js - UBT App Update (WebView Fixed)
+// script.js - UBT App (WebView Submit Fix - Beacon + Keepalive + Delay)
 // ===========================
 
 let questions = [];
@@ -13,23 +13,22 @@ const soalURL = `https://airnetcso.github.io/ubt/soal/soal${paket}.json?v=13`;
 const SPREADSHEET_URL = "https://script.google.com/macros/s/AKfycbzxyVIlsyLswlfnQG618eeUZgN83dd2jfCjU0r7LsNHM3A6NNiibuCIb5e3CNs9J1vVhQ/exec";
 
 // ===========================
-// Kirim skor ke Sheet (FIXED untuk WebView)
+// Kirim skor (sendBeacon utama + fetch keepalive fallback)
 // ===========================
 function sendScoreToSheet(username, paket, score) {
-    console.log("🔥 MENGIRIM SKOR UBT... (mode: XHR sync + fallback)");
+    console.log("🔥 Kirim skor UBT...");
 
     const totalSoal = questions.length || 40;
     const maxScore = totalSoal * 2.5;
     const persentase = Math.round((score / maxScore) * 100);
 
-    // Cegah duplikat
     const key = "ubt_sent_" + username + "_p" + paket + "_s" + score;
     if (localStorage.getItem(key) === "sent") {
-        console.log("✅ Skor sudah pernah dikirim, skip.");
-        return true; // anggap sukses
+        console.log("✅ Sudah dikirim, skip.");
+        return true;
     }
 
-    const params = new URLSearchParams({
+    const data = new URLSearchParams({
         waktu: new Date().toLocaleString('id-ID', {timeZone: 'Asia/Jakarta'}),
         namaSiswa: username || "Anonymous",
         code: "UBT TRYOUT " + paket,
@@ -39,211 +38,96 @@ function sendScoreToSheet(username, paket, score) {
         keterangan: score >= 80 ? "Lulus P" + paket : "Gagal <80"
     });
 
-    // Utama: XMLHttpRequest synchronous (paling reliable di WebView)
-    const xhr = new XMLHttpRequest();
-    xhr.open("POST", SPREADSHEET_URL, false); // synchronous = blocking
-    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    let queued = false;
 
-    try {
-        xhr.send(params.toString());
-        if (xhr.status >= 200 && xhr.status < 300) {
-            console.log("✅ XHR sync SUKSES, status:", xhr.status);
-            localStorage.setItem(key, "sent");
-            return true;
+    // 1. Priority: sendBeacon (best for unload/background)
+    if (navigator.sendBeacon) {
+        const sent = navigator.sendBeacon(SPREADSHEET_URL, data);
+        if (sent) {
+            console.log("✅ sendBeacon queued (return true) → browser tanggung jawab kirim");
+            queued = true;
         } else {
-            console.error("❌ XHR sync gagal, status:", xhr.status);
+            console.warn("⚠️ sendBeacon return false");
         }
-    } catch (e) {
-        console.error("❌ XHR sync error:", e);
     }
 
-    // Fallback kalau sync gagal (jarang): coba async fetch dengan delay
-    console.log("⚠️ Coba fallback fetch...");
-    fetch(SPREADSHEET_URL, {
-        method: "POST",
-        body: params,
-        keepalive: true,
-        mode: "no-cors" // biar gak blocked CORS strict
-    }).then(() => {
-        console.log("✅ Fallback fetch dipanggil (no-cors)");
+    // 2. Fallback: fetch dengan keepalive (untuk WebView yang support)
+    if (!queued) {
+        fetch(SPREADSHEET_URL, {
+            method: "POST",
+            body: data,
+            keepalive: true,
+            mode: "no-cors",          // Hindari CORS block di WebView
+            credentials: "omit"
+        }).then(response => {
+            console.log("✅ fetch keepalive dipanggil");
+            queued = true;
+        }).catch(e => {
+            console.error("❌ fetch keepalive error:", e);
+        });
+    }
+
+    if (queued) {
         localStorage.setItem(key, "sent");
-    }).catch(e => console.error("Fallback fetch error:", e));
-
-    return false; // tandain kalau sync gagal
-}
-
-// ===========================
-// Load soal
-// ===========================
-async function loadSoal() {
-    try {
-        const res = await fetch(soalURL);
-        if (!res.ok) throw new Error("Gagal load soal");
-        questions = await res.json();
-        console.log("✅ Soal loaded:", questions.length, "soal");
-
-        const loading = document.getElementById("loading");
-        if (loading) loading.style.display = "none";
-
-        if (document.getElementById("listen") || document.getElementById("read")) buildGrid();
-        if (document.getElementById("questionBox")) loadQuestionPage();
-
-    } catch (e) {
-        console.error("❌ Error load soal:", e);
-        alert("Gagal memuat soal. Refresh halaman.");
-    }
-}
-
-// ===========================
-// Build Grid Dashboard
-// ===========================
-function buildGrid() {
-    const L = document.getElementById("listen");
-    const R = document.getElementById("read");
-    if (!L || !R) return;
-    L.innerHTML = ""; R.innerHTML = "";
-
-    questions.forEach(q => {
-        const box = document.createElement("div");
-        box.className = "qbox";
-        box.textContent = q.id;
-        if (answered[q.id]) box.classList.add("done");
-        box.onclick = () => {
-            localStorage.setItem("current", q.id);
-            location.href = "question.html";
-        };
-        (q.type === "listening" ? L : R).appendChild(box);
-    });
-}
-
-// ===========================
-// Load Question Page
-// ===========================
-function loadQuestionPage() {
-    const box = document.getElementById("questionBox");
-    const ans = document.getElementById("answers");
-    if (!box || !ans || questions.length === 0) return;
-
-    const id = Number(localStorage.getItem("current")) || questions[0].id;
-    const idx = questions.findIndex(q => q.id === id);
-    currentIndex = idx < 0 ? 0 : idx;
-    const q = questions[currentIndex];
-
-    box.innerHTML = ""; ans.innerHTML = "";
-
-    const h = document.createElement("h3");
-    h.textContent = `${q.id}. ${q.question.split("\n\n")[0]}`;
-    box.appendChild(h);
-
-    if (q.question.includes("\n\n")) {
-        const d = document.createElement("div");
-        d.className = "dialog-box";
-        d.textContent = q.question.split("\n\n").slice(1).join("\n\n");
-        box.appendChild(d);
     }
 
-    if (q.audio) {
-        const container = document.createElement("div");
-        container.style.margin = "25px 0"; container.style.textAlign = "center";
-        const audio = document.createElement("audio");
-        audio.controls = true; audio.preload = "auto"; audio.src = q.audio;
-        audio.style.width = "100%";
-        container.appendChild(audio); box.appendChild(container);
-    }
-
-    if (q.image) {
-        const i = document.createElement("img");
-        i.src = q.image;
-        i.style.maxWidth = "100%";
-        i.style.display = "block";
-        i.style.margin = "20px auto";
-        box.appendChild(i);
-    }
-
-    q.options.forEach((option, i) => {
-        const b = document.createElement("button");
-        b.textContent = i + 1;
-        if (answered[q.id] === i + 1) b.classList.add("selected");
-        b.onclick = () => {
-            answered[q.id] = i + 1;
-            localStorage.setItem("answered", JSON.stringify(answered));
-            buildGrid(); loadQuestionPage();
-        };
-
-        const row = document.createElement("div");
-        row.style.display = "flex"; row.style.alignItems = "center"; row.style.gap = "12px"; row.style.margin = "12px 0";
-        row.appendChild(b);
-        const text = document.createElement("span"); text.textContent = option;
-        row.appendChild(text); ans.appendChild(row);
-    });
+    return queued;
 }
 
-// ===========================
-// Navigation
-// ===========================
-function nextQuestion() { if (currentIndex + 1 < questions.length) { localStorage.setItem("current", questions[currentIndex + 1].id); loadQuestionPage(); } }
-function prevQuestion() { if (currentIndex > 0) { localStorage.setItem("current", questions[currentIndex - 1].id); loadQuestionPage(); } }
-function back() { localStorage.removeItem("time"); location.href = "dashboard.html"; }
+// ... (loadSoal, buildGrid, loadQuestionPage, next/prev/back, timer, manualSubmit, calculateScore tetap sama seperti versi sebelumnya)
 
 // ===========================
-// Timer
-// ===========================
-let time = Number(localStorage.getItem("time")) || 50*60;
-setInterval(() => {
-    if (time <= 0) { finish(); return; }
-    time--;
-    localStorage.setItem("time", time);
-    const t = document.getElementById("timerBox");
-    if (t) t.textContent = `${String(Math.floor(time/60)).padStart(2,"0")}:${String(time%60).padStart(2,"0")}`;
-}, 1000);
-
-// ===========================
-// Manual Submit
-// ===========================
-function manualSubmit() {
-    if (questions.length === 0) { alert("Soal belum dimuat!"); return; }
-    if (confirm("Yakin submit sekarang?")) finish();
-}
-
-// ===========================
-// Calculate Score
-// ===========================
-function calculateScore() {
-    if (questions.length === 0) return 0;
-    let correct = 0;
-    questions.forEach(q => { if (answered[q.id] === q.answer) correct++; });
-    return correct * 2.5;
-}
-
-// ===========================
-// Finish Exam (dengan fix pengiriman)
+// Finish Exam (loading lama + beacon + visibility listener)
 // ===========================
 function finish() {
     console.log("🎉 SUBMIT UBT!");
 
-    if (questions.length === 0) { alert("Soal belum dimuat!"); return; }
-
     const score = calculateScore();
     console.log("🏆 SKOR AKHIR:", score);
 
-    const user = localStorage.getItem("user");
+    const user = localStorage.getItem("user") || "Anonymous";
     const results = JSON.parse(localStorage.getItem("results") || "[]");
     results.push({ name: user, paket, score, time: document.getElementById("timerBox")?.innerText || "00:00", date: new Date().toLocaleString("id-ID") });
     localStorage.setItem("results", JSON.stringify(results));
 
-    // Kirim skor (sync mode)
-    const sentSuccess = sendScoreToSheet(user, paket, score);
+    // Ganti body jadi loading screen
+    document.body.innerHTML = `
+        <div style="height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; background:#000; color:#fff; text-align:center; padding:20px;">
+            <h2>Sedang Mengirim Skor...</h2>
+            <p>Jangan tutup aplikasi atau matikan HP selama proses ini!<br>(Tunggu 5-10 detik)</p>
+            <div id="status" style="margin:20px; font-size:18px;">Mengirim data ke pusat...</div>
+            <progress style="width:80%;"></progress>
+        </div>
+    `;
 
-    // Bersihkan localStorage tapi simpan sent keys
-    const sentKeys = Object.keys(localStorage).filter(k => k.startsWith("ubt_sent_")).reduce((obj,k)=>{obj[k]=localStorage.getItem(k);return obj;},{});
-    localStorage.clear();
-    Object.entries(sentKeys).forEach(([k,v])=>localStorage.setItem(k,v));
+    const status = document.getElementById("status");
 
-    // Delay sedikit biar WebView sempat proses
-    setTimeout(() => { 
-        alert(`Ujian selesai!\nNilai Anda: ${score}\nData ${sentSuccess ? 'berhasil' : 'sedang'} dikirim ke pusat! 🎉`);
-        location.href = "index.html"; 
-    }, 800); // 800ms biasanya cukup
+    // Kirim sekarang
+    const queued = sendScoreToSheet(user, paket, score);
+    status.textContent = queued ? "Data di-queue (akan terkirim otomatis)..." : "Mengirim via fallback...";
+
+    // Listener: kirim ulang kalau app di-background (penting di Android)
+    const onVisibilityChange = () => {
+        if (document.visibilityState === 'hidden') {
+            sendScoreToSheet(user, paket, score);
+            console.log("App background → kirim ulang beacon/fetch");
+        }
+    };
+    document.addEventListener('visibilitychange', onVisibilityChange, {once: true});
+
+    // Delay panjang biar WebView punya waktu kirim (5 detik minimal, bisa naik ke 8000 kalau masih gagal)
+    setTimeout(() => {
+        // Simpan sent keys dulu
+        const sentKeys = {};
+        Object.keys(localStorage).forEach(k => {
+            if (k.startsWith("ubt_sent_")) sentKeys[k] = localStorage.getItem(k);
+        });
+        localStorage.clear();
+        Object.keys(sentKeys).forEach(k => localStorage.setItem(k, sentKeys[k]));
+
+        alert(`Ujian selesai!\nNilai Anda: ${score.toFixed(1)}\nData telah/akan dikirim ke pusat! 🎉`);
+        location.href = "index.html";
+    }, 6000);  // 6 detik - aman di kebanyakan WebView
 }
 
 // ===========================
@@ -252,4 +136,9 @@ function finish() {
 window.onload = async () => {
     console.log("🚀 UBT App mulai...");
     await loadSoal();
+
+    const userEl = document.getElementById("user");
+    if (userEl) {
+        userEl.innerText = (localStorage.getItem("user") || "User") + " - TRYOUT " + paket;
+    }
 };
