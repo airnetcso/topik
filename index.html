@@ -20,63 +20,65 @@ body {
               url("https://raw.githubusercontent.com/airnetcso/eps/main/image/bg1.jpg") center/cover no-repeat;
 }
 
-/* Animasi masuk lebih subtle & formal */
+/* Animasi masuk subtle */
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(30px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
 .login-box {
-  width: 320px;               /* Lebih pendek dari sebelumnya (340 → 320) */
-  background: rgba(255, 255, 255, 0.92);
-  padding: 40px 30px;         /* Padding lebih rapi & sedikit lebih kecil */
+  width: 300px;                 /* Lebih kecil & pendek */
+  background: rgba(255, 255, 255, 0.25);  /* Kembali semi-transparent */
+  padding: 32px 24px 24px 24px; /* Atas 32px, bawah lebih rapat 24px */
   text-align: center;
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   animation: fadeInUp 0.7s ease-out forwards;
-  backdrop-filter: blur(8px);
-  border: 1px solid #e0e0e0;
+  backdrop-filter: blur(10px);
+  border: none;                 /* Hilangkan border */
+  border-radius: 0;             /* Kotak tajam, tanpa radius */
 }
 
 .login-box h2 {
-  margin: 0 0 28px 0;
-  color: #1e3a8a;             /* Navy formal */
-  font-size: 24px;
+  margin: 0 0 24px 0;           /* Jarak atas lebih rapat */
+  color: #ffffff;
+  font-size: 22px;
   font-weight: 600;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.6);
 }
 
 input, select, button {
   width: 100%;
-  padding: 14px;
-  margin-bottom: 16px;
+  padding: 13px;
+  margin-bottom: 14px;          /* Jarak antar elemen lebih rapat */
   font-size: 15px;
-  border-radius: 8px;
-  border: 1px solid #d1d5db;
+  border-radius: 0;             /* Kotak tajam */
+  border: 1px solid rgba(255,255,255,0.4);
   outline: none;
   transition: border-color 0.25s, box-shadow 0.25s;
 }
 
 input, select {
-  background: #f9fafb;
-  color: #111827;
+  background: rgba(255,255,255,0.15);
+  color: #ffffff;
 }
 
-input::placeholder, select {
-  color: #6b7280;
+input::placeholder {
+  color: rgba(255,255,255,0.7);
 }
 
 input:focus, select:focus {
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+  border-color: #60a5fa;
+  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.25);
 }
 
 button {
-  background: #1e40af;        /* Biru navy formal */
+  background: #1e40af;
   color: white;
   font-weight: 600;
   cursor: pointer;
   border: none;
   transition: background 0.25s;
+  margin-top: 4px;              /* Sedikit jarak dari select */
 }
 
 button:hover {
@@ -84,9 +86,9 @@ button:hover {
 }
 
 #error-msg {
-  color: #dc2626;
+  color: #fbbf24;
   font-weight: 500;
-  margin-top: 8px;
+  margin-top: 10px;
   font-size: 14px;
   min-height: 20px;
 }
@@ -97,7 +99,7 @@ button:hover {
   width: 100%;
   text-align: center;
   font-size: 13px;
-  color: rgba(255, 255, 255, 0.85);
+  color: rgba(255, 255, 255, 0.75);
 }
 </style>
 </head>
@@ -109,7 +111,7 @@ button:hover {
   <input id="userid" placeholder="Masukkan User ID" autofocus>
   
   <select id="paket">
-    <option value="" disabled selected>Pilih Paket / Tryout</option>
+    <option value="" disabled selected>Pilih Paket Tryout</option>
     <option value="1">Tryout 01</option>
     <option value="2">Tryout 02</option>
     <option value="3">Tryout 03</option>
@@ -126,7 +128,7 @@ button:hover {
 
 <script>
 // =====================================================================
-// MAPPING: User ID → Nama Asli (yang akan dikirim ke Google Sheet)
+// MAPPING: User ID → Nama Asli (untuk tampilan & Google Sheet)
 // =====================================================================
 const userMapping = {
   "2026010001": "uus",
@@ -154,7 +156,7 @@ const userMapping = {
   "2026010023": "yppsdi",
   "2026010024": "Azizah27_",
   "2026010025": "mila",
-  // tambahkan user lain sesuai kebutuhan
+  // tambahkan sisanya sesuai daftar kamu
 };
 
 const validUserIDs = Object.keys(userMapping);
@@ -198,7 +200,6 @@ function login() {
 
   const realName = userMapping[userid];
 
-  // Validasi paket sebelumnya
   if (Number(paket) > 1) {
     const results = JSON.parse(localStorage.getItem("results") || "[]");
     const prev = results.find(r => r.name === realName && Number(r.paket) === Number(paket) - 1);
@@ -209,13 +210,12 @@ function login() {
   }
 
   localStorage.setItem("login", "true");
-  localStorage.setItem("user", realName);    // nama asli → tampil di dashboard & dikirim ke sheet
+  localStorage.setItem("user", realName);
   localStorage.setItem("paket", paket);
 
   window.location.href = "dashboard.html";
 }
 
-// Support tekan Enter
 document.addEventListener("keypress", function(e) {
   if (e.key === "Enter") login();
 });
