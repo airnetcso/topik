@@ -1,5 +1,5 @@
 // ===========================
-// script.js - UBT App Update
+// script.js - UBT App Update (Full Version with Native Bridge)
 // ===========================
 
 let questions = [];
@@ -13,10 +13,10 @@ const soalURL = `https://airnetcso.github.io/ubt/soal/soal${paket}.json?v=13`;
 const SPREADSHEET_URL = "https://script.google.com/macros/s/AKfycbzxyVIlsyLswlfnQG618eeUZgN83dd2jfCjU0r7LsNHM3A6NNiibuCIb5e3CNs9J1vVhQ/exec";
 
 // ===========================
-// Kirim skor ke Sheet (WebView safe)
+// Kirim skor ke Sheet (Support Native Android + fallback sendBeacon)
 // ===========================
 function sendScoreToSheet(username, paket, score) {
-    console.log("🔥 Kirim skor UBT via sendBeacon (WebView safe)");
+    console.log("🔥 Mencoba kirim skor UBT:", username, paket, score);
 
     const totalSoal = questions.length || 40;
     const maxScore = totalSoal * 2.5;
@@ -30,6 +30,15 @@ function sendScoreToSheet(username, paket, score) {
     }
     localStorage.setItem(key, "sent");
 
+    // Check apakah di APK Android (ada window.Android dari JavascriptInterface)
+    if (window.Android) {
+        // Kirim via native Android (Volley POST)
+        window.Android.sendScore(username, paket, score.toString());
+        console.log("✅ Dikirim via native Android bridge");
+        return;  // Stop di sini, jangan kirim beacon lagi
+    }
+
+    // Fallback untuk browser/web biasa (sendBeacon + fetch keepalive)
     const dataToSend = new URLSearchParams({
         waktu: new Date().toLocaleString('id-ID', {timeZone: 'Asia/Jakarta'}),
         namaSiswa: username || "Anonymous",
@@ -40,18 +49,25 @@ function sendScoreToSheet(username, paket, score) {
         keterangan: score >= 80 ? "Lulus P" + paket : "Gagal <80"
     });
 
-    // Gunakan sendBeacon → pasti jalan di WebView
+    console.log("Mengirim data via fallback:", dataToSend.toString());
+
+    // Prioritas sendBeacon (paling aman untuk unload)
     if (navigator.sendBeacon) {
-        navigator.sendBeacon(SPREADSHEET_URL, dataToSend);
-        console.log("✅ sendBeacon dipanggil");
-    } else {
-        // Fallback: fetch biasa
-        fetch(SPREADSHEET_URL, {
-            method: "POST",
-            body: dataToSend,
-            keepalive: true,
-        }).then(()=>console.log("✅ fallback fetch POST"));
+        const success = navigator.sendBeacon(SPREADSHEET_URL, dataToSend);
+        console.log("sendBeacon dipanggil, success:", success);
+        if (success) return;
     }
+
+    // Fallback fetch kalau sendBeacon gagal
+    fetch(SPREADSHEET_URL, {
+        method: "POST",
+        body: dataToSend,
+        keepalive: true,
+        mode: "no-cors",  // Penting untuk cross-origin tanpa CORS error
+        cache: "no-cache"
+    })
+    .then(() => console.log("✅ Fallback fetch POST berhasil"))
+    .catch(err => console.error("❌ Fallback fetch gagal:", err));
 }
 
 // ===========================
@@ -163,9 +179,24 @@ function loadQuestionPage() {
 // ===========================
 // Navigation
 // ===========================
-function nextQuestion() { if (currentIndex + 1 < questions.length) { localStorage.setItem("current", questions[currentIndex + 1].id); loadQuestionPage(); } }
-function prevQuestion() { if (currentIndex > 0) { localStorage.setItem("current", questions[currentIndex - 1].id); loadQuestionPage(); } }
-function back() { localStorage.removeItem("time"); location.href = "dashboard.html"; }
+function nextQuestion() { 
+    if (currentIndex + 1 < questions.length) { 
+        localStorage.setItem("current", questions[currentIndex + 1].id); 
+        loadQuestionPage(); 
+    } 
+}
+
+function prevQuestion() { 
+    if (currentIndex > 0) { 
+        localStorage.setItem("current", questions[currentIndex - 1].id); 
+        loadQuestionPage(); 
+    } 
+}
+
+function back() { 
+    localStorage.removeItem("time"); 
+    location.href = "dashboard.html"; 
+}
 
 // ===========================
 // Timer
@@ -213,7 +244,7 @@ function finish() {
     results.push({ name: user, paket, score, time: document.getElementById("timerBox")?.innerText || "00:00", date: new Date().toLocaleString("id-ID") });
     localStorage.setItem("results", JSON.stringify(results));
 
-    // ===== FIX WEBVIEW: sendBeacon =====
+    // Kirim skor (native atau fallback)
     sendScoreToSheet(user, paket, score);
 
     // Bersihkan localStorage tapi simpan data sent key
@@ -221,11 +252,11 @@ function finish() {
     localStorage.clear();
     Object.entries(sentKeys).forEach(([k,v])=>localStorage.setItem(k,v));
 
-    // Delay redirect supaya sendBeacon sempat jalan
-    setTimeout(()=>{ 
+    // Delay redirect supaya kirim sempat jalan
+    setTimeout(()=> { 
         alert(`Ujian selesai!\nNilai Anda: ${score}\nData sudah dikirim ke pusat! 🎉`);
         location.href = "index.html"; 
-    }, 400);
+    }, 800);
 }
 
 // ===========================
