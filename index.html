@@ -2,105 +2,216 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<title>Login CBT</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login CBT UBT</title>
 <style>
-*{box-sizing:border-box;font-family:Arial}
-body{
-  margin:0;height:100vh;display:flex;justify-content:center;align-items:center;
-  background:linear-gradient(rgba(0,0,0,.35),rgba(0,0,0,.35)),
-  url("https://raw.githubusercontent.com/airnetcso/eps/main/image/bg1.jpg") center/cover no-repeat;
+*{ box-sizing:border-box; font-family:Arial, Helvetica, sans-serif }
+body{ 
+  margin:0; 
+  height:100vh; 
+  display:flex; 
+  justify-content:center; 
+  align-items:center; 
+  background:linear-gradient(rgba(0,0,0,.35),rgba(0,0,0,.35)), 
+              url("https://raw.githubusercontent.com/airnetcso/eps/main/image/bg1.jpg") center/cover no-repeat; 
 }
-.login-box{
-  width:340px;background:rgba(255,255,255,.3);
-  padding:30px 25px;text-align:center;backdrop-filter:blur(5px)
+/* ANIMASI MASUK HALUS + POLISH */
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(50px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
-input,select,button{
-  width:100%;padding:12px;margin-bottom:12px;font-size:14px
+.login-box{ 
+  width:340px; /* Tetap seperti asli */
+  background:rgba(255,255,255,.3); 
+  padding:30px 25px; 
+  text-align:center; 
+  backdrop-filter:blur(6px); 
+  border-radius:10px; 
+  box-shadow:0 8px 32px rgba(0,0,0,.2); 
+  animation: fadeSlideUp 0.8s ease-out forwards; /* Lebih smooth */
+  position:relative;
+  overflow:hidden;
+  transition:transform .3s, box-shadow .3s;
+  border:1px solid rgba(30,58,138,.2); /* Gradient border tipis biru tua */
 }
-button{
-  background:#2563eb;color:#fff;border:none;cursor:pointer
+.login-box::before {
+  content:'';
+  position:absolute;
+  top:-2px; left:-2px; right:-2px; bottom:-2px;
+  background:linear-gradient(45deg, #1e3a8a, #60a5fa);
+  z-index:-1;
+  border-radius:10px;
+  opacity:0;
+  transition:opacity .3s;
 }
-button:hover{background:#1e40af}
-#error-msg{color:#ff0000;font-weight:bold;margin-top:10px;font-size:13px}
+.login-box:hover::before { opacity:0.6; } /* Border glow saat hover */
+.login-box:hover {
+  transform:translateY(-5px);
+  box-shadow:0 15px 40px rgba(0,0,0,.3);
+}
+.login-box h2{ 
+  margin-bottom:20px; 
+  color:#fff; 
+  font-size:24px; 
+  text-shadow:0 2px 6px rgba(0,0,0,.7);
+}
+input, select, button{ 
+  width:100%; 
+  padding:12px; 
+  margin-bottom:12px; 
+  font-size:14px; 
+  border-radius:6px; 
+  border:none; 
+  outline:none; 
+}
+input, select {
+  background:rgba(255,255,255,.18);
+  color:#fff;
+  backdrop-filter:blur(4px);
+  transition:background .3s, box-shadow .3s;
+}
+input::placeholder, select::placeholder {
+  color:rgba(255,255,255,.45); /* Transparan putih */
+  opacity:1;
+  transition:color .3s;
+}
+input:focus::placeholder, select:focus::placeholder {
+  color:rgba(255,255,255,.8); /* Fade-in placeholder saat fokus */
+}
+input:focus, select:focus{ 
+  box-shadow:0 0 0 2px #60a5fa; 
+  background:rgba(255,255,255,.3);
+}
+button{ 
+  background:#1e3a8a; /* Biru tua navy */
+  color:#fff; 
+  cursor:pointer; 
+  font-weight:bold; 
+  transition:background .3s, transform .2s; 
+}
+button:hover{ 
+  background:#172554; /* Lebih gelap */
+  transform:translateY(-2px);
+  animation: pulse 1.5s infinite;
+}
+@keyframes pulse {
+  0%{box-shadow:0 0 0 0 rgba(30,58,138,.7);}
+  70%{box-shadow:0 0 0 10px rgba(30,58,138,0);}
+  100%{box-shadow:0 0 0 0 rgba(30,58,138,0);}
+}
+#error-msg{ 
+  color:#ff6b6b; 
+  font-weight:bold; 
+  margin-top:10px; 
+  font-size:13px; 
+  min-height:20px; 
+}
+.copyright{ 
+  position:fixed; 
+  bottom:12px; 
+  width:100%; 
+  text-align:center; 
+  font-size:12px; 
+  color:rgba(255,255,255,0.85); 
+  letter-spacing:0.5px; 
+}
+.info{ 
+  color:#fff; 
+  font-size:12px; 
+  margin-top:15px; 
+}
 </style>
 </head>
 <body>
-
-<div class="login-box">
+ <div class="login-box">
   <h2>LOGIN UBT</h2>
-  <input id="username" placeholder="Username / 이름">
+  <input id="username" placeholder="Username / 이름" autofocus>
   <input id="password" type="password" placeholder="Password / 비밀번호">
-
   <select id="paket">
-    <option value="1">TRYOUT 01</option>
-    <option value="2">TRYOUT 02</option>
-    <option value="3">TRYOUT 03</option>
+   <option value="1">TRYOUT 01</option>
+   <option value="2">TRYOUT 02</option>
+   <option value="3">TRYOUT 03</option>
   </select>
-
   <button onclick="login()">LOGIN / 로그인</button>
   <div id="error-msg"></div>
-</div>
+ </div>
+ <div class="copyright">
+  © 2026 Denzuka - Kim Jongun. All Rights Reserved.
+ </div>
 
-<script>
-function checkStorage() {
-  try {
-    localStorage.setItem('test', 'ok');
-    localStorage.removeItem('test');
-    return true;
-  } catch (e) {
-    return false;
-  }
-}
+ <script>
+ const SPREADSHEET_URL = "https://script.google.com/macros/s/AKfycbzxyVIlsyLswlfnQG618eeUZgN83dd2jfCjU0r7LsNHM3A6NNiibuCIb5e3CNs9J1vVhQ/exec";
 
-const users = [
-  {username:"siswa01",password:"12345",role:"user"},
-  {username:"windi",password:"Windi2000",role:"user"},
-  {username:"rismaya97",password:"bahasakorea",role:"user"},
-  {username:"admin",password:"admin123",role:"admin"}
-  {username:"sita77",password:"minyooki",role:"user"},
-  {username:"Aini185",password:"Doraemon",role:"user"},
-  {username:"Hangeulfei",password:"studykorea02",role:"user"},
-  {username:"admin",password:"admin123",role:"admin"}
-  {username:"Hamdan106",password:"Fukuo106",role:"user"},
-  {username:"windi",password:"Windi2000",role:"user"},
-  {username:"siswa03",password:"12345",role:"user"},
-  {username:"admin",password:"admin123",role:"admin"}
-];
+ const users = [
+  {username:"uus",password:"111"},
+  {username:"windi",password:"Windi2000"},
+  {username:"rismaya97",password:"bahasakorea"},
+  {username:"sita77",password:"minyooki"},
+  {username:"Aini185",password:"Doraemon"},
+  {username:"Hangeulfei",password:"studykorea02"},
+  {username:"Hamdan106",password:"Fukuo106"},
+  {username:"Heri",password:"heri99"},
+  {username:"hanarizka",password:"Nungkihana24!"},
+  {username:"Fikrisurya",password:"464646"},
+  {username:"Mutiara2003",password:"Mutiara14"},
+  {username:"dinda",password:"dinda1999"},
+  {username:"wantikas",password:"200022"},
+  {username:"Dininidia",password:"dininidia11"},
+  {username:"kaniarostayuni9",password:"Kania1313"},
+  {username:"Dikisetiawan07",password:"Diki2709"},
+  {username:"Aisyah18",password:"Aisyah18."},
+  {username:"Rizka2026",password:"butterfly24"},
+  {username:"Zhafif07",password:"20060722"},
+  {username:"siwon",password:"kampus2"},
+  {username:"Satria11",password:"Satria113"},
+  {username:"sultan2026",password:"sultandaulah"},
+  {username:"yppsdi",password:"global2026"},
+  {username:"Azizah27_",password:"Azzh271"},
+  {username:"mila",password:"lestari"}
+ ];
 
-function login(){
+ function checkStorage(){
+  try{ localStorage.setItem("test","ok"); localStorage.removeItem("test"); return true; }catch(e){ return false; }
+ }
+
+ function login(){
   const err = document.getElementById("error-msg");
   err.innerText = "";
-
-  if (!checkStorage()) {
-    err.innerText = "Browser memblokir localStorage (Private/Incognito?). Gunakan mode normal.";
-    return;
-  }
-
+  if(!checkStorage()){ err.innerText = "Browser memblokir localStorage. Gunakan mode normal."; return; }
+  
   const u = document.getElementById("username").value.trim();
   const p = document.getElementById("password").value.trim();
-  const paket = document.getElementById("paket").value;  // ← FIX TYPO FATAL
+  const paket = document.getElementById("paket").value;
+  
+  if (!u || !p) { err.innerText = "Username & password wajib diisi!"; return; }
 
   const user = users.find(x => x.username === u && x.password === p);
-  if (!user) {
-    err.innerText = "Username atau password salah!";
-    return;
+  if(!user){ err.innerText = "Username atau password salah!"; return; }
+  
+  if(Number(paket) > 1){
+   const results = JSON.parse(localStorage.getItem("results") || "[]");
+   const prev = results.find(r => r.name === u && Number(r.paket) === Number(paket) - 1);
+   if(!prev || Number(prev.score) < 80){ 
+    err.innerText = "Harus lulus paket sebelumnya dengan nilai minimal 80"; 
+    return; 
+   }
   }
-
-  if (Number(paket) > 1) {
-    const results = JSON.parse(localStorage.getItem("results") || "[]");
-    const prev = results.find(r => r.name === u && Number(r.paket.replace("Paket ","")) === Number(paket)-1);
-    if (!prev || prev.score < 80) {
-      err.innerText = "Harus lulus paket sebelumnya dengan nilai minimal 80";
-      return;
-    }
+  
+  localStorage.setItem("login","true");
+  localStorage.setItem("user",u);
+  localStorage.setItem("paket",paket);
+  
+  if(user.role === "admin") {
+   location.href = "https://airnetcso.github.io/admin/";
+  } else {
+   location.href = "dashboard.html";
   }
+ }
 
-  localStorage.setItem("login", "true");
-  localStorage.setItem("user", u);
-  localStorage.setItem("paket", paket);
-  location.href = user.role === "admin" ? "admin.html" : "dashboard.html";
-}
-</script>
-
+ // Enter untuk login
+ document.addEventListener("keypress", function(e) {
+  if (e.key === "Enter") login();
+ });
+ </script>
 </body>
 </html>
