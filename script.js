@@ -1,5 +1,5 @@
 // ===========================
-// script.js - UBT App Update
+// script.js - UBT App Update (WebView Fixed)
 // ===========================
 
 let questions = [];
@@ -13,10 +13,10 @@ const soalURL = `https://airnetcso.github.io/ubt/soal/soal${paket}.json?v=13`;
 const SPREADSHEET_URL = "https://script.google.com/macros/s/AKfycbzxyVIlsyLswlfnQG618eeUZgN83dd2jfCjU0r7LsNHM3A6NNiibuCIb5e3CNs9J1vVhQ/exec";
 
 // ===========================
-// Kirim skor ke Sheet (WebView safe)
+// Kirim skor ke Sheet (FIXED untuk WebView)
 // ===========================
 function sendScoreToSheet(username, paket, score) {
-    console.log("🔥 Kirim skor UBT via sendBeacon (WebView safe)");
+    console.log("🔥 MENGIRIM SKOR UBT... (mode: XHR sync + fallback)");
 
     const totalSoal = questions.length || 40;
     const maxScore = totalSoal * 2.5;
@@ -25,12 +25,11 @@ function sendScoreToSheet(username, paket, score) {
     // Cegah duplikat
     const key = "ubt_sent_" + username + "_p" + paket + "_s" + score;
     if (localStorage.getItem(key) === "sent") {
-        console.log("✅ Skor sudah dikirim sebelumnya, skip.");
-        return;
+        console.log("✅ Skor sudah pernah dikirim, skip.");
+        return true; // anggap sukses
     }
-    localStorage.setItem(key, "sent");
 
-    const dataToSend = new URLSearchParams({
+    const params = new URLSearchParams({
         waktu: new Date().toLocaleString('id-ID', {timeZone: 'Asia/Jakarta'}),
         namaSiswa: username || "Anonymous",
         code: "UBT TRYOUT " + paket,
@@ -40,18 +39,37 @@ function sendScoreToSheet(username, paket, score) {
         keterangan: score >= 80 ? "Lulus P" + paket : "Gagal <80"
     });
 
-    // Gunakan sendBeacon → pasti jalan di WebView
-    if (navigator.sendBeacon) {
-        navigator.sendBeacon(SPREADSHEET_URL, dataToSend);
-        console.log("✅ sendBeacon dipanggil");
-    } else {
-        // Fallback: fetch biasa
-        fetch(SPREADSHEET_URL, {
-            method: "POST",
-            body: dataToSend,
-            keepalive: true,
-        }).then(()=>console.log("✅ fallback fetch POST"));
+    // Utama: XMLHttpRequest synchronous (paling reliable di WebView)
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", SPREADSHEET_URL, false); // synchronous = blocking
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+    try {
+        xhr.send(params.toString());
+        if (xhr.status >= 200 && xhr.status < 300) {
+            console.log("✅ XHR sync SUKSES, status:", xhr.status);
+            localStorage.setItem(key, "sent");
+            return true;
+        } else {
+            console.error("❌ XHR sync gagal, status:", xhr.status);
+        }
+    } catch (e) {
+        console.error("❌ XHR sync error:", e);
     }
+
+    // Fallback kalau sync gagal (jarang): coba async fetch dengan delay
+    console.log("⚠️ Coba fallback fetch...");
+    fetch(SPREADSHEET_URL, {
+        method: "POST",
+        body: params,
+        keepalive: true,
+        mode: "no-cors" // biar gak blocked CORS strict
+    }).then(() => {
+        console.log("✅ Fallback fetch dipanggil (no-cors)");
+        localStorage.setItem(key, "sent");
+    }).catch(e => console.error("Fallback fetch error:", e));
+
+    return false; // tandain kalau sync gagal
 }
 
 // ===========================
@@ -198,7 +216,7 @@ function calculateScore() {
 }
 
 // ===========================
-// Finish Exam
+// Finish Exam (dengan fix pengiriman)
 // ===========================
 function finish() {
     console.log("🎉 SUBMIT UBT!");
@@ -213,19 +231,19 @@ function finish() {
     results.push({ name: user, paket, score, time: document.getElementById("timerBox")?.innerText || "00:00", date: new Date().toLocaleString("id-ID") });
     localStorage.setItem("results", JSON.stringify(results));
 
-    // ===== FIX WEBVIEW: sendBeacon =====
-    sendScoreToSheet(user, paket, score);
+    // Kirim skor (sync mode)
+    const sentSuccess = sendScoreToSheet(user, paket, score);
 
-    // Bersihkan localStorage tapi simpan data sent key
+    // Bersihkan localStorage tapi simpan sent keys
     const sentKeys = Object.keys(localStorage).filter(k => k.startsWith("ubt_sent_")).reduce((obj,k)=>{obj[k]=localStorage.getItem(k);return obj;},{});
     localStorage.clear();
     Object.entries(sentKeys).forEach(([k,v])=>localStorage.setItem(k,v));
 
-    // Delay redirect supaya sendBeacon sempat jalan
-    setTimeout(()=>{ 
-        alert(`Ujian selesai!\nNilai Anda: ${score}\nData sudah dikirim ke pusat! 🎉`);
+    // Delay sedikit biar WebView sempat proses
+    setTimeout(() => { 
+        alert(`Ujian selesai!\nNilai Anda: ${score}\nData ${sentSuccess ? 'berhasil' : 'sedang'} dikirim ke pusat! 🎉`);
         location.href = "index.html"; 
-    }, 400);
+    }, 800); // 800ms biasanya cukup
 }
 
 // ===========================
