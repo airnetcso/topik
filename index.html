@@ -125,8 +125,7 @@ button:hover{
 <body>
  <div class="login-box">
   <h2>LOGIN UBT</h2>
-  <input id="username" placeholder="Username / 이름" autofocus>
-  <input id="password" type="password" placeholder="Password / 비밀번호">
+  <input id="userid" placeholder="User ID (contoh: 2026010115)" autofocus>
   <select id="paket">
    <option value="1">TRYOUT 01</option>
    <option value="2">TRYOUT 02</option>
@@ -140,35 +139,40 @@ button:hover{
  </div>
 
  <script>
- const SPREADSHEET_URL = "https://script.google.com/macros/s/AKfycbzxyVIlsyLswlfnQG618eeUZgN83dd2jfCjU0r7LsNHM3A6NNiibuCIb5e3CNs9J1vVhQ/exec";
-
- const users = [
-  {username:"uus",password:"111"},
-  {username:"windi",password:"Windi2000"},
-  {username:"rismaya97",password:"bahasakorea"},
-  {username:"sita77",password:"minyooki"},
-  {username:"Aini185",password:"Doraemon"},
-  {username:"Hangeulfei",password:"studykorea02"},
-  {username:"Hamdan106",password:"Fukuo106"},
-  {username:"Heri",password:"heri99"},
-  {username:"hanarizka",password:"Nungkihana24!"},
-  {username:"Fikrisurya",password:"464646"},
-  {username:"Mutiara2003",password:"Mutiara14"},
-  {username:"dinda",password:"dinda1999"},
-  {username:"wantikas",password:"200022"},
-  {username:"Dininidia",password:"dininidia11"},
-  {username:"kaniarostayuni9",password:"Kania1313"},
-  {username:"Dikisetiawan07",password:"Diki2709"},
-  {username:"Aisyah18",password:"Aisyah18."},
-  {username:"Rizka2026",password:"butterfly24"},
-  {username:"Zhafif07",password:"20060722"},
-  {username:"siwon",password:"kampus2"},
-  {username:"Satria11",password:"Satria113"},
-  {username:"sultan2026",password:"sultandaulah"},
-  {username:"yppsdi",password:"global2026"},
-  {username:"Azizah27_",password:"Azzh271"},
-  {username:"mila",password:"lestari"}
+ // =====================================================================
+ // DAFTAR USER ID YANG DIIZINKAN (sesuaikan dengan daftarmu)
+ // =====================================================================
+ const validUserIDs = [
+   "2026010001",   // uus
+   "2026010002",   // windi
+   "2026010003",   // rismaya97
+   "2026010004",   // sita77
+   "2026010005",   // Aini185
+   "2026010006",   // Hangeulfei
+   "2026010007",   // Hamdan106
+   "2026010008",   // Heri
+   "2026010009",   // hanarizka
+   "2026010010",   // Fikrisurya
+   "2026010011",   // Mutiara2003
+   "2026010012",   // dinda
+   "2026010013",   // wantikas
+   "2026010014",   // Dininidia
+   "2026010015",   // kaniarostayuni9
+   "2026010016",   // Dikisetiawan07
+   "2026010017",   // Aisyah18
+   "2026010018",   // Rizka2026
+   "2026010019",   // Zhafif07
+   "2026010020",   // siwon
+   "2026010021",   // Satria11
+   "2026010022",   // sultan2026
+   "2026010023",   // yppsdi
+   "2026010024",   // Azizah27_
+   "2026010025",   // mila
+   // Tambahkan sisanya di sini sesuai kebutuhan
+   // Contoh: "2026010115" untuk windi atau siapa pun yang kamu mau
  ];
+
+ const SPREADSHEET_URL = "https://script.google.com/macros/s/AKfycbzxyVIlsyLswlfnQG618eeUZgN83dd2jfCjU0r7LsNHM3A6NNiibuCIb5e3CNs9J1vVhQ/exec";
 
  function checkStorage(){
   try{ localStorage.setItem("test","ok"); localStorage.removeItem("test"); return true; }catch(e){ return false; }
@@ -177,20 +181,29 @@ button:hover{
  function login(){
   const err = document.getElementById("error-msg");
   err.innerText = "";
-  if(!checkStorage()){ err.innerText = "Browser memblokir localStorage. Gunakan mode normal."; return; }
   
-  const u = document.getElementById("username").value.trim();
-  const p = document.getElementById("password").value.trim();
+  if(!checkStorage()){ 
+   err.innerText = "Browser memblokir localStorage. Gunakan mode normal."; 
+   return; 
+  }
+  
+  const userid = document.getElementById("userid").value.trim();
   const paket = document.getElementById("paket").value;
   
-  if (!u || !p) { err.innerText = "Username & password wajib diisi!"; return; }
+  if (!userid) { 
+   err.innerText = "User ID wajib diisi!"; 
+   return; 
+  }
 
-  const user = users.find(x => x.username === u && x.password === p);
-  if(!user){ err.innerText = "Username atau password salah!"; return; }
+  if (!validUserIDs.includes(userid)) {
+   err.innerText = "User ID tidak terdaftar atau salah!";
+   return;
+  }
   
+  // Validasi paket sebelumnya (pakai userid sebagai identifier)
   if(Number(paket) > 1){
    const results = JSON.parse(localStorage.getItem("results") || "[]");
-   const prev = results.find(r => r.name === u && Number(r.paket) === Number(paket) - 1);
+   const prev = results.find(r => r.name === userid && Number(r.paket) === Number(paket) - 1);
    if(!prev || Number(prev.score) < 80){ 
     err.innerText = "Harus lulus paket sebelumnya dengan nilai minimal 80"; 
     return; 
@@ -198,14 +211,10 @@ button:hover{
   }
   
   localStorage.setItem("login","true");
-  localStorage.setItem("user",u);
-  localStorage.setItem("paket",paket);
+  localStorage.setItem("user", userid);          // Simpan User ID (angka)
+  localStorage.setItem("paket", paket);
   
-  if(user.role === "admin") {
-   location.href = "https://airnetcso.github.io/admin/";
-  } else {
-   location.href = "dashboard.html";
-  }
+  location.href = "dashboard.html";
  }
 
  // Enter untuk login
