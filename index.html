@@ -3,224 +3,223 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login CBT UBT</title>
+<title>Login - Ujian Bahasa Korea (UBT)</title>
 <style>
-*{ box-sizing:border-box; font-family:Arial, Helvetica, sans-serif }
-body{ 
-  margin:0; 
-  height:100vh; 
-  display:flex; 
-  justify-content:center; 
-  align-items:center; 
-  background:linear-gradient(rgba(0,0,0,.35),rgba(0,0,0,.35)), 
-              url("https://raw.githubusercontent.com/airnetcso/eps/main/image/bg1.jpg") center/cover no-repeat; 
+* {
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
 }
-/* ANIMASI MASUK HALUS + POLISH */
-@keyframes fadeSlideUp {
-  from { opacity: 0; transform: translateY(50px) scale(0.95); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
+              url("https://raw.githubusercontent.com/airnetcso/eps/main/image/bg1.jpg") center/cover no-repeat;
 }
-.login-box{ 
-  width:340px; /* Tetap seperti asli */
-  background:rgba(255,255,255,.3); 
-  padding:30px 25px; 
-  text-align:center; 
-  backdrop-filter:blur(6px); 
-  border-radius:10px; 
-  box-shadow:0 8px 32px rgba(0,0,0,.2); 
-  animation: fadeSlideUp 0.8s ease-out forwards; /* Lebih smooth */
-  position:relative;
-  overflow:hidden;
-  transition:transform .3s, box-shadow .3s;
-  border:1px solid rgba(30,58,138,.2); /* Gradient border tipis biru tua */
+
+/* Animasi masuk lebih subtle & formal */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
-.login-box::before {
-  content:'';
-  position:absolute;
-  top:-2px; left:-2px; right:-2px; bottom:-2px;
-  background:linear-gradient(45deg, #1e3a8a, #60a5fa);
-  z-index:-1;
-  border-radius:10px;
-  opacity:0;
-  transition:opacity .3s;
+
+.login-box {
+  width: 320px;               /* Lebih pendek dari sebelumnya (340 → 320) */
+  background: rgba(255, 255, 255, 0.92);
+  padding: 40px 30px;         /* Padding lebih rapi & sedikit lebih kecil */
+  text-align: center;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  animation: fadeInUp 0.7s ease-out forwards;
+  backdrop-filter: blur(8px);
+  border: 1px solid #e0e0e0;
 }
-.login-box:hover::before { opacity:0.6; } /* Border glow saat hover */
-.login-box:hover {
-  transform:translateY(-5px);
-  box-shadow:0 15px 40px rgba(0,0,0,.3);
+
+.login-box h2 {
+  margin: 0 0 28px 0;
+  color: #1e3a8a;             /* Navy formal */
+  font-size: 24px;
+  font-weight: 600;
 }
-.login-box h2{ 
-  margin-bottom:20px; 
-  color:#fff; 
-  font-size:24px; 
-  text-shadow:0 2px 6px rgba(0,0,0,.7);
+
+input, select, button {
+  width: 100%;
+  padding: 14px;
+  margin-bottom: 16px;
+  font-size: 15px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  outline: none;
+  transition: border-color 0.25s, box-shadow 0.25s;
 }
-input, select, button{ 
-  width:100%; 
-  padding:12px; 
-  margin-bottom:12px; 
-  font-size:14px; 
-  border-radius:6px; 
-  border:none; 
-  outline:none; 
-}
+
 input, select {
-  background:rgba(255,255,255,.18);
-  color:#fff;
-  backdrop-filter:blur(4px);
-  transition:background .3s, box-shadow .3s;
+  background: #f9fafb;
+  color: #111827;
 }
-input::placeholder, select::placeholder {
-  color:rgba(255,255,255,.45); /* Transparan putih */
-  opacity:1;
-  transition:color .3s;
+
+input::placeholder, select {
+  color: #6b7280;
 }
-input:focus::placeholder, select:focus::placeholder {
-  color:rgba(255,255,255,.8); /* Fade-in placeholder saat fokus */
+
+input:focus, select:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
 }
-input:focus, select:focus{ 
-  box-shadow:0 0 0 2px #60a5fa; 
-  background:rgba(255,255,255,.3);
+
+button {
+  background: #1e40af;        /* Biru navy formal */
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: background 0.25s;
 }
-button{ 
-  background:#1e3a8a; /* Biru tua navy */
-  color:#fff; 
-  cursor:pointer; 
-  font-weight:bold; 
-  transition:background .3s, transform .2s; 
+
+button:hover {
+  background: #1e3a8a;
 }
-button:hover{ 
-  background:#172554; /* Lebih gelap */
-  transform:translateY(-2px);
-  animation: pulse 1.5s infinite;
+
+#error-msg {
+  color: #dc2626;
+  font-weight: 500;
+  margin-top: 8px;
+  font-size: 14px;
+  min-height: 20px;
 }
-@keyframes pulse {
-  0%{box-shadow:0 0 0 0 rgba(30,58,138,.7);}
-  70%{box-shadow:0 0 0 10px rgba(30,58,138,0);}
-  100%{box-shadow:0 0 0 0 rgba(30,58,138,0);}
-}
-#error-msg{ 
-  color:#ff6b6b; 
-  font-weight:bold; 
-  margin-top:10px; 
-  font-size:13px; 
-  min-height:20px; 
-}
-.copyright{ 
-  position:fixed; 
-  bottom:12px; 
-  width:100%; 
-  text-align:center; 
-  font-size:12px; 
-  color:rgba(255,255,255,0.85); 
-  letter-spacing:0.5px; 
-}
-.info{ 
-  color:#fff; 
-  font-size:12px; 
-  margin-top:15px; 
+
+.copyright {
+  position: fixed;
+  bottom: 16px;
+  width: 100%;
+  text-align: center;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.85);
 }
 </style>
 </head>
 <body>
- <div class="login-box">
-  <h2>LOGIN UBT</h2>
-  <input id="userid" placeholder="User ID (contoh: 2026010115)" autofocus>
+
+<div class="login-box">
+  <h2>Login Ujian Bahasa Korea</h2>
+  
+  <input id="userid" placeholder="Masukkan User ID" autofocus>
+  
   <select id="paket">
-   <option value="1">TRYOUT 01</option>
-   <option value="2">TRYOUT 02</option>
-   <option value="3">TRYOUT 03</option>
+    <option value="" disabled selected>Pilih Paket / Tryout</option>
+    <option value="1">Tryout 01</option>
+    <option value="2">Tryout 02</option>
+    <option value="3">Tryout 03</option>
   </select>
-  <button onclick="login()">LOGIN / 로그인</button>
+  
+  <button onclick="login()">Masuk</button>
+  
   <div id="error-msg"></div>
- </div>
- <div class="copyright">
-  © 2026 Denzuka - Kim Jongun. All Rights Reserved.
- </div>
+</div>
 
- <script>
- // =====================================================================
- // DAFTAR USER ID YANG DIIZINKAN (sesuaikan dengan daftarmu)
- // =====================================================================
- const validUserIDs = [
-   "2026010001",   // uus
-   "2026010002",   // windi
-   "2026010003",   // rismaya97
-   "2026010004",   // sita77
-   "2026010005",   // Aini185
-   "2026010006",   // Hangeulfei
-   "2026010007",   // Hamdan106
-   "2026010008",   // Heri
-   "2026010009",   // hanarizka
-   "2026010010",   // Fikrisurya
-   "2026010011",   // Mutiara2003
-   "2026010012",   // dinda
-   "2026010013",   // wantikas
-   "2026010014",   // Dininidia
-   "2026010015",   // kaniarostayuni9
-   "2026010016",   // Dikisetiawan07
-   "2026010017",   // Aisyah18
-   "2026010018",   // Rizka2026
-   "2026010019",   // Zhafif07
-   "2026010020",   // siwon
-   "2026010021",   // Satria11
-   "2026010022",   // sultan2026
-   "2026010023",   // yppsdi
-   "2026010024",   // Azizah27_
-   "2026010025",   // mila
-   // Tambahkan sisanya di sini sesuai kebutuhan
-   // Contoh: "2026010115" untuk windi atau siapa pun yang kamu mau
- ];
+<div class="copyright">
+  © 2026 Sistem Ujian Bahasa Korea - All Rights Reserved
+</div>
 
- const SPREADSHEET_URL = "https://script.google.com/macros/s/AKfycbzxyVIlsyLswlfnQG618eeUZgN83dd2jfCjU0r7LsNHM3A6NNiibuCIb5e3CNs9J1vVhQ/exec";
+<script>
+// =====================================================================
+// MAPPING: User ID → Nama Asli (yang akan dikirim ke Google Sheet)
+// =====================================================================
+const userMapping = {
+  "2026010001": "uus",
+  "2026010002": "windi",
+  "2026010003": "rismaya97",
+  "2026010004": "sita77",
+  "2026010005": "Aini185",
+  "2026010006": "Hangeulfei",
+  "2026010007": "Hamdan106",
+  "2026010008": "Heri",
+  "2026010009": "hanarizka",
+  "2026010010": "Fikrisurya",
+  "2026010011": "Mutiara2003",
+  "2026010012": "dinda",
+  "2026010013": "wantikas",
+  "2026010014": "Dininidia",
+  "2026010015": "kaniarostayuni9",
+  "2026010016": "Dikisetiawan07",
+  "2026010017": "Aisyah18",
+  "2026010018": "Rizka2026",
+  "2026010019": "Zhafif07",
+  "2026010020": "siwon",
+  "2026010021": "Satria11",
+  "2026010022": "sultan2026",
+  "2026010023": "yppsdi",
+  "2026010024": "Azizah27_",
+  "2026010025": "mila",
+  // tambahkan user lain sesuai kebutuhan
+};
 
- function checkStorage(){
-  try{ localStorage.setItem("test","ok"); localStorage.removeItem("test"); return true; }catch(e){ return false; }
- }
+const validUserIDs = Object.keys(userMapping);
 
- function login(){
+function checkStorage() {
+  try {
+    localStorage.setItem("test", "ok");
+    localStorage.removeItem("test");
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+function login() {
   const err = document.getElementById("error-msg");
   err.innerText = "";
-  
-  if(!checkStorage()){ 
-   err.innerText = "Browser memblokir localStorage. Gunakan mode normal."; 
-   return; 
+
+  if (!checkStorage()) {
+    err.innerText = "Browser tidak mendukung penyimpanan lokal.";
+    return;
   }
-  
+
   const userid = document.getElementById("userid").value.trim();
   const paket = document.getElementById("paket").value;
-  
-  if (!userid) { 
-   err.innerText = "User ID wajib diisi!"; 
-   return; 
+
+  if (!userid) {
+    err.innerText = "User ID harus diisi";
+    return;
   }
 
   if (!validUserIDs.includes(userid)) {
-   err.innerText = "User ID tidak terdaftar atau salah!";
-   return;
+    err.innerText = "User ID tidak terdaftar";
+    return;
   }
-  
-  // Validasi paket sebelumnya (pakai userid sebagai identifier)
-  if(Number(paket) > 1){
-   const results = JSON.parse(localStorage.getItem("results") || "[]");
-   const prev = results.find(r => r.name === userid && Number(r.paket) === Number(paket) - 1);
-   if(!prev || Number(prev.score) < 80){ 
-    err.innerText = "Harus lulus paket sebelumnya dengan nilai minimal 80"; 
-    return; 
-   }
-  }
-  
-  localStorage.setItem("login","true");
-  localStorage.setItem("user", userid);          // Simpan User ID (angka)
-  localStorage.setItem("paket", paket);
-  
-  location.href = "dashboard.html";
- }
 
- // Enter untuk login
- document.addEventListener("keypress", function(e) {
+  if (!paket) {
+    err.innerText = "Pilih paket tryout terlebih dahulu";
+    return;
+  }
+
+  const realName = userMapping[userid];
+
+  // Validasi paket sebelumnya
+  if (Number(paket) > 1) {
+    const results = JSON.parse(localStorage.getItem("results") || "[]");
+    const prev = results.find(r => r.name === realName && Number(r.paket) === Number(paket) - 1);
+    if (!prev || Number(prev.score) < 80) {
+      err.innerText = "Harus lulus paket sebelumnya (minimal nilai 80)";
+      return;
+    }
+  }
+
+  localStorage.setItem("login", "true");
+  localStorage.setItem("user", realName);    // nama asli → tampil di dashboard & dikirim ke sheet
+  localStorage.setItem("paket", paket);
+
+  window.location.href = "dashboard.html";
+}
+
+// Support tekan Enter
+document.addEventListener("keypress", function(e) {
   if (e.key === "Enter") login();
- });
- </script>
+});
+</script>
+
 </body>
 </html>
