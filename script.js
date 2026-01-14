@@ -1,5 +1,5 @@
 // ===========================
-// script.js - UBT App Update (Full Version with Native Bridge)
+// script.js - UBT App Update (Full Version with Native Android Bridge)
 // ===========================
 
 let questions = [];
@@ -13,7 +13,7 @@ const soalURL = `https://airnetcso.github.io/ubt/soal/soal${paket}.json?v=13`;
 const SPREADSHEET_URL = "https://script.google.com/macros/s/AKfycbzxyVIlsyLswlfnQG618eeUZgN83dd2jfCjU0r7LsNHM3A6NNiibuCIb5e3CNs9J1vVhQ/exec";
 
 // ===========================
-// Kirim skor ke Sheet (Support Native Android + fallback sendBeacon)
+// Kirim skor ke Sheet (Native Android + fallback)
 // ===========================
 function sendScoreToSheet(username, paket, score) {
     console.log("🔥 Mencoba kirim skor UBT:", username, paket, score);
@@ -22,7 +22,7 @@ function sendScoreToSheet(username, paket, score) {
     const maxScore = totalSoal * 2.5;
     const persentase = Math.round((score / maxScore) * 100);
 
-    // Cegah duplikat
+    // Cegah duplikat kirim
     const key = "ubt_sent_" + username + "_p" + paket + "_s" + score;
     if (localStorage.getItem(key) === "sent") {
         console.log("✅ Skor sudah dikirim sebelumnya, skip.");
@@ -30,12 +30,12 @@ function sendScoreToSheet(username, paket, score) {
     }
     localStorage.setItem(key, "sent");
 
-    // Check apakah di APK Android (ada window.Android dari JavascriptInterface)
+    // DETEKSI APAKAH DI APK ANDROID (ada window.Android dari JavascriptInterface)
     if (window.Android) {
-        // Kirim via native Android (Volley POST)
+        // Kirim via native Android (Volley POST di MainActivity.kt)
         window.Android.sendScore(username, paket, score.toString());
         console.log("✅ Dikirim via native Android bridge");
-        return;  // Stop di sini, jangan kirim beacon lagi
+        return;  // Stop di sini, jangan lanjut ke fallback
     }
 
     // Fallback untuk browser/web biasa (sendBeacon + fetch keepalive)
@@ -51,19 +51,19 @@ function sendScoreToSheet(username, paket, score) {
 
     console.log("Mengirim data via fallback:", dataToSend.toString());
 
-    // Prioritas sendBeacon (paling aman untuk unload)
+    // Prioritas 1: sendBeacon (paling aman untuk background/unload)
     if (navigator.sendBeacon) {
         const success = navigator.sendBeacon(SPREADSHEET_URL, dataToSend);
         console.log("sendBeacon dipanggil, success:", success);
         if (success) return;
     }
 
-    // Fallback fetch kalau sendBeacon gagal
+    // Prioritas 2: fallback fetch dengan keepalive
     fetch(SPREADSHEET_URL, {
         method: "POST",
         body: dataToSend,
         keepalive: true,
-        mode: "no-cors",  // Penting untuk cross-origin tanpa CORS error
+        mode: "no-cors",       // Hindari CORS error di cross-origin
         cache: "no-cache"
     })
     .then(() => console.log("✅ Fallback fetch POST berhasil"))
@@ -71,7 +71,7 @@ function sendScoreToSheet(username, paket, score) {
 }
 
 // ===========================
-// Load soal
+// Load soal dari JSON
 // ===========================
 async function loadSoal() {
     try {
@@ -93,7 +93,7 @@ async function loadSoal() {
 }
 
 // ===========================
-// Build Grid Dashboard
+// Build Grid Dashboard (soal listening & reading)
 // ===========================
 function buildGrid() {
     const L = document.getElementById("listen");
@@ -115,7 +115,7 @@ function buildGrid() {
 }
 
 // ===========================
-// Load Question Page
+// Load halaman soal (question.html)
 // ===========================
 function loadQuestionPage() {
     const box = document.getElementById("questionBox");
@@ -177,7 +177,7 @@ function loadQuestionPage() {
 }
 
 // ===========================
-// Navigation
+// Navigation antar soal
 // ===========================
 function nextQuestion() { 
     if (currentIndex + 1 < questions.length) { 
@@ -199,7 +199,7 @@ function back() {
 }
 
 // ===========================
-// Timer
+// Timer countdown
 // ===========================
 let time = Number(localStorage.getItem("time")) || 50*60;
 setInterval(() => {
@@ -211,7 +211,7 @@ setInterval(() => {
 }, 1000);
 
 // ===========================
-// Manual Submit
+// Manual Submit (tombol SUBMIT)
 // ===========================
 function manualSubmit() {
     if (questions.length === 0) { alert("Soal belum dimuat!"); return; }
@@ -219,7 +219,7 @@ function manualSubmit() {
 }
 
 // ===========================
-// Calculate Score
+// Hitung skor akhir
 // ===========================
 function calculateScore() {
     if (questions.length === 0) return 0;
@@ -229,7 +229,7 @@ function calculateScore() {
 }
 
 // ===========================
-// Finish Exam
+// Finish ujian & kirim skor
 // ===========================
 function finish() {
     console.log("🎉 SUBMIT UBT!");
@@ -247,12 +247,12 @@ function finish() {
     // Kirim skor (native atau fallback)
     sendScoreToSheet(user, paket, score);
 
-    // Bersihkan localStorage tapi simpan data sent key
+    // Bersihkan localStorage tapi simpan key anti-duplikat
     const sentKeys = Object.keys(localStorage).filter(k => k.startsWith("ubt_sent_")).reduce((obj,k)=>{obj[k]=localStorage.getItem(k);return obj;},{});
     localStorage.clear();
     Object.entries(sentKeys).forEach(([k,v])=>localStorage.setItem(k,v));
 
-    // Delay redirect supaya kirim sempat jalan
+    // Delay redirect biar kirim sempat jalan
     setTimeout(()=> { 
         alert(`Ujian selesai!\nNilai Anda: ${score}\nData sudah dikirim ke pusat! 🎉`);
         location.href = "index.html"; 
@@ -260,9 +260,16 @@ function finish() {
 }
 
 // ===========================
-// Init
+// Init app
 // ===========================
 window.onload = async () => {
     console.log("🚀 UBT App mulai...");
     await loadSoal();
+
+    // Test bridge (opsional, hapus kalau sudah yakin jalan)
+    if (window.Android) {
+        console.log("✅ Android bridge terdeteksi (di APK)");
+    } else {
+        console.log("ℹ️ Mode browser (fallback sendBeacon)");
+    }
 };
