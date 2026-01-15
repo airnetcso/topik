@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Soal</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<script>
+if(localStorage.getItem("login") !== "true" || !localStorage.getItem("user")){
+  alert("Sesi habis!");
+  location.href = "index.html";
+}
+</script>
+
+<div class="question-page">
+  <div class="col-left" id="answers"></div>
+  <div class="col-right" id="questionBox"></div>
+</div>
+
+<div class="nav-buttons">
+  <button onclick="prevQuestion()">SEBELUMNYA</button>
+  <button onclick="back()">KEMBALI</button>
+  <button onclick="nextQuestion()">BERIKUTNYA</button>
+</div>
+
+<script src="script.js?v=13"></script>
+</body>
+</html>

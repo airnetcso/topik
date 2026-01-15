@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Dashboard UBT</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<script>
+if(localStorage.getItem("login")!=="true"){location.href="index.html";}
+</script>
+<body>
+<header class="header">
+  <div><button id="submitBtn" class="box" onclick="manualSubmit()">SUBMIT</button></div>
+  <div id="user" style="font-weight:bold;color:#fff"></div>
+  <div class="top-right"><div id="timerBox" class="box">50:00</div></div>
+</header>
+
+<div id="loading" style="text-align:center;padding:30px;font-size:20px;color:#fff;background:rgba(0,0,0,0.7);margin:15px;border-radius:10px;">
+  ⏳ Loading soal... Tunggu sebentar ya 🙏<br>
+  <small>Jangan klik SUBMIT sebelum nomor soal muncul!</small>
+</div>
+
+<div class="content two-col">
+  <div class="col">
+    <div style="text-align:center"><div class="section-box listening">SOAL MENDENGAR / 듣기문제</div></div>
+    <div class="grid" id="listen"></div>
+  </div>
+  <div class="col">
+    <div style="text-align:center"><div class="section-box reading">SOAL MEMBACA / 읽기문제</div></div>
+    <div class="grid" id="read"></div>
+  </div>
+</div>
+
+<script src="script.js?v=13"></script>
+<script>
+document.getElementById("user").innerText = localStorage.getItem("user") + " - TRYOUT " + localStorage.getItem("paket");
+</script>
+</body>
+</html>
