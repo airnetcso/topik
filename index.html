@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Login - Ujian Bahasa Korea (UBT)</title>
+
 <style>
 * {
   box-sizing: border-box;
@@ -16,119 +17,136 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
-              url("https://raw.githubusercontent.com/airnetcso/eps/main/image/bg1.jpg") center/cover no-repeat;
+  background:
+    linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+    url("https://raw.githubusercontent.com/airnetcso/eps/main/image/bg1.jpg")
+    center/cover no-repeat;
 }
 
-/* Animasi masuk subtle */
+/* animasi masuk */
 @keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(30px); }
+  from { opacity: 0; transform: translateY(22px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
 .login-box {
-  width: 300px;
-  background: rgba(255, 255, 255, 0.25);
-  padding: 32px 24px 20px 24px; /* bawah lebih rapat */
+  width: 300px; /* UKURAN TETAP */
+  background: rgba(255,255,255,0.14); /* LEBIH TRANSPARAN */
+  padding: 28px 22px 22px;
   text-align: center;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  animation: fadeInUp 0.7s ease-out forwards;
-  backdrop-filter: blur(10px);
-  border: none;
-  border-radius: 0;
+  animation: fadeInUp 0.6s ease-out forwards;
+  backdrop-filter: blur(14px);
+  border-radius: 6px;
+  box-shadow:
+    0 6px 20px rgba(0,0,0,0.35),
+    inset 0 0 0 1px rgba(255,255,255,0.12);
+  position: relative;
+}
+
+/* garis aksen tipis */
+.login-box::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, #60a5fa, #2563eb);
 }
 
 .login-box h2 {
-  margin: 0 0 20px 0;
+  margin: 6px 0 18px;
   color: #ffffff;
-  font-size: 22px;
+  font-size: 21px;
   font-weight: 600;
-  text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+  letter-spacing: 0.4px;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.6);
 }
 
 input, select, button {
   width: 100%;
-  padding: 13px;
+  padding: 12px;
   margin-bottom: 14px;
-  font-size: 15px;
-  border-radius: 0;
-  border: 1px solid rgba(255,255,255,0.4);
+  font-size: 14.5px;
+  border-radius: 5px;
   outline: none;
-  transition: border-color 0.25s, box-shadow 0.25s;
+  transition: all 0.25s ease;
 }
 
 input, select {
-  background: rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.10); /* transparan */
   color: #ffffff;
+  border: 1px solid rgba(255,255,255,0.28);
 }
 
 input::placeholder {
-  color: rgba(255,255,255,0.7);
+  color: rgba(255,255,255,0.65);
 }
 
 input:focus, select:focus {
+  background: rgba(255,255,255,0.18);
   border-color: #60a5fa;
-  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.25);
+  box-shadow: 0 0 0 3px rgba(96,165,250,0.25);
 }
 
 button {
-  background: #1e40af;
-  color: white;
-  font-weight: 600;
-  cursor: pointer;
+  margin-top: 4px;
   border: none;
-  transition: background 0.25s;
-  margin-top: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  color: #ffffff;
+  background: linear-gradient(135deg, #1e40af, #2563eb);
 }
 
 button:hover {
-  background: #1e3a8a;
+  filter: brightness(1.08);
 }
 
 #error-msg {
-  color: #fbbf24;
+  min-height: 18px;
+  margin-top: 6px;
+  font-size: 13.5px;
   font-weight: 500;
-  margin-top: 10px;
-  font-size: 14px;
-  min-height: 20px;
+  color: #fde68a;
 }
 
 .copyright {
   position: fixed;
-  bottom: 16px;
+  bottom: 14px;
   width: 100%;
   text-align: center;
-  font-size: 13px;
-  color: rgba(255, 255, 255, 0.75);
+  font-size: 12.5px;
+  color: rgba(255,255,255,0.7);
 }
 </style>
 </head>
+
 <body>
 
 <div class="login-box">
   <h2>Login UBT</h2>
-  
-  <input id="userid" placeholder="Masukkan User ID" autofocus>
-  
+
+  <input id="userid" placeholder="User ID / 아이디번호" autofocus>
+
   <select id="paket">
-    <option value="" disabled selected>Pilih Paket Tryout</option>
+    <option value="" disabled selected>Pilih Tryout</option>
     <option value="1">Tryout 01</option>
     <option value="2">Tryout 02</option>
     <option value="3">Tryout 03</option>
   </select>
-  
+
   <button onclick="login()">LOGIN / 로그인</button>
-  
+
   <div id="error-msg"></div>
 </div>
 
 <div class="copyright">
-  © 2026 Sistem Ujian Bahasa Korea - All Rights Reserved
+  © 2026 Denzuka - Kim Jongun. All Rights Reserved.
 </div>
 
 <script>
 // =====================================================================
-// MAPPING: User ID → Nama Asli (untuk tampilan & Google Sheet)
+// MAPPING: User ID → Nama Asli
 // =====================================================================
 const userMapping = {
   "2026010001": "uus",
@@ -155,8 +173,7 @@ const userMapping = {
   "2026010022": "sultan2026",
   "2026010023": "yppsdi",
   "2026010024": "Azizah27_",
-  "2026010025": "mila",
-  // tambahkan user lain sesuai daftar kamu
+  "2026010025": "mila"
 };
 
 const validUserIDs = Object.keys(userMapping);
@@ -209,45 +226,20 @@ async function login() {
     }
   }
 
-  // ────────────────────────────────────────────────
-  // Force landscape + fullscreen setelah login berhasil
-  // ────────────────────────────────────────────────
   try {
-    // Minta fullscreen dulu (required untuk lock orientation di banyak browser)
     const elem = document.documentElement;
-    if (elem.requestFullscreen) {
-      await elem.requestFullscreen();
-    } else if (elem.webkitRequestFullscreen) { // Safari iOS
-      await elem.webkitRequestFullscreen();
-    } else if (elem.msRequestFullscreen) {
-      await elem.msRequestFullscreen();
-    }
+    if (elem.requestFullscreen) await elem.requestFullscreen();
+    if (screen.orientation?.lock) await screen.orientation.lock("landscape-primary");
+  } catch (e) {}
 
-    // Lock ke landscape
-    if (screen.orientation && typeof screen.orientation.lock === 'function') {
-      await screen.orientation.lock("landscape-primary");
-      console.log("Berhasil lock landscape");
-    } else {
-      console.warn("Browser tidak support lock orientation");
-      // Optional: kasih hint ke user
-      alert("Silakan putar perangkat ke mode landscape untuk ujian terbaik.");
-    }
-  } catch (err) {
-    console.error("Gagal masuk fullscreen atau lock orientation:", err);
-    // Tidak menghentikan login, lanjut saja
-  }
-
-  // Simpan data login
   localStorage.setItem("login", "true");
   localStorage.setItem("user", realName);
   localStorage.setItem("paket", paket);
 
-  // Redirect ke dashboard
   window.location.href = "dashboard.html";
 }
 
-// Support tekan Enter
-document.addEventListener("keypress", function(e) {
+document.addEventListener("keypress", e => {
   if (e.key === "Enter") login();
 });
 </script>
