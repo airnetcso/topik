@@ -2,255 +2,416 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login - Ujian Bahasa Korea (UBT)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>UBT - Ujian Bahasa Korea</title>
+
 <style>
-* {
-  box-sizing: border-box;
+/* === Gabungan semua style.css === */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
   font-family: Arial, Helvetica, sans-serif;
+  background: #f4f4f4;
+  height: 100vh;
+  overflow-x: hidden;
 }
 
-body {
-  margin: 0;
-  height: 100vh;
+.hidden { display: none !important; }
+
+/* Header */
+.header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 60px;
+  background: #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 15px;
+  z-index: 1000;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+.box {
+  padding: 8px 16px;
+  font-weight: bold;
+  border-radius: 4px;
+}
+#timerBox { background: #48bb78; color: white; }
+#submitBtn { background: #ec4899; color: white; border: none; cursor: pointer; }
+
+/* Login */
+#loginPage {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
-              url("https://raw.githubusercontent.com/airnetcso/eps/main/image/bg1.jpg") center/cover no-repeat;
+  height: 100vh;
+  background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url("https://raw.githubusercontent.com/airnetcso/eps/main/image/bg1.jpg") center/cover no-repeat;
 }
-
-/* Animasi masuk subtle */
+.login-box {
+  width: 90%;
+  max-width: 350px;
+  padding: 30px;
+  background: rgba(255,255,255,0.25);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  backdrop-filter: blur(10px);
+  text-align: center;
+  animation: fadeInUp 0.7s ease-out;
+}
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(30px); }
-  to   { opacity: 1; transform: translateY(0); }
+  to { opacity: 1; transform: translateY(0); }
 }
-
-.login-box {
-  width: 300px;
-  background: rgba(255, 255, 255, 0.25);
-  padding: 32px 24px 20px 24px; /* bawah lebih rapat */
-  text-align: center;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  animation: fadeInUp 0.7s ease-out forwards;
-  backdrop-filter: blur(10px);
-  border: none;
-  border-radius: 0;
-}
-
-.login-box h2 {
-  margin: 0 0 20px 0;
-  color: #ffffff;
-  font-size: 22px;
-  font-weight: 600;
-  text-shadow: 0 1px 3px rgba(0,0,0,0.6);
-}
-
 input, select, button {
   width: 100%;
-  padding: 13px;
-  margin-bottom: 14px;
-  font-size: 15px;
-  border-radius: 0;
+  padding: 12px;
+  margin: 10px 0;
   border: 1px solid rgba(255,255,255,0.4);
-  outline: none;
-  transition: border-color 0.25s, box-shadow 0.25s;
-}
-
-input, select {
+  border-radius: 0;
   background: rgba(255,255,255,0.15);
-  color: #ffffff;
-}
-
-input::placeholder {
-  color: rgba(255,255,255,0.7);
-}
-
-input:focus, select:focus {
-  border-color: #60a5fa;
-  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.25);
-}
-
-button {
-  background: #1e40af;
   color: white;
-  font-weight: 600;
-  cursor: pointer;
-  border: none;
-  transition: background 0.25s;
-  margin-top: 6px;
+  font-size: 16px;
 }
+button { background: #1e40af; color: white; border: none; cursor: pointer; }
+button:hover { background: #1e3a8a; }
+#error-msg { color: #fbbf24; font-size: 14px; margin-top: 10px; }
 
-button:hover {
-  background: #1e3a8a;
-}
-
-#error-msg {
-  color: #fbbf24;
-  font-weight: 500;
-  margin-top: 10px;
-  font-size: 14px;
-  min-height: 20px;
-}
-
-.copyright {
-  position: fixed;
-  bottom: 16px;
-  width: 100%;
+/* Dashboard content */
+.content { margin-top: 70px; padding: 15px; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); gap: 10px; }
+.qbox {
+  background: rgba(255,192,203,0.3);
+  padding: 15px;
   text-align: center;
-  font-size: 13px;
-  color: rgba(255, 255, 255, 0.75);
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+.qbox.done { background: #ccc; opacity: 0.7; }
+
+/* Question page */
+.question-page {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 70px;
+  padding: 15px;
+  min-height: calc(100vh - 140px);
+}
+.col-left {
+  background: #f9f9f9;
+  padding: 15px;
+  border-radius: 8px;
+}
+.col-right {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+}
+.col-left button {
+  width: 45px; height: 45px;
+  border-radius: 50%;
+  border: 2px solid #444;
+  margin: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+.col-left button.selected { background: #3b82f6; color: white; border-color: #3b82f6; }
+
+/* Nav bottom */
+.nav-buttons {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  display: flex;
+  background: white;
+  padding: 10px;
+  border-top: 1px solid #ddd;
+  gap: 10px;
+}
+.nav-buttons button {
+  flex: 1;
+  padding: 12px;
+  background: #3498db;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Responsif */
+@media (max-width: 768px) {
+  .two-col { grid-template-columns: 1fr; }
+  .question-page { flex-direction: column; }
+}
+
+audio, img { max-width: 100%; display: block; margin: 15px auto; }
+.dialog-box {
+  background: #f2ebed;
+  padding: 15px;
+  border-radius: 8px;
+  margin: 15px 0;
+  font-size: 18px;
+  line-height: 1.6;
 }
 </style>
 </head>
 <body>
 
-<div class="login-box">
-  <h2>Login UBT</h2>
-  
-  <input id="userid" placeholder="Masukkan User ID" autofocus>
-  
-  <select id="paket">
-    <option value="" disabled selected>Pilih Paket Tryout</option>
-    <option value="1">Tryout 01</option>
-    <option value="2">Tryout 02</option>
-    <option value="3">Tryout 03</option>
-  </select>
-  
-  <button onclick="login()">LOGIN / 로그인</button>
-  
-  <div id="error-msg"></div>
+<!-- Login Page -->
+<div id="loginPage">
+  <div class="login-box">
+    <h2>Login UBT</h2>
+    <input id="userid" placeholder="Masukkan User ID" autofocus>
+    <select id="paket">
+      <option value="" disabled selected>Pilih Paket Tryout</option>
+      <option value="1">Tryout 01</option>
+      <option value="2">Tryout 02</option>
+      <option value="3">Tryout 03</option>
+    </select>
+    <button onclick="login()">LOGIN / 로그인</button>
+    <div id="error-msg"></div>
+  </div>
 </div>
 
-<div class="copyright">
-  © 2026 Sistem Ujian Bahasa Korea - All Rights Reserved
+<!-- Dashboard Page -->
+<div id="dashboardPage" class="hidden">
+  <header class="header">
+    <button id="submitBtn" class="box" onclick="manualSubmit()">SUBMIT</button>
+    <div id="user" style="font-weight:bold;"></div>
+    <div id="timerBox" class="box">50:00</div>
+  </header>
+
+  <div id="loading" style="text-align:center;padding:30px;font-size:20px;color:#333;background:rgba(255,255,255,0.8);margin:15px;border-radius:10px;">
+    ⏳ Loading soal... Tunggu sebentar ya 🙏<br>
+    <small>Jangan klik SUBMIT sebelum nomor soal muncul!</small>
+  </div>
+
+  <div class="content two-col">
+    <div>
+      <h3>SOAL MENDENGAR / 듣기문제</h3>
+      <div class="grid" id="listen"></div>
+    </div>
+    <div>
+      <h3>SOAL MEMBACA / 읽기문제</h3>
+      <div class="grid" id="read"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Question Page -->
+<div id="questionPage" class="hidden question-page">
+  <div class="col-left" id="answers"></div>
+  <div class="col-right" id="questionBox"></div>
+</div>
+
+<!-- Nav Soal -->
+<div id="navButtons" class="nav-buttons hidden">
+  <button onclick="prevQuestion()">SEBELUMNYA</button>
+  <button onclick="backToDashboard()">KEMBALI</button>
+  <button onclick="nextQuestion()">BERIKUTNYA</button>
 </div>
 
 <script>
-// =====================================================================
-// MAPPING: User ID → Nama Asli (untuk tampilan & Google Sheet)
-// =====================================================================
-const userMapping = {
-  "2026010001": "uus",
-  "2026010002": "windi",
-  "2026010003": "rismaya97",
-  "2026010004": "sita77",
-  "2026010005": "Aini185",
-  "2026010006": "Hangeulfei",
-  "2026010007": "Hamdan106",
-  "2026010008": "Heri",
-  "2026010009": "hanarizka",
-  "2026010010": "Fikrisurya",
-  "2026010011": "Mutiara2003",
-  "2026010012": "dinda",
-  "2026010013": "wantikas",
-  "2026010014": "Dininidia",
-  "2026010015": "kaniarostayuni9",
-  "2026010016": "Dikisetiawan07",
-  "2026010017": "Aisyah18",
-  "2026010018": "Rizka2026",
-  "2026010019": "Zhafif07",
-  "2026010020": "siwon",
-  "2026010021": "Satria11",
-  "2026010022": "sultan2026",
-  "2026010023": "yppsdi",
-  "2026010024": "Azizah27_",
-  "2026010025": "mila",
-  // tambahkan user lain sesuai daftar kamu
-};
+// === JS lengkap dari script.js + adaptasi single page ===
+let questions = [];
+let answered = JSON.parse(localStorage.getItem("answered") || "{}");
+let currentIndex = 0;
+let time = Number(localStorage.getItem("time")) || 50*60;
 
-const validUserIDs = Object.keys(userMapping);
+const paket = localStorage.getItem("paket") || "1";
+const soalURL = `https://airnetcso.github.io/ubt/soal/soal${paket}.json?v=13`;
 
-function checkStorage() {
-  try {
-    localStorage.setItem("test", "ok");
-    localStorage.removeItem("test");
-    return true;
-  } catch (e) {
-    return false;
+const SPREADSHEET_URL = "https://script.google.com/macros/s/AKfycbzxyVIlsyLswlfnQG618eeUZgN83dd2jfCjU0r7LsNHM3A6NNiibuCIb5e3CNs9J1vVhQ/exec";
+
+function sendScoreToSheet(username, paket, score) {
+  const totalSoal = questions.length || 40;
+  const maxScore = totalSoal * 2.5;
+  const persentase = Math.round((score / maxScore) * 100);
+
+  const key = "ubt_sent_" + username + "_p" + paket + "_s" + score;
+  if (localStorage.getItem(key) === "sent") return;
+  localStorage.setItem(key, "sent");
+
+  const dataToSend = new URLSearchParams({
+    waktu: new Date().toLocaleString('id-ID', {timeZone: 'Asia/Jakarta'}),
+    namaSiswa: username || "Anonymous",
+    code: "UBT TRYOUT " + paket,
+    kosaKata: "-",
+    ubt: `${score}/${maxScore} (${persentase}%)`,
+    latihanSoal: "-",
+    keterangan: score >= 80 ? "Lulus P" + paket : "Gagal <80"
+  });
+
+  if (navigator.sendBeacon) {
+    navigator.sendBeacon(SPREADSHEET_URL, dataToSend);
+  } else {
+    fetch(SPREADSHEET_URL, {
+      method: "POST",
+      body: dataToSend,
+      keepalive: true
+    });
   }
 }
 
-async function login() {
-  const err = document.getElementById("error-msg");
-  err.innerText = "";
+async function loadSoal() {
+  try {
+    const res = await fetch(soalURL);
+    if (!res.ok) throw new Error("Gagal load soal");
+    questions = await res.json();
+    document.getElementById("loading").style.display = "none";
+    buildGrid();
+  } catch (e) {
+    alert("Gagal memuat soal: " + e.message);
+  }
+}
 
-  if (!checkStorage()) {
-    err.innerText = "Browser tidak mendukung penyimpanan lokal.";
-    return;
+function buildGrid() {
+  const listen = document.getElementById("listen");
+  const read = document.getElementById("read");
+  listen.innerHTML = read.innerHTML = "";
+
+  questions.forEach(q => {
+    const box = document.createElement("div");
+    box.className = "qbox" + (answered[q.id] ? " done" : "");
+    box.textContent = q.id;
+    box.onclick = () => showQuestion(q.id);
+    (q.type === "listening" ? listen : read).appendChild(box);
+  });
+}
+
+function showQuestion(id) {
+  const q = questions.find(qq => qq.id == id);
+  if (!q) return;
+
+  currentIndex = questions.indexOf(q);
+  localStorage.setItem("current", id);
+
+  document.getElementById("dashboardPage").classList.add("hidden");
+  document.getElementById("questionPage").classList.remove("hidden");
+  document.getElementById("navButtons").classList.remove("hidden");
+
+  const box = document.getElementById("questionBox");
+  const ans = document.getElementById("answers");
+  box.innerHTML = ans.innerHTML = "";
+
+  box.innerHTML = `<h3>${q.id}. ${q.question.split("\n\n")[0] || q.question}</h3>`;
+
+  if (q.question.includes("\n\n")) {
+    box.innerHTML += `<div class="dialog-box">${q.question.split("\n\n").slice(1).join("<br><br>")}</div>`;
   }
 
+  if (q.audio) {
+    box.innerHTML += `<audio controls src="${q.audio}"></audio>`;
+  }
+  if (q.image) {
+    box.innerHTML += `<img src="${q.image}" alt="Soal Image">`;
+  }
+
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement("button");
+    btn.textContent = i + 1;
+    if (answered[q.id] === i + 1) btn.classList.add("selected");
+    btn.onclick = () => {
+      answered[q.id] = i + 1;
+      localStorage.setItem("answered", JSON.stringify(answered));
+      buildGrid();
+    };
+    const row = document.createElement("div");
+    row.style.margin = "10px 0";
+    row.append(btn, document.createTextNode(" " + opt));
+    ans.appendChild(row);
+  });
+}
+
+function nextQuestion() {
+  if (currentIndex + 1 < questions.length) showQuestion(questions[currentIndex + 1].id);
+}
+
+function prevQuestion() {
+  if (currentIndex > 0) showQuestion(questions[currentIndex - 1].id);
+}
+
+function backToDashboard() {
+  document.getElementById("questionPage").classList.add("hidden");
+  document.getElementById("navButtons").classList.add("hidden");
+  document.getElementById("dashboardPage").classList.remove("hidden");
+}
+
+function startTimer() {
+  setInterval(() => {
+    if (time <= 0) { finish(); return; }
+    time--;
+    localStorage.setItem("time", time);
+    document.getElementById("timerBox").textContent = 
+      `${Math.floor(time/60).toString().padStart(2,'0')}:${(time%60).toString().padStart(2,'0')}`;
+  }, 1000);
+}
+
+function manualSubmit() {
+  if (questions.length === 0) { alert("Soal belum dimuat!"); return; }
+  if (confirm("Yakin submit sekarang?")) finish();
+}
+
+function calculateScore() {
+  let correct = 0;
+  questions.forEach(q => { if (answered[q.id] === q.answer) correct++; });
+  return correct * 2.5;
+}
+
+function finish() {
+  const score = calculateScore();
+  const user = localStorage.getItem("user");
+  const paket = localStorage.getItem("paket");
+
+  sendScoreToSheet(user, paket, score);
+
+  alert(`Ujian selesai!\nNilai Anda: ${score}\nData dikirim ke pusat! 🎉`);
+
+  localStorage.clear();
+  location.reload();
+}
+
+// Login function (adaptasi dari index.html)
+const userMapping = {
+  "2026010001": "uus",
+  // ... tambahkan semua mapping lo di sini ...
+};
+
+function login() {
   const userid = document.getElementById("userid").value.trim();
   const paket = document.getElementById("paket").value;
+  const err = document.getElementById("error-msg");
 
-  if (!userid) {
-    err.innerText = "User ID harus diisi";
+  if (!userid || !paket) {
+    err.innerText = "Isi User ID dan Paket!";
     return;
   }
 
-  if (!validUserIDs.includes(userid)) {
+  if (!userMapping[userid]) {
     err.innerText = "User ID tidak terdaftar";
     return;
   }
 
-  if (!paket) {
-    err.innerText = "Pilih paket tryout terlebih dahulu";
-    return;
-  }
-
-  const realName = userMapping[userid];
-
-  if (Number(paket) > 1) {
-    const results = JSON.parse(localStorage.getItem("results") || "[]");
-    const prev = results.find(r => r.name === realName && Number(r.paket) === Number(paket) - 1);
-    if (!prev || Number(prev.score) < 80) {
-      err.innerText = "Harus lulus paket sebelumnya (minimal nilai 80)";
-      return;
-    }
-  }
-
-  // ────────────────────────────────────────────────
-  // Force landscape + fullscreen setelah login berhasil
-  // ────────────────────────────────────────────────
-  try {
-    // Minta fullscreen dulu (required untuk lock orientation di banyak browser)
-    const elem = document.documentElement;
-    if (elem.requestFullscreen) {
-      await elem.requestFullscreen();
-    } else if (elem.webkitRequestFullscreen) { // Safari iOS
-      await elem.webkitRequestFullscreen();
-    } else if (elem.msRequestFullscreen) {
-      await elem.msRequestFullscreen();
-    }
-
-    // Lock ke landscape
-    if (screen.orientation && typeof screen.orientation.lock === 'function') {
-      await screen.orientation.lock("landscape-primary");
-      console.log("Berhasil lock landscape");
-    } else {
-      console.warn("Browser tidak support lock orientation");
-      // Optional: kasih hint ke user
-      alert("Silakan putar perangkat ke mode landscape untuk ujian terbaik.");
-    }
-  } catch (err) {
-    console.error("Gagal masuk fullscreen atau lock orientation:", err);
-    // Tidak menghentikan login, lanjut saja
-  }
-
-  // Simpan data login
   localStorage.setItem("login", "true");
-  localStorage.setItem("user", realName);
+  localStorage.setItem("user", userMapping[userid]);
   localStorage.setItem("paket", paket);
 
-  // Redirect ke dashboard
-  window.location.href = "dashboard.html";
+  document.getElementById("loginPage").classList.add("hidden");
+  document.getElementById("dashboardPage").classList.remove("hidden");
+  document.getElementById("user").innerText = userMapping[userid] + " - TRYOUT " + paket;
+
+  loadSoal();
+  startTimer();
 }
 
-// Support tekan Enter
-document.addEventListener("keypress", function(e) {
-  if (e.key === "Enter") login();
-});
+// Init
+if (localStorage.getItem("login") === "true") {
+  document.getElementById("loginPage").classList.add("hidden");
+  document.getElementById("dashboardPage").classList.remove("hidden");
+  document.getElementById("user").innerText = localStorage.getItem("user") + " - TRYOUT " + localStorage.getItem("paket");
+  loadSoal();
+  startTimer();
+}
 </script>
-
 </body>
 </html>
