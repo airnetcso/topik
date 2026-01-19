@@ -15,7 +15,7 @@ body {
   margin: 0;
   height: 100vh;
   background:
-    linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+    linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)),
     url("https://raw.githubusercontent.com/airnetcso/eps/main/image/bg1.jpg")
     center/cover no-repeat;
 }
@@ -32,49 +32,47 @@ body {
   color: #fff;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  padding: 28px 16px;
+  padding: 26px 18px;
   z-index: 9999;
+  text-align: center;
 }
 
 #splash h1 {
-  margin-top: 40px;
   font-size: 18px;
   font-weight: 600;
-  text-align: center;
   line-height: 1.5;
+  margin-bottom: 20px;
   text-shadow: 0 2px 6px rgba(0,0,0,0.8);
 }
 
-/* container nama */
+/* ===== nama statik ===== */
+
 #splash-names {
-  width: 100%;
-  max-width: 320px;
-  height: 160px;
-  overflow: hidden;
-  margin-bottom: 40px;
-  text-align: center;
-  mask-image: linear-gradient(to bottom, transparent, black 20%, black 80%, transparent);
-}
-
-/* animasi turun */
-@keyframes scrollDown {
-  from { transform: translateY(-100%); }
-  to   { transform: translateY(100%); }
-}
-
-#splash-names .list {
-  animation: scrollDown 26s linear infinite;
-}
-
-#splash-names .list div {
-  padding: 4px 0;
-  font-size: 14px;
+  max-width: 360px;
+  font-size: 11px;
+  line-height: 1.6;
   opacity: 0.9;
+  text-align: justify;
+}
+
+#splash-names span {
+  white-space: nowrap;
+}
+
+#splash-names span::after {
+  content: " · ";
 }
 
 /* ================= LOGIN ================= */
+
+.center {
+  height: 100vh;
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
 
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(22px); }
@@ -88,9 +86,6 @@ body {
   text-align: center;
   backdrop-filter: blur(14px);
   border-radius: 6px;
-  box-shadow:
-    0 6px 20px rgba(0,0,0,0.35),
-    inset 0 0 0 1px rgba(255,255,255,0.12);
   animation: fadeInUp 0.6s ease-out forwards;
 }
 
@@ -134,14 +129,6 @@ button {
   color: #fde68a;
 }
 
-.center {
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  display: none;
-}
-
 .copyright {
   position: fixed;
   bottom: 14px;
@@ -164,34 +151,15 @@ button {
   </h1>
 
   <div id="splash-names">
-    <div class="list">
-      <!-- NAMA SISWA (AMAN, MANUAL) -->
-      <div>Uus</div>
-      <div>Hanarizka</div>
-      <div>Windi</div>
-      <div>Rismayayanti</div>
-      <div>Sita</div>
-      <div>Mila</div>
-      <div>Aini</div>
-      <div>Feinie</div>
-      <div>Hamdan</div>
-      <div>Heri</div>
-      <div>Fikrisurya</div>
-      <div>Mutiara</div>
-      <div>Wantika</div>
-      <div>Dini</div>
-      <div>Kaniarostayuni</div>
-      <div>Dikisetiawan</div>
-      <div>Aisyah</div>
-      <div>Rizka</div>
-      <div>Dinda</div>
-      <div>Zhafif</div>
-      <div>Siwon</div>
-      <div>Azizah</div>
-      <div>Yppsdi</div>
-      <div>Satria</div>
-      <div>Sultan</div>
-    </div>
+    <span>Uus</span><span>Hanarizka</span><span>Windi</span>
+    <span>Rismayayanti</span><span>Sita</span><span>Mila</span>
+    <span>Aini</span><span>Feinie</span><span>Hamdan</span>
+    <span>Heri</span><span>Fikrisurya</span><span>Mutiara</span>
+    <span>Wantika</span><span>Dini</span><span>Kaniarostayuni</span>
+    <span>Dikisetiawan</span><span>Aisyah</span><span>Rizka</span>
+    <span>Dinda</span><span>Zhafif</span><span>Siwon</span>
+    <span>Azizah</span><span>Yppsdi</span><span>Satria</span>
+    <span>Sultan</span>
   </div>
 </div>
 
@@ -229,9 +197,9 @@ button {
 setTimeout(() => {
   document.getElementById("splash").style.display = "none";
   document.getElementById("loginPage").style.display = "flex";
-}, 7000);
+}, 6500);
 
-/* ================= LOGIN SCRIPT (ASLI – TIDAK DIUBAH) ================= */
+/* ================= LOGIN SCRIPT ASLI (TIDAK DIUBAH) ================= */
 
 const userMapping = {
   "2026010001":"Uus",
@@ -284,18 +252,31 @@ function login() {
     return;
   }
 
-  const userid = userid.value.trim();
+  const userid = document.getElementById("userid").value.trim();
   const paket = document.getElementById("paket").value;
 
-  if (!userid) { err.innerText = "User ID harus diisi"; return; }
-  if (!validUserIDs.includes(userid)) { err.innerText = "User ID tidak terdaftar"; return; }
-  if (!paket) { err.innerText = "Pilih paket tryout terlebih dahulu"; return; }
+  if (!userid) {
+    err.innerText = "User ID harus diisi";
+    return;
+  }
+
+  if (!validUserIDs.includes(userid)) {
+    err.innerText = "User ID tidak terdaftar";
+    return;
+  }
+
+  if (!paket) {
+    err.innerText = "Pilih paket tryout terlebih dahulu";
+    return;
+  }
 
   const realName = userMapping[userid];
 
   if (Number(paket) > 1) {
     const results = JSON.parse(localStorage.getItem("results") || "[]");
-    const prev = results.find(r => r.name === realName && Number(r.paket) === Number(paket) - 1);
+    const prev = results.find(
+      r => r.name === realName && Number(r.paket) === Number(paket) - 1
+    );
     if (!prev || Number(prev.score) < 80) {
       err.innerText = "Harus lulus paket sebelumnya (minimal nilai 80)";
       return;
@@ -308,6 +289,10 @@ function login() {
 
   window.location.href = "dashboard.html";
 }
+
+document.addEventListener("keypress", e => {
+  if (e.key === "Enter") login();
+});
 </script>
 
 </body>
