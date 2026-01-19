@@ -40,31 +40,34 @@ body {
 
 .splash-box {
   max-width: 420px;
+  transform: translateY(28px); /* optical center */
 }
 
 #splash h1 {
   font-size: 18px;
   font-weight: 600;
   line-height: 1.5;
-  margin-bottom: 20px;
+  margin-bottom: 14px;
   text-shadow: 0 2px 6px rgba(0,0,0,0.8);
 }
 
-/* ===== nama statik ===== */
+/* ===== NAMA STATIK ===== */
 
 #splash-names {
-  font-size: 10.5px;
-  line-height: 1.6;
+  font-size: 10px;
+  line-height: 1.55;
   opacity: 0.9;
   text-align: justify;
+  column-count: 2;
+  column-gap: 16px;
 }
 
 #splash-names span {
-  white-space: nowrap;
+  white-space: normal;
 }
 
 #splash-names span::after {
-  content: " · ";
+  content: ", ";
 }
 
 /* ================= LOGIN ================= */
