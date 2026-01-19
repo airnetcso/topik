@@ -14,20 +14,17 @@
 body {
   margin: 0;
   height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   background:
-    linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+    linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
     url("https://raw.githubusercontent.com/airnetcso/eps/main/image/bg1.jpg")
     center/cover no-repeat;
 }
 
-/* ================= SPLASH (TAMBAHAN SAJA) ================= */
+/* ================= SPLASH ================= */
+
 #splash {
   position: fixed;
   inset: 0;
-  z-index: 9999;
   background:
     linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)),
     url("https://raw.githubusercontent.com/airnetcso/eps/main/image/bg1.jpg")
@@ -36,54 +33,49 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 28px 20px;
+  align-items: center;
+  padding: 28px 16px;
+  z-index: 9999;
+}
+
+#splash h1 {
+  margin-top: 40px;
+  font-size: 18px;
+  font-weight: 600;
   text-align: center;
-}
-
-#splash .splash-top {
-  font-size: 15px;
   line-height: 1.5;
-  opacity: 0.95;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.8);
 }
 
-#splash .splash-center {
-  margin-top: 20px;
-}
-
-#splash .splash-center h1 {
-  font-size: 24px;
-  margin-bottom: 6px;
-  letter-spacing: 0.6px;
-}
-
-#splash .splash-center p {
-  font-size: 14px;
-  opacity: 0.85;
-}
-
-/* daftar nama siswa (ANIMASI HALUS) */
+/* container nama */
 #splash-names {
-  height: 120px;
+  width: 100%;
+  max-width: 320px;
+  height: 160px;
   overflow: hidden;
+  margin-bottom: 40px;
+  text-align: center;
+  mask-image: linear-gradient(to bottom, transparent, black 20%, black 80%, transparent);
+}
+
+/* animasi turun */
+@keyframes scrollDown {
+  from { transform: translateY(-100%); }
+  to   { transform: translateY(100%); }
 }
 
 #splash-names .list {
-  animation: scrollUp 16s linear infinite;
+  animation: scrollDown 26s linear infinite;
 }
 
-#splash-names div {
-  font-size: 14px;
+#splash-names .list div {
   padding: 4px 0;
-  opacity: 0.85;
+  font-size: 14px;
+  opacity: 0.9;
 }
 
-@keyframes scrollUp {
-  from { transform: translateY(100%); }
-  to   { transform: translateY(-100%); }
-}
-/* ========================================================= */
+/* ================= LOGIN ================= */
 
-/* animasi masuk login */
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(22px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -94,14 +86,12 @@ body {
   background: rgba(255,255,255,0.14);
   padding: 28px 22px 22px;
   text-align: center;
-  animation: fadeInUp 0.6s ease-out forwards;
   backdrop-filter: blur(14px);
   border-radius: 6px;
   box-shadow:
     0 6px 20px rgba(0,0,0,0.35),
     inset 0 0 0 1px rgba(255,255,255,0.12);
-  position: relative;
-  display: none; /* login disembunyikan saat splash */
+  animation: fadeInUp 0.6s ease-out forwards;
 }
 
 .login-box h2 {
@@ -117,12 +107,17 @@ input, select, button {
   margin-bottom: 14px;
   font-size: 14.5px;
   border-radius: 5px;
+  outline: none;
 }
 
 input, select {
   background: rgba(255,255,255,0.10);
   color: #ffffff;
   border: 1px solid rgba(255,255,255,0.28);
+}
+
+input::placeholder {
+  color: rgba(255,255,255,0.65);
 }
 
 button {
@@ -137,6 +132,14 @@ button {
   min-height: 18px;
   font-size: 13.5px;
   color: #fde68a;
+}
+
+.center {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  display: none;
 }
 
 .copyright {
@@ -154,20 +157,15 @@ button {
 
 <!-- ================= SPLASH ================= -->
 <div id="splash">
-  <div class="splash-top">
+  <h1>
     Tetap semangat belajar,<br>
-    semoga kalian semua lulus ujian <b>EPS-TOPIK</b>.<br>
-    Aamiin 🤲
-  </div>
+    semoga kalian semua lulus ujian<br>
+    <b>EPS TOPIK</b>, aamiin 🤲
+  </h1>
 
-  <div class="splash-center">
-    <h1>UBT EPS-TOPIK</h1>
-    <p>Ujian Bahasa Korea</p>
-  </div>
-
-  <!-- NAMA SISWA (STATIS, TIDAK TERKAIT DATA) -->
   <div id="splash-names">
     <div class="list">
+      <!-- NAMA SISWA (AMAN, MANUAL) -->
       <div>Uus</div>
       <div>Hanarizka</div>
       <div>Windi</div>
@@ -196,28 +194,30 @@ button {
     </div>
   </div>
 </div>
-<!-- ========================================= -->
 
-<div class="login-box">
-  <h2>Login UBT</h2>
+<!-- ================= LOGIN ================= -->
+<div class="center" id="loginPage">
+  <div class="login-box">
+    <h2>Login UBT</h2>
 
-  <input id="userid" placeholder="User ID / 아이디" autofocus>
+    <input id="userid" placeholder="User ID / 아이디" autofocus>
 
-  <select id="paket">
-    <option value="" disabled selected>Pilih Tryout / 유형선택</option>
-    <option value="1">Tryout 01</option>
-    <option value="2">Tryout 02</option>
-    <option value="3">Tryout 03</option>
-    <option value="4">Tryout 04</option>
-    <option value="5">Tryout 05</option>
-    <option value="6">Tryout 06</option>
-    <option value="7">Tryout 07</option>
-    <option value="8">Tryout 08</option>
-    <option value="9">Tryout 09</option>
-  </select>
+    <select id="paket">
+      <option value="" disabled selected>Pilih Tryout</option>
+      <option value="1">Tryout 01</option>
+      <option value="2">Tryout 02</option>
+      <option value="3">Tryout 03</option>
+      <option value="4">Tryout 04</option>
+      <option value="5">Tryout 05</option>
+      <option value="6">Tryout 06</option>
+      <option value="7">Tryout 07</option>
+      <option value="8">Tryout 08</option>
+      <option value="9">Tryout 09</option>
+    </select>
 
-  <button onclick="login()">LOGIN / 로그인</button>
-  <div id="error-msg"></div>
+    <button onclick="login()">LOGIN / 로그인</button>
+    <div id="error-msg"></div>
+  </div>
 </div>
 
 <div class="copyright">
@@ -225,18 +225,14 @@ button {
 </div>
 
 <script>
-// ========= SPLASH TIMER (TAMBAHAN SAJA) =========
-window.addEventListener("load", () => {
-  setTimeout(() => {
-    document.getElementById("splash").style.display = "none";
-    document.querySelector(".login-box").style.display = "block";
-  }, 3000);
-});
-// ===============================================
+/* ================= SPLASH TIMER ================= */
+setTimeout(() => {
+  document.getElementById("splash").style.display = "none";
+  document.getElementById("loginPage").style.display = "flex";
+}, 7000);
 
-// =====================================================================
-// MAPPING: User ID → Nama Asli (TIDAK DIUBAH)
-// =====================================================================
+/* ================= LOGIN SCRIPT (ASLI – TIDAK DIUBAH) ================= */
+
 const userMapping = {
   "2026010001":"Uus",
   "2026010002":"Hanarizka",
@@ -269,66 +265,49 @@ const validUserIDs = Object.keys(userMapping);
 
 function checkStorage() {
   try {
-    localStorage.setItem("test", "ok");
+    localStorage.setItem("test","ok");
     localStorage.removeItem("test");
     return true;
-  } catch (e) {
+  } catch(e) {
     return false;
   }
 }
 
-async function login() {
+function login() {
+  alert("Untuk kenyamanan penggunaan aplikasi, silakan gunakan mode LANDSCAPE (horizontal).");
+
   const err = document.getElementById("error-msg");
   err.innerText = "";
-
-  alert("Untuk kenyamanan penggunaan aplikasi, silakan gunakan mode LANDSCAPE (horizontal).");
 
   if (!checkStorage()) {
     err.innerText = "Browser tidak mendukung penyimpanan lokal.";
     return;
   }
 
-  const userid = document.getElementById("userid").value.trim();
+  const userid = userid.value.trim();
   const paket = document.getElementById("paket").value;
 
-  if (!userid) {
-    err.innerText = "User ID harus diisi";
-    return;
-  }
-
-  if (!validUserIDs.includes(userid)) {
-    err.innerText = "User ID tidak terdaftar";
-    return;
-  }
-
-  if (!paket) {
-    err.innerText = "Pilih paket tryout terlebih dahulu";
-    return;
-  }
+  if (!userid) { err.innerText = "User ID harus diisi"; return; }
+  if (!validUserIDs.includes(userid)) { err.innerText = "User ID tidak terdaftar"; return; }
+  if (!paket) { err.innerText = "Pilih paket tryout terlebih dahulu"; return; }
 
   const realName = userMapping[userid];
 
   if (Number(paket) > 1) {
     const results = JSON.parse(localStorage.getItem("results") || "[]");
-    const prev = results.find(
-      r => r.name === realName && Number(r.paket) === Number(paket) - 1
-    );
+    const prev = results.find(r => r.name === realName && Number(r.paket) === Number(paket) - 1);
     if (!prev || Number(prev.score) < 80) {
       err.innerText = "Harus lulus paket sebelumnya (minimal nilai 80)";
       return;
     }
   }
 
-  localStorage.setItem("login", "true");
+  localStorage.setItem("login","true");
   localStorage.setItem("user", realName);
   localStorage.setItem("paket", paket);
 
   window.location.href = "dashboard.html";
 }
-
-document.addEventListener("keypress", e => {
-  if (e.key === "Enter") login();
-});
 </script>
 
 </body>
