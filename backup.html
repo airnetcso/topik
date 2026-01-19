@@ -1,0 +1,243 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login - Ujian Bahasa Korea (UBT)</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background:
+    linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+    url("https://raw.githubusercontent.com/airnetcso/eps/main/image/bg1.jpg")
+    center/cover no-repeat;
+}
+
+/* animasi masuk */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.login-box {
+  width: 300px;
+  background: rgba(255,255,255,0.14);
+  padding: 28px 22px 22px;
+  text-align: center;
+  animation: fadeInUp 0.6s ease-out forwards;
+  backdrop-filter: blur(14px);
+  border-radius: 6px;
+  box-shadow:
+    0 6px 20px rgba(0,0,0,0.35),
+    inset 0 0 0 1px rgba(255,255,255,0.12);
+  position: relative;
+}
+
+.login-box h2 {
+  margin: 6px 0 18px;
+  color: #ffffff;
+  font-size: 21px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.6);
+}
+
+input, select, button {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 14px;
+  font-size: 14.5px;
+  border-radius: 5px;
+  outline: none;
+  transition: all 0.25s ease;
+}
+
+input, select {
+  background: rgba(255,255,255,0.10);
+  color: #ffffff;
+  border: 1px solid rgba(255,255,255,0.28);
+}
+
+input::placeholder {
+  color: rgba(255,255,255,0.65);
+}
+
+input:focus, select:focus {
+  background: rgba(255,255,255,0.18);
+  border-color: #60a5fa;
+  box-shadow: 0 0 0 3px rgba(96,165,250,0.25);
+}
+
+button {
+  margin-top: 4px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  color: #ffffff;
+  background: linear-gradient(135deg, #1e40af, #2563eb);
+}
+
+button:hover {
+  filter: brightness(1.08);
+}
+
+#error-msg {
+  min-height: 18px;
+  margin-top: 6px;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: #fde68a;
+}
+
+.copyright {
+  position: fixed;
+  bottom: 14px;
+  width: 100%;
+  text-align: center;
+  font-size: 12.5px;
+  color: rgba(255,255,255,0.7);
+}
+</style>
+</head>
+
+<body>
+
+<div class="login-box">
+  <h2>Login UBT</h2>
+
+  <input id="userid" placeholder="User ID / 아이디" autofocus>
+
+  <select id="paket">
+    <option value="" disabled selected>Pilih Tryout / 유형선택</option>
+    <option value="1">Tryout 01</option>
+    <option value="2">Tryout 02</option>
+    <option value="3">Tryout 03</option>
+    <option value="4">Tryout 04</option>
+    <option value="5">Tryout 05</option>
+    <option value="6">Tryout 06</option>
+    <option value="7">Tryout 07</option>
+    <option value="8">Tryout 08</option>
+    <option value="9">Tryout 09</option>
+  </select>
+
+  <button onclick="login()">LOGIN / 로그인</button>
+
+  <div id="error-msg"></div>
+</div>
+
+<div class="copyright">
+  © 2026 Denzuka - Kim Jongun. All Rights Reserved.
+</div>
+
+<script>
+// =====================================================================
+// MAPPING: User ID → Nama Asli
+// =====================================================================
+const userMapping = {
+  "2026010001":"Uus",
+  "2026010002":"Hanarizka",
+  "2026010003":"Windi",
+  "2026010004":"Rismayayanti",
+  "2026010005":"Sita",
+  "2026010006":"Mila",
+  "2026010007":"Aini",
+  "2026010008":"Feinie",
+  "2026010009":"Hamdan",
+  "2026010010":"Heri",
+  "2026010011":"Fikrisurya",
+  "2026010012":"Mutiara",
+  "2026010013":"Wantika",
+  "2026010014":"Dini",
+  "2026010015":"Kaniarostayuni",
+  "2026010016":"Dikisetiawan",
+  "2026010017":"Aisyah",
+  "2026010018":"Rizka",
+  "2026010019":"Dinda",
+  "2026010020":"Zhafif",
+  "2026010021":"Siwon",
+  "2026010022":"Azizah",
+  "2026010023":"Yppsdi",
+  "2026010024":"Satria",
+  "2026010025":"Sultan"
+};
+
+const validUserIDs = Object.keys(userMapping);
+
+function checkStorage() {
+  try {
+    localStorage.setItem("test", "ok");
+    localStorage.removeItem("test");
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+async function login() {
+  const err = document.getElementById("error-msg");
+  err.innerText = "";
+
+  // 🔔 NOTIF LANDSCAPE (TAMBAHAN SAJA)
+  alert("Untuk kenyamanan penggunaan aplikasi, silakan gunakan mode LANDSCAPE (horizontal).");
+
+  if (!checkStorage()) {
+    err.innerText = "Browser tidak mendukung penyimpanan lokal.";
+    return;
+  }
+
+  const userid = document.getElementById("userid").value.trim();
+  const paket = document.getElementById("paket").value;
+
+  if (!userid) {
+    err.innerText = "User ID harus diisi";
+    return;
+  }
+
+  if (!validUserIDs.includes(userid)) {
+    err.innerText = "User ID tidak terdaftar";
+    return;
+  }
+
+  if (!paket) {
+    err.innerText = "Pilih paket tryout terlebih dahulu";
+    return;
+  }
+
+  const realName = userMapping[userid];
+
+  if (Number(paket) > 1) {
+    const results = JSON.parse(localStorage.getItem("results") || "[]");
+    const prev = results.find(
+      r => r.name === realName && Number(r.paket) === Number(paket) - 1
+    );
+    if (!prev || Number(prev.score) < 80) {
+      err.innerText = "Harus lulus paket sebelumnya (minimal nilai 80)";
+      return;
+    }
+  }
+
+  localStorage.setItem("login", "true");
+  localStorage.setItem("user", realName);
+  localStorage.setItem("paket", paket);
+
+  window.location.href = "dashboard.html";
+}
+
+document.addEventListener("keypress", e => {
+  if (e.key === "Enter") login();
+});
+</script>
+
+</body>
+</html>
