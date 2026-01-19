@@ -30,8 +30,8 @@ body {
 }
 
 .login-box {
-  width: 300px; /* UKURAN TETAP */
-  background: rgba(255,255,255,0.14); /* LEBIH TRANSPARAN */
+  width: 300px;
+  background: rgba(255,255,255,0.14);
   padding: 28px 22px 22px;
   text-align: center;
   animation: fadeInUp 0.6s ease-out forwards;
@@ -42,8 +42,6 @@ body {
     inset 0 0 0 1px rgba(255,255,255,0.12);
   position: relative;
 }
-
-/* garis aksen tipis */
 
 .login-box h2 {
   margin: 6px 0 18px;
@@ -65,7 +63,7 @@ input, select, button {
 }
 
 input, select {
-  background: rgba(255,255,255,0.10); /* transparan */
+  background: rgba(255,255,255,0.10);
   color: #ffffff;
   border: 1px solid rgba(255,255,255,0.28);
 }
@@ -189,6 +187,9 @@ async function login() {
   const err = document.getElementById("error-msg");
   err.innerText = "";
 
+  // 🔔 NOTIF LANDSCAPE (TAMBAHAN SAJA)
+  alert("Untuk kenyamanan penggunaan aplikasi, silakan gunakan mode LANDSCAPE (horizontal).");
+
   if (!checkStorage()) {
     err.innerText = "Browser tidak mendukung penyimpanan lokal.";
     return;
@@ -216,18 +217,14 @@ async function login() {
 
   if (Number(paket) > 1) {
     const results = JSON.parse(localStorage.getItem("results") || "[]");
-    const prev = results.find(r => r.name === realName && Number(r.paket) === Number(paket) - 1);
+    const prev = results.find(
+      r => r.name === realName && Number(r.paket) === Number(paket) - 1
+    );
     if (!prev || Number(prev.score) < 80) {
       err.innerText = "Harus lulus paket sebelumnya (minimal nilai 80)";
       return;
     }
   }
-
-  try {
-    const elem = document.documentElement;
-    if (elem.requestFullscreen) await elem.requestFullscreen();
-    if (screen.orientation?.lock) await screen.orientation.lock("landscape-primary");
-  } catch (e) {}
 
   localStorage.setItem("login", "true");
   localStorage.setItem("user", realName);
