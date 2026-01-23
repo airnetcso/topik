@@ -1,158 +1,222 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login - Ujian Bahasa Korea (UBT)</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Login - Ujian Bahasa Korea (UBT)</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Arial, Helvetica, sans-serif;
+    }
 
-<style>
-* {
-  box-sizing: border-box;
-  font-family: Arial, Helvetica, sans-serif;
-}
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
 
-body {
-  margin: 0;
-  height: 100vh;
-  background:
-    linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)),
-    url("https://raw.githubusercontent.com/airnetcso/eps/main/image/bg1.jpg")
-    center/cover no-repeat;
-}
+    body {
+      background: url('https://raw.githubusercontent.com/airnetcso/eps/main/image/bg1.jpg') no-repeat center center fixed;
+      background-size: cover;
+      position: relative;
+      color: #e0e0e0;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
 
-/* ================= SPLASH ================= */
+    body::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 0;
+    }
 
-#splash {
-  position: fixed;
-  inset: 0;
-  background:
-    linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)),
-    url("https://raw.githubusercontent.com/airnetcso/eps/main/image/bg1.jpg")
-    center/cover no-repeat;
-  color: #fff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 26px 18px;
-  z-index: 9999;
-  text-align: center;
-}
+    /* ================= SPLASH (full page versi perfect) ================= */
+    #splash {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100dvh;
+      background: 
+        linear-gradient(rgba(0,0,0,0.82), rgba(0,0,0,0.82)),
+        url("https://raw.githubusercontent.com/airnetcso/eps/main/image/bg1.jpg") center/cover no-repeat;
+      background-attachment: fixed;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      text-align: center;
+      transition: opacity 1.3s ease;
+      animation: fadeIn 1.2s ease-out;
+    }
 
-.splash-box {
-  max-width: 420px;
-  transform: translateY(28px); /* optical center */
-}
+    @supports not (height: 100dvh) {
+      #splash { height: 100vh; }
+    }
 
-#splash h1 {
-  font-size: 18px;
-  font-weight: 600;
-  line-height: 1.5;
-  margin-bottom: 14px;
-  text-shadow: 0 2px 6px rgba(0,0,0,0.8);
-}
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-/* ===== NAMA STATIK ===== */
+    .splash-box {
+      max-width: 560px;
+      width: 100%;
+      padding: 20px;
+      box-sizing: border-box;
+    }
 
-#splash-names {
-  font-size: 10px;
-  line-height: 1.55;
-  opacity: 0.9;
-  text-align: justify;
-  column-count: 2;
-  column-gap: 16px;
-}
+    #splash h1 {
+      font-size: 22px;
+      font-weight: 800;
+      line-height: 1.4;
+      margin: 0 0 20px;
+      text-shadow: 0 4px 12px rgba(0,0,0,0.9), 0 0 20px rgba(255, 107, 157, 0.4);
+      letter-spacing: 0.5px;
+    }
+    #splash h1 b {
+      color: #ff6b9d;
+    }
 
-#splash-names span {
-  white-space: normal;
-}
+    /* NAMA-NAMA DI SPLASH: RATA KIRI-KANAN (JUSTIFY) */
+    #splash-names {
+      font-size: 11px;
+      line-height: 1.7;
+      opacity: 0.92;
+      text-align: justify;
+      text-justify: inter-word;
+      hyphens: auto;
+      word-break: break-word;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.7);
+      max-width: 90%;
+      margin: 0 auto;
+      padding: 0 10px;
+    }
+    #splash-names span {
+      white-space: normal;
+    }
+    #splash-names span::after {
+      content: ", ";
+      opacity: 0.7;
+    }
+    #splash-names span:last-child::after {
+      content: " 🔥";
+    }
 
-#splash-names span::after {
-  content: ", ";
-}
+    @media (max-width: 480px) {
+      .splash-box { padding: 15px 20px; }
+      #splash h1 { font-size: 20px; }
+      #splash-names { 
+        font-size: 12px; 
+        padding: 0 8px; 
+      }
+    }
 
-/* ================= LOGIN ================= */
+    /* ================= LOGIN (ukuran & jenis tampilan dari versi perfect) ================= */
+    .center {
+      height: 100vh;
+      display: none;
+      justify-content: center;
+      align-items: center;
+    }
 
-.center {
-  height: 100vh;
-  display: none;
-  justify-content: center;
-  align-items: center;
-}
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(22px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(22px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
+    .login-box {
+      width: 95%;
+      max-width: 300px;
+      padding: 35px 25px;
+      text-align: center;
+      background: rgba(40,40,40,0.92);
+      border: 1px solid #666;
+      border-radius: 8px;
+      box-shadow: 0 14px 32px rgba(0,0,0,0.7);
+      animation: fadeInUp 0.6s ease-out forwards;
+      position: relative;
+      z-index: 3;
+      box-sizing: border-box;
+    }
 
-.login-box {
-  width: 300px;
-  background: rgba(255,255,255,0.14);
-  padding: 28px 22px 22px;
-  text-align: center;
-  backdrop-filter: blur(14px);
-  border-radius: 6px;
-  animation: fadeInUp 0.6s ease-out forwards;
-}
+    .login-box h2 {
+      margin: 0 0 24px;
+      color: #ffffff;
+      font-size: 28px;
+      font-weight: 600;
+    }
 
-.login-box h2 {
-  margin: 6px 0 18px;
-  color: #ffffff;
-  font-size: 21px;
-  font-weight: 600;
-}
+    input, select, button {
+      width: 100%;
+      padding: 16px;
+      margin-bottom: 16px;
+      font-size: 16px;
+      border-radius: 6px;
+      outline: none;
+      box-sizing: border-box;
+    }
 
-input, select, button {
-  width: 100%;
-  padding: 12px;
-  margin-bottom: 14px;
-  font-size: 14.5px;
-  border-radius: 5px;
-  outline: none;
-}
+    input, select {
+      background: #1e1e1e;
+      color: #e0e0e0;
+      border: 1px solid #666;
+      transition: border-color 0.3s ease;
+    }
 
-input, select {
-  background: rgba(255,255,255,0.10);
-  color: #ffffff;
-  border: 1px solid rgba(255,255,255,0.28);
-}
+    input::placeholder {
+      color: #888;
+    }
 
-input::placeholder {
-  color: rgba(255,255,255,0.65);
-}
+    input:focus, select:focus {
+      border-color: #818cf8;
+    }
 
-button {
-  border: none;
-  cursor: pointer;
-  font-weight: 600;
-  color: #ffffff;
-  background: linear-gradient(135deg, #1e40af, #2563eb);
-}
+    button {
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      color: #ffffff;
+      background: linear-gradient(135deg, #1e40af, #2563eb);
+      transition: all 0.4s;
+    }
 
-#error-msg {
-  min-height: 18px;
-  font-size: 13.5px;
-  color: #fde68a;
-}
+    button:hover {
+      background: linear-gradient(135deg, #1d4ed8, #3b82f6);
+      transform: translateY(-3px);
+    }
 
-.copyright {
-  position: fixed;
-  bottom: 14px;
-  width: 100%;
-  text-align: center;
-  font-size: 12.5px;
-  color: rgba(255,255,255,0.7);
-}
-</style>
+    #error-msg {
+      min-height: 18px;
+      font-size: 13.5px;
+      color: #fde68a;
+    }
+
+    .copyright {
+      position: fixed;
+      bottom: 14px;
+      width: 100%;
+      text-align: center;
+      font-size: 12.5px;
+      color: rgba(255,255,255,0.7);
+    }
+  </style>
 </head>
-
 <body>
 
 <!-- ================= SPLASH ================= -->
 <div id="splash">
   <div class="splash-box">
     <h1>
-      Tetap semangat belajar,<br>
-      semoga kalian semua lulus ujian<br>
+      Tetap semangat belajar,<br><br>
+      semoga kalian semua lulus ujian<br><br>
       <b>EPS TOPIK</b>, aamiin 🤲
     </h1>
 
@@ -165,8 +229,7 @@ button {
       <span>Dikisetiawan</span><span>Aisyah</span><span>Rizka</span>
       <span>Dinda</span><span>Zhafif</span><span>Siwon</span>
       <span>Azizah</span><span>Yppsdi</span><span>Satria</span>
-      <span>Sultan</span>
-
+      <span>Sultan</span><br><br>
       <span>Ahmad</span><span>Budi</span><span>Cahyo</span>
       <span>Dedi</span><span>Eko</span><span>Fajar</span>
       <span>Galang</span><span>Hadi</span><span>Indra</span>
