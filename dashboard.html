@@ -8,21 +8,19 @@
   /* Warna khusus untuk teks user & type tryout di header */
   #user {
     font-weight: bold;
-    font-size: 18px; /* sedikit lebih besar biar keliatan */
+    font-size: 18px;
     padding: 8px 12px;
     border-radius: 8px;
     background: rgba(255, 255, 255, 0.15); /* background tipis biar kontras */
-    color: #fff; /* fallback kalau warna nggak ke-load */
+    color: #fff; /* fallback */
   }
 
-  /* Warna nama user (biru cerah) */
   .user-name {
-    color: #40c4ff; /* biru cerah */
+    color: #40c4ff; /* biru cerah untuk nama user */
   }
 
-  /* Warna TRYOUT + nomor (kuning cerah + bold) */
   .tryout-text {
-    color: #ffca28; /* kuning cerah */
+    color: #ffca28; /* kuning cerah untuk TRYOUT X */
     font-weight: bold;
   }
 </style>
@@ -34,7 +32,7 @@ if(localStorage.getItem("login")!=="true"){location.href="index.html";}
 <header class="header">
   <div><button id="submitBtn" class="box" onclick="manualSubmit()">SUBMIT</button></div>
   <div id="user">
-    <!-- Teks akan diisi via JS di bawah -->
+    <!-- Akan diisi via JS di bawah -->
   </div>
   <div class="top-right"><div id="timerBox" class="box">50:00</div></div>
 </header>
@@ -55,14 +53,19 @@ if(localStorage.getItem("login")!=="true"){location.href="index.html";}
 
 <script src="script.js?v=13"></script>
 <script>
-  // Warnain teks user & type tryout di header
-  const userName = localStorage.getItem("user") || "Guest";
-  const paket = localStorage.getItem("paket") || "1";
+  // Pastikan DOM siap sebelum warnain
+  document.addEventListener("DOMContentLoaded", function() {
+    const userName = localStorage.getItem("user") || "Guest";
+    const paket = localStorage.getItem("paket") || "1";
 
-  document.getElementById("user").innerHTML = `
-    <span class="user-name">${userName}</span> - 
-    <span class="tryout-text">TRYOUT ${paket}</span>
-  `;
+    const userDiv = document.getElementById("user");
+    if (userDiv) {
+      userDiv.innerHTML = `
+        <span class="user-name">${userName}</span> - 
+        <span class="tryout-text">TRYOUT ${paket}</span>
+      `;
+    }
+  });
 </script>
 </body>
 </html>
