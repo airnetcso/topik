@@ -4,6 +4,27 @@
 <meta charset="UTF-8">
 <title>Dashboard UBT</title>
 <link rel="stylesheet" href="style.css">
+<style>
+  /* Warna khusus untuk teks user & type soal di header */
+  #user {
+    font-weight: bold;
+    font-size: 18px; /* sedikit lebih besar biar keliatan */
+    padding: 8px 12px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.15); /* background tipis biar kontras */
+  }
+
+  /* Warna user (misal biru muda biar keliatan di background gelap) */
+  #user span.user-name {
+    color: #40c4ff; /* biru cerah */
+  }
+
+  /* Warna type tryout (misal kuning/oranye biar beda) */
+  #user span.tryout-type {
+    color: #ffca28; /* kuning cerah */
+    font-weight: bold;
+  }
+</style>
 </head>
 <script>
 if(localStorage.getItem("login")!=="true"){location.href="index.html";}
@@ -11,15 +32,16 @@ if(localStorage.getItem("login")!=="true"){location.href="index.html";}
 <body>
 <header class="header">
   <div><button id="submitBtn" class="box" onclick="manualSubmit()">SUBMIT</button></div>
-  <div id="user" style="font-weight:bold;color:#fff"></div>
+  <div id="user" style="font-weight:bold;color:#fff">
+    <!-- Teks user & type diwarnain beda -->
+    <span class="user-name"></span> - <span class="tryout-type">TRYOUT </span><span class="tryout-type"></span>
+  </div>
   <div class="top-right"><div id="timerBox" class="box">50:00</div></div>
 </header>
-
 <div id="loading" style="text-align:center;padding:30px;font-size:20px;color:#fff;background:rgba(0,0,0,0.7);margin:15px;border-radius:10px;">
   ⏳ Loading soal... Tunggu sebentar ya 🙏<br>
   <small>Jangan klik SUBMIT sebelum nomor soal muncul!</small>
 </div>
-
 <div class="content two-col">
   <div class="col">
     <div style="text-align:center"><div class="section-box listening">SOAL MENDENGAR / 듣기문제</div></div>
@@ -30,10 +52,15 @@ if(localStorage.getItem("login")!=="true"){location.href="index.html";}
     <div class="grid" id="read"></div>
   </div>
 </div>
-
 <script src="script.js?v=13"></script>
 <script>
-document.getElementById("user").innerText = localStorage.getItem("user") + " - TRYOUT " + localStorage.getItem("paket");
+  // Warnain teks user & type di header
+  const userName = localStorage.getItem("user") || "Guest";
+  const paket = localStorage.getItem("paket") || "1";
+
+  document.querySelector("#user .user-name").innerText = userName;
+  document.querySelectorAll("#user .tryout-type")[0].innerText = "TRYOUT ";
+  document.querySelectorAll("#user .tryout-type")[1].innerText = paket;
 </script>
 </body>
 </html>
