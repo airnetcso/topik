@@ -1,375 +1,399 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Login - Ujian Bahasa Korea (UBT)</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      font-family: Arial, Helvetica, sans-serif;
-    }
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+ <title>Login - Ujian Bahasa Korea (UBT)</title>
+ <style>
+  * {
+   box-sizing: border-box;
+   font-family: Arial, Helvetica, sans-serif;
+  }
 
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-    }
+  html, body {
+   margin: 0;
+   padding: 0;
+   height: 100%;
+  }
 
-    body {
-      background: url('https://raw.githubusercontent.com/airnetcso/eps/main/image/bg1.jpg') no-repeat center center fixed;
-      background-size: cover;
-      position: relative;
-      color: #e0e0e0;
-      min-height: 100dvh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
+  body {
+   background: url('https://raw.githubusercontent.com/airnetcso/eps/main/image/bg1.jpg') no-repeat center center fixed;
+   background-size: cover;
+   position: relative;
+   color: #e0e0e0;
+   min-height: 100dvh;
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   align-items: center;
+  }
 
-    body::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: rgba(0,0,0,0.6);
-      z-index: 0;
-    }
+  body::before {
+   content: '';
+   position: absolute;
+   inset: 0;
+   background: rgba(0,0,0,0.6);
+   z-index: 0;
+  }
 
-    /* ================= SPLASH (versi perfect: full page, no side padding, nama justify) ================= */
-    #splash {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100dvh;
-      background: 
-        linear-gradient(rgba(0,0,0,0.82), rgba(0,0,0,0.82)),
-        url("https://raw.githubusercontent.com/airnetcso/eps/main/image/bg1.jpg") center/cover no-repeat;
-      background-attachment: fixed;
-      color: #fff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
-      text-align: center;
-      transition: opacity 1.3s ease;
-      animation: fadeIn 1.2s ease-out;
-    }
+  /* ================= SPLASH ================= */
+  #splash {
+   position: fixed;
+   top: 0;
+   left: 0;
+   width: 100vw;
+   height: 100dvh;
+   background: 
+    linear-gradient(rgba(0,0,0,0.82), rgba(0,0,0,0.82)),
+    url("https://raw.githubusercontent.com/airnetcso/eps/main/image/bg1.jpg") center/cover no-repeat;
+   background-attachment: fixed;
+   color: #fff;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   z-index: 9999;
+   text-align: center;
+   transition: opacity 1.3s ease;
+   animation: fadeIn 1.2s ease-out;
+  }
 
-    @supports not (height: 100dvh) {
-      #splash { height: 100vh; }
-    }
+  @supports not (height: 100dvh) {
+   #splash { height: 100vh; }
+  }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+  @keyframes fadeIn {
+   from { opacity: 0; transform: translateY(20px); }
+   to { opacity: 1; transform: translateY(0); }
+  }
 
-    .splash-box {
-      max-width: 560px;
-      width: 100%;
-      padding: 20px;
-      box-sizing: border-box;
-    }
+  .splash-box {
+   max-width: 560px;
+   width: 100%;
+   padding: 20px;
+   box-sizing: border-box;
+  }
 
-    #splash h1 {
-      font-size: 22px;
-      font-weight: 800;
-      line-height: 1.4;
-      margin: 0 0 20px;
-      text-shadow: 0 4px 12px rgba(0,0,0,0.9), 0 0 20px rgba(255, 107, 157, 0.4);
-      letter-spacing: 0.5px;
-    }
-    #splash h1 b {
-      color: #ff6b9d;
-    }
+  #splash h1 {
+   font-size: 22px;
+   font-weight: 800;
+   line-height: 1.4;
+   margin: 0 0 20px;
+   text-shadow: 0 4px 12px rgba(0,0,0,0.9), 0 0 20px rgba(255, 107, 157, 0.4);
+   letter-spacing: 0.5px;
+  }
+  #splash h1 b {
+   color: #ff6b9d;
+  }
 
-    /* NAMA-NAMA DI SPLASH: RATA KIRI-KANAN (JUSTIFY) - mirip perfect */
-    #splash-names {
-      font-size: 11px;
-      line-height: 1.7;
-      opacity: 0.92;
-      text-align: justify;
-      text-justify: inter-word;
-      hyphens: auto;
-      word-break: break-word;
-      text-shadow: 0 1px 3px rgba(0,0,0,0.7);
-      max-width: 95%;
-      margin: 0 auto;
-      padding: 0 10px;
-    }
-    #splash-names span {
-      white-space: normal;
-    }
-    #splash-names span::after {
-      content: ", ";
-      opacity: 0.7;
-    }
-    #splash-names span:last-child::after {
-      content: " 🔥";
-    }
+  #splash-names {
+   font-size: 11px;
+   line-height: 1.7;
+   opacity: 0.92;
+   text-align: justify;
+   text-justify: inter-word;
+   hyphens: auto;
+   word-break: break-word;
+   text-shadow: 0 1px 3px rgba(0,0,0,0.7);
+   max-width: 95%;
+   margin: 0 auto;
+   padding: 0 10px;
+  }
+  #splash-names span {
+   white-space: normal;
+  }
+  #splash-names span::after {
+   content: ", ";
+   opacity: 0.7;
+  }
+  #splash-names span:last-child::after {
+   content: " 🔥";
+  }
 
-    @media (max-width: 480px) {
-      .splash-box { padding: 15px 20px; }
-      #splash h1 { font-size: 20px; }
-      #splash-names { 
-        font-size: 12px; 
-        padding: 0 8px; 
-      }
-    }
+  @media (max-width: 480px) {
+   .splash-box { padding: 15px 20px; }
+   #splash h1 { font-size: 20px; }
+   #splash-names { 
+    font-size: 12px; 
+    padding: 0 8px; 
+   }
+  }
 
-    /* ================= LOGIN (tetap asli, hanya ukuran & jenis tampilan dari perfect) ================= */
-    .center {
-      height: 100vh;
-      display: none;
-      justify-content: center;
-      align-items: center;
-    }
+  /* ================= LOGIN ================= */
+  .center {
+   height: 100vh;
+   display: none;
+   justify-content: center;
+   align-items: center;
+  }
 
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(22px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+  @keyframes fadeInUp {
+   from { opacity: 0; transform: translateY(22px); }
+   to { opacity: 1; transform: translateY(0); }
+  }
 
-    .login-box {
-      width: 100%;
-      max-width: 300px;
-      padding: 35px 25px;
-      text-align: center;
-      background: rgba(40,40,40,0.92);
-      border: 1px solid #666;
-      border-radius: 8px;
-      box-shadow: 0 14px 32px rgba(0,0,0,0.7);
-      animation: fadeInUp 0.6s ease-out forwards;
-      position: relative;
-      z-index: 3;
-      box-sizing: border-box;
-    }
+  .login-box {
+   width: 100%;
+   max-width: 300px;
+   padding: 35px 25px;
+   text-align: center;
+   background: rgba(40,40,40,0.92);
+   border: 1px solid #666;
+   border-radius: 8px;
+   box-shadow: 0 14px 32px rgba(0,0,0,0.7);
+   animation: fadeInUp 0.6s ease-out forwards;
+   position: relative;
+   z-index: 3;
+   box-sizing: border-box;
+  }
 
-    .login-box h2 {
-      margin: 0 0 24px;
-      color: #ffffff;
-      font-size: 26px;
-      font-weight: 600;
-    }
+  .login-box h2 {
+   margin: 0 0 24px;
+   color: #ffffff;
+   font-size: 26px;
+   font-weight: 600;
+  }
 
-    input, select, button {
-      width: 100%;
-      padding: 16px;
-      margin-bottom: 16px;
-      font-size: 16px;
-      border-radius: 6px;
-      outline: none;
-      box-sizing: border-box;
-    }
+  input, select, button {
+   width: 100%;
+   padding: 16px;
+   margin-bottom: 16px;
+   font-size: 16px;
+   border-radius: 6px;
+   outline: none;
+   box-sizing: border-box;
+  }
 
-    input, select {
-      background: #1e1e1e;
-      color: #e0e0e0;
-      border: 1px solid #666;
-      transition: border-color 0.3s ease;
-    }
+  input, select {
+   background: #1e1e1e;
+   color: #e0e0e0;
+   border: 1px solid #666;
+   transition: border-color 0.3s ease;
+  }
 
-    input::placeholder {
-      color: #888;
-    }
+  input::placeholder {
+   color: #888;
+  }
 
-    input:focus, select:focus {
-      border-color: #818cf8;
-    }
+  input:focus, select:focus {
+   border-color: #818cf8;
+  }
 
-    button {
-      border: none;
-      cursor: pointer;
-      font-weight: 600;
-      color: #ffffff;
-      background: linear-gradient(135deg, #1e40af, #2563eb);
-      transition: all 0.4s;
-    }
+  button {
+   border: none;
+   cursor: pointer;
+   font-weight: 600;
+   color: #ffffff;
+   background: linear-gradient(135deg, #1e40af, #2563eb);
+   transition: all 0.4s;
+  }
 
-    button:hover {
-      background: linear-gradient(135deg, #1d4ed8, #3b82f6);
-      transform: translateY(-3px);
-    }
+  button:hover {
+   background: linear-gradient(135deg, #1d4ed8, #3b82f6);
+   transform: translateY(-3px);
+  }
 
-    #error-msg {
-      min-height: 18px;
-      font-size: 13.5px;
-      color: #fde68a;
-    }
+  #error-msg {
+   min-height: 18px;
+   font-size: 13.5px;
+   color: #fde68a;
+  }
 
-    .copyright {
-      position: fixed;
-      bottom: 14px;
-      width: 100%;
-      text-align: center;
-      font-size: 12.5px;
-      color: rgba(255,255,255,0.7);
-    }
-  </style>
+  .copyright {
+   position: fixed;
+   bottom: 14px;
+   width: 100%;
+   text-align: center;
+   font-size: 12.5px;
+   color: rgba(255,255,255,0.7);
+  }
+ </style>
 </head>
 <body>
 
 <!-- ================= SPLASH ================= -->
 <div id="splash">
-  <div class="splash-box">
-    <h1>
-      <b>여러분,</b> harus tetap semangat !<br>
-      Kalian semua pasti lulus ujian EPS TOPIK, Aamiin ...
-    </h1>
+ <div class="splash-box">
+  <h1>
+   <b>여러분,</b> harus tetap semangat !<br><br>
+   Kalian semua pasti lulus ujian EPS TOPIK, Aamiin ...
+  </h1>
 
-    <div id="splash-names">
-      <span>Uus</span><span>Hanarizka</span><span>Windi</span>
-      <span>Rismayanti</span><span>Sita</span><span>Mila</span>
-      <span>Aini</span><span>Feinie</span><span>Hamdan</span>
-      <span>Heri</span><span>Fikri Surya</span><span>Mutiara</span>
-      <span>Wantika</span><span>Dini</span><span>Kania Rostayuni</span>
-      <span>Diki Setiawan</span><span>Aisyah</span><span>Rizka</span>
-      <span>Dinda</span><span>Zhafif</span><span>Siwon</span>
-      <span>Azizah</span><span>Yppsdi</span><span>Satria</span>
-      <span>Sultan</span><span>Johan</span><span>Wisnu</span>
-      <span>Ahmad</span><span>Budi</span><span>Cahyo</span>
-      <span>Dedi</span><span>Eko</span><span>Fajar</span>
-      <span>Galang</span><span>Hadi</span><span>Indra</span>
-      <span>Joko</span><span>Kurnia</span><span>Lukman</span>
-      <span>Maulana</span><span>Nanda</span><span>Oktavian</span>
-      <span>Pratama</span><span>Randi</span><span>Sandi</span>
-      <span>Teguh</span><span>Ubay</span><span>Wahyu</span>
-      <span>Yoga</span><span>Zainal</span>
-    </div>
+  <div id="splash-names">
+   <span>Uus</span><span>Hanarizka</span><span>Windi</span>
+   <span>Rismayanti</span><span>Sita</span><span>Mila</span>
+   <span>Aini</span><span>Feinie</span><span>Hamdan</span>
+   <span>Heri</span><span>Fikri Surya</span><span>Mutiara</span>
+   <span>Wantika</span><span>Dini</span><span>Kania Rostayuni</span>
+   <span>Diki Setiawan</span><span>Aisyah</span><span>Rizka</span>
+   <span>Dinda</span><span>Zhafif</span><span>Siwon</span>
+   <span>Azizah</span><span>Yppsdi</span><span>Satria</span>
+   <span>Sultan</span><span>Johan</span><span>Wisnu</span>
+   <span>Ahmad</span><span>Budi</span><span>Cahyo</span>
+   <span>Dedi</span><span>Eko</span><span>Fajar</span>
+   <span>Galang</span><span>Hadi</span><span>Indra</span>
+   <span>Joko</span><span>Kurnia</span><span>Lukman</span>
+   <span>Maulana</span><span>Nanda</span><span>Oktavian</span>
+   <span>Pratama</span><span>Randi</span><span>Sandi</span>
+   <span>Teguh</span><span>Ubay</span><span>Wahyu</span>
+   <span>Yoga</span><span>Zainal</span>
   </div>
+ </div>
 </div>
 
 <!-- ================= LOGIN ================= -->
 <div class="center" id="loginPage">
-  <div class="login-box">
-    <h2>LOGIN UBT</h2>
+ <div class="login-box">
+  <h2>LOGIN UBT</h2>
 
-    <input id="userid" placeholder="User ID / 아이디" autofocus>
+  <input id="userid" placeholder="User ID / 아이디" autofocus>
 
-    <select id="paket">
-      <option value="" disabled selected>Pilih Tryout / 문제 유형</option>
-      <option value="1">Tryout 01</option>
-      <option value="2">Tryout 02</option>
-      <option value="3">Tryout 03</option>
-      <option value="4">Tryout 04</option>
-      <option value="5">Tryout 05</option>
-      <option value="6">Tryout 06</option>
-      <option value="7">Tryout 07</option>
-      <option value="8">Tryout 08</option>
-      <option value="9">Tryout 09</option>
-    </select>
+  <select id="paket">
+   <option value="" disabled selected>Pilih Tryout / 문제 유형</option>
+   <option value="1">Tryout 01</option>
+   <option value="2">Tryout 02</option>
+   <option value="3">Tryout 03</option>
+   <option value="4">Tryout 04</option>
+   <option value="5">Tryout 05</option>
+   <option value="6">Tryout 06</option>
+   <option value="7">Tryout 07</option>
+   <option value="8">Tryout 08</option>
+   <option value="9">Tryout 09</option>
+  </select>
 
-    <button onclick="login()">LOGIN / 로그인</button>
-    <div id="error-msg"></div>
-  </div>
+  <button onclick="login()">LOGIN / 로그인</button>
+  <div id="error-msg"></div>
+ </div>
 </div>
 
 <div class="copyright">
-  © 2026 Denzuka - Kim Jongun. All Rights Reserved.
+ © 2026 Denzuka - Kim Jongun. All Rights Reserved.
 </div>
 
 <script>
 /* ================= SPLASH TIMER ================= */
 setTimeout(() => {
-  document.getElementById("splash").style.display = "none";
-  document.getElementById("loginPage").style.display = "flex";
+ document.getElementById("splash").style.display = "none";
+ document.getElementById("loginPage").style.display = "flex";
 }, 6500);
 
-/* ================= LOGIN SCRIPT ASLI (TIDAK DIUBAH) ================= */
+/* ================= LOGIN SCRIPT DENGAN BYPASS ADMIN ================= */
 
 const userMapping = {
-"2026010001":"Uus",
-"2026010009":"Hamdan",
-"2026010010":"Heri",
-"2026010011":"Windi",
-"2026010014":"Dini",
-"2026010015":"Sita",
-"2026010017":"Rismayanti",
-"2026010018":"Rizka",
-"2026010019":"Dinda",
-"2026010020":"Zhafif",
-"2026010021":"Siwon",
-"2026010022":"Azizah",
-"2026010023":"Aini",
-"2026010024":"Satria",
-"2026010031":"Fikri Surya",
-"2026010036":"Mila",
-"2026010037":"Kania Rostayuni",
-"2026010038":"Diki Setiawan",
-"2026010043":"Wantika",
-"2026010048":"Feinie",
-"2026010062":"Mutiara",
-"2026010064":"Aisyah",
-"2026010069":"Yppsdi",
-"2026010072":"Hanarizka",
-"2026010075":"Sultan"
+ "2026010001":"Uus",
+ "2026010009":"Hamdan",
+ "2026010010":"Heri",
+ "2026010011":"Windi",
+ "2026010014":"Dini",
+ "2026010015":"Sita",
+ "2026010017":"Rismayanti",
+ "2026010018":"Rizka",
+ "2026010019":"Dinda",
+ "2026010020":"Zhafif",
+ "2026010021":"Siwon",
+ "2026010022":"Azizah",
+ "2026010023":"Aini",
+ "2026010024":"Satria",
+ "2026010031":"Fikri Surya",
+ "2026010036":"Mila",
+ "2026010037":"Kania Rostayuni",
+ "2026010038":"Diki Setiawan",
+ "2026010043":"Wantika",
+ "2026010048":"Feinie",
+ "2026010062":"Mutiara",
+ "2026010064":"Aisyah",
+ "2026010069":"Yppsdi",
+ "2026010072":"Hanarizka",
+ "2026010075":"Sultan",
+ "9999999999": "ADMIN_CEK_SOAL"   // ← ID khusus admin, bebas semua paket
 };
 
 const validUserIDs = Object.keys(userMapping);
 
 function checkStorage() {
-  try {
-    localStorage.setItem("test","ok");
-    localStorage.removeItem("test");
-    return true;
-  } catch(e) {
-    return false;
-  }
+ try {
+  localStorage.setItem("test","ok");
+  localStorage.removeItem("test");
+  return true;
+ } catch(e) {
+  return false;
+ }
 }
 
 function login() {
-  alert("Untuk kenyamanan dalam mengerjakan soal ujian, silakan gunakan mode LANDSCAPE.");
+ alert("Untuk kenyamanan dalam mengerjakan soal ujian, silakan gunakan mode LANDSCAPE.");
 
-  const err = document.getElementById("error-msg");
-  err.innerText = "";
+ const err = document.getElementById("error-msg");
+ err.innerText = "";
 
-  if (!checkStorage()) {
-    err.innerText = "Browser tidak mendukung penyimpanan lokal.";
-    return;
-  }
+ if (!checkStorage()) {
+  err.innerText = "Browser tidak mendukung penyimpanan lokal.";
+  return;
+ }
 
-  const userid = document.getElementById("userid").value.trim();
-  const paket = document.getElementById("paket").value;
+ const userid = document.getElementById("userid").value.trim();
+ const paket = document.getElementById("paket").value;
 
-  if (!userid) {
-    err.innerText = "User ID harus diisi";
-    return;
-  }
+ if (!userid) {
+  err.innerText = "User ID harus diisi";
+  return;
+ }
 
-  if (!validUserIDs.includes(userid)) {
-    err.innerText = "User ID tidak terdaftar";
-    return;
-  }
+ if (!validUserIDs.includes(userid)) {
+  err.innerText = "User ID tidak terdaftar";
+  return;
+ }
 
-  if (!paket) {
-    err.innerText = "Pilih paket tryout terlebih dahulu";
-    return;
-  }
+ if (!paket) {
+  err.innerText = "Pilih paket tryout terlebih dahulu";
+  return;
+ }
 
-  const realName = userMapping[userid];
+ const realName = userMapping[userid];
 
-  if (Number(paket) > 1) {
-    const results = JSON.parse(localStorage.getItem("results") || "[]");
-    const prev = results.find(
-      r => r.name === realName && Number(r.paket) === Number(paket) - 1
-    );
-    if (!prev || Number(prev.score) < 80) {
-      err.innerText = "Harus lulus paket sebelumnya (minimal nilai 80)";
-      return;
-    }
-  }
-
-  localStorage.setItem("login","true");
-  localStorage.setItem("user", realName);
+ // BYPASS KHUSUS ADMIN: User ID 9999999999 bisa buka semua paket tanpa syarat
+ if (userid === "9999999999") {
+  localStorage.setItem("login", "true");
+  localStorage.setItem("user", "ADMIN_CEK_SOAL");
   localStorage.setItem("paket", paket);
 
+  // Fake semua paket sebelumnya sudah lulus 100 (supaya bisa pilih paket 9 juga)
+  const fakeResults = [];
+  for (let i = 1; i <= 8; i++) {
+   fakeResults.push({
+    name: "ADMIN_CEK_SOAL",
+    paket: String(i),
+    score: 100,
+    time: "00:00",
+    date: new Date().toLocaleString("id-ID")
+   });
+  }
+  localStorage.setItem("results", JSON.stringify(fakeResults));
+
   window.location.href = "dashboard.html";
+  return;  // Langsung keluar, skip pengecekan normal
+ }
+
+ // Pengecekan normal (untuk user biasa)
+ if (Number(paket) > 1) {
+  const results = JSON.parse(localStorage.getItem("results") || "[]");
+  const prev = results.find(
+   r => r.name === realName && Number(r.paket) === Number(paket) - 1
+  );
+  if (!prev || Number(prev.score) < 80) {
+   err.innerText = "Harus lulus paket sebelumnya (minimal nilai 80)";
+   return;
+  }
+ }
+
+ localStorage.setItem("login","true");
+ localStorage.setItem("user", realName);
+ localStorage.setItem("paket", paket);
+
+ window.location.href = "dashboard.html";
 }
 
 document.addEventListener("keypress", e => {
-  if (e.key === "Enter") login();
+ if (e.key === "Enter") login();
 });
 </script>
 
