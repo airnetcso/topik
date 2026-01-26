@@ -4,7 +4,6 @@ body {
   margin: 0;
   padding-bottom: 100px; /* Ruang aman dari nav fixed bawah */
 }
-
 .center {
   text-align: center;
   padding-top: 100px;
@@ -137,7 +136,6 @@ input, button {
 .col-left {
   padding: 10px;
 }
-
 .col-left button {
   width: 38px;
   height: 38px;
@@ -154,12 +152,10 @@ input, button {
   cursor: pointer;
   transition: background .2s, border-color .2s;
 }
-
 .col-left button:hover {
   background: #e0f2fe;
   border-color: #60a5fa;
 }
-
 .col-left button.selected {
   background: #3b82f6;
   color: white;
@@ -171,7 +167,7 @@ input, button {
   display: flex;
   align-items: flex-start;
   gap: 10px;
-  margin: 4px 0;        /* ← ini yang paling pengaruh (dari 6px jadi 4px) */
+  margin: 4px 0; /* ← ini yang paling pengaruh */
   padding: 2px 0;
 }
 
@@ -191,13 +187,12 @@ input, button {
   }
   .col-left > div {
     gap: 8px;
-    margin: 3px 0;      /* lebih rapat lagi di HP */
+    margin: 3px 0;
   }
 }
-
 @media (min-width: 1024px) {
   .col-left > div {
-    margin: 5px 0;      /* sedikit longgar di layar besar */
+    margin: 5px 0;
   }
 }
 
@@ -217,7 +212,6 @@ input, button {
   gap: 10px;
   flex-wrap: nowrap;
 }
-
 .nav-buttons button {
   background-color: #3498db;
   color: #fff;
@@ -225,14 +219,13 @@ input, button {
   padding: 12px 20px;
   font-weight: bold;
   font-size: 15px;
-  border-radius: 0 !important; /* Kotak tajam */
-  flex: 1; /* Ukuran sama semua */
+  border-radius: 0 !important;
+  flex: 1;
   text-align: center;
   white-space: nowrap;
   min-width: 120px;
   max-width: 160px;
 }
-
 .nav-buttons button:hover {
   background-color: #2980b9;
 }
@@ -273,75 +266,73 @@ input, button {
   hyphens: none;
 }
 
-/* Khusus soal 37 & 38: teks rata tengah di dialog-box */
-.dialog-center {
+/* HANYA UNTUK NOMOR 37 DAN 38: BARIS KEDUA RATA TENGAH */
+.dialog-center,
+.col-right .dialog-center,
+#questionBox .dialog-center,
+.dialog-box.dialog-center {
   text-align: center !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
+  text-justify: none !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  display: block !important;
+  width: 80% !important;
+  max-width: 600px !important;
+  padding: 20px 15px !important;
+  font-size: 21px !important;
   font-weight: bold !important;
-  font-size: 22px !important;
-  padding: 20px !important;
-  min-height: 0px !important;
   background: #f2ebed !important;
+  border: none !important;
 }
 
-.dialog-box p {
-  margin: 0 0 10px 0;
-}
-.dialog-box p:last-child {
-  margin-bottom: 0;
-}
-
+/* Biar tetap responsif */
 @media (max-width: 768px) {
-  .dialog-box {
-    width: 95%;
-    font-size: 18px;
-    padding: 16px;
-    margin-top: 12px;
-    line-height: 1.85;
+  .dialog-box,
+  .dialog-center {
+    width: 95% !important;
+    margin: 15px auto !important;
+    padding: 16px 12px !important;
+    font-size: 18px !important;
+  }
+  .dialog-center {
+    font-size: 19px !important;
   }
 }
 
 /* =============================================
-   FINAL TOUCH - Listening + Image (Mobile Optimized)
+   FINAL TOUCH - Listening + Image
 ============================================= */
 audio {
   outline: none !important;
   width: 100% !important;
   max-width: 380px !important;
   display: block !important;
-  margin: 20px 0 !important; /* Rata kiri */
+  margin: 20px 0 !important;
   border-radius: 0 !important;
   box-shadow: none !important;
   border: none !important;
   background: #f8fafc !important;
   padding: 8px !important;
 }
-
 audio::-webkit-media-controls-panel,
 audio::-webkit-media-controls-enclosure {
   border-radius: 0 !important;
   background: #f8fafc !important;
 }
-
 @media (max-width: 768px) {
   audio {
     margin: 20px 0 !important;
     padding: 8px !important;
-    border-radius: 0 !important;
   }
-
   #questionBox img {
     max-width: 100% !important;
     height: auto !important;
     width: auto !important;
     display: block !important;
-    margin: 12px 0 40px 0 !important; /* Jarak bawah besar */
+    margin: 12px 0 40px 0 !important;
     border-radius: 0 !important;
     box-shadow: 0 3px 10px rgba(0,0,0,0.1) !important;
   }
-
   h3 {
     font-size: 1.4rem !important;
     margin-bottom: 12px !important;
