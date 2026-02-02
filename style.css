@@ -85,7 +85,7 @@ input, button {
   text-align: center;
   cursor: pointer;
   border-radius: 0;
-  height: 70px;              /* ← tinggi tetap 70px (coba mulai dari sini, bisa naik ke 80px/90px) */
+  height: 40px;              /* ← tinggi tetap 70px (coba mulai dari sini, bisa naik ke 80px/90px) */
   display: flex;             /* biar nomor tepat di tengah vertikal */
   align-items: center;
   justify-content: center;
