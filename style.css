@@ -98,7 +98,7 @@ input, button {
 
 /* ===== SECTION BOX ===== */
 .section-box {
-  height: 30px !important;           /* paksa tinggi 30px */
+  height: 70px !important;           /* paksa tinggi 30px */
   min-height: 30px !important;
   max-height: 30px !important;
   line-height: 30px !important;      /* teks center vertikal */
