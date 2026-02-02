@@ -85,6 +85,12 @@ input, button {
   text-align: center;
   cursor: pointer;
   border-radius: 0;
+  height: 70px;              /* ← tinggi tetap 70px (coba mulai dari sini, bisa naik ke 80px/90px) */
+  display: flex;             /* biar nomor tepat di tengah vertikal */
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4em;          /* opsional: nomor lebih besar biar proporsional dengan tinggi baru */
+  font-weight: bold;
 }
 .qbox.done {
   background: #ccc;
