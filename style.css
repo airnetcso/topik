@@ -79,44 +79,47 @@ input, button {
   grid-template-columns: repeat(5, 1fr);
   gap: 10px;
 }
+
+/* Kotak nomor soal (pink) - tinggi disamakan 30px */
 .qbox {
   background: rgba(255, 192, 203, 0.3);
-  padding: 15px;
   text-align: center;
   cursor: pointer;
   border-radius: 0;
-  height: 30px;              /* ← tinggi tetap 70px (coba mulai dari sini, bisa naik ke 80px/90px) */
-  display: flex;             /* biar nomor tepat di tengah vertikal */
-  align-items: center;
-  justify-content: center;
-  font-size: 1.4em;          /* opsional: nomor lebih besar biar proporsional dengan tinggi baru */
-
+  
+  height: 30px !important;           /* tinggi sama persis dengan section-box */
+  line-height: 30px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 1.3em !important;
+  font-weight: bold;
+  box-sizing: border-box !important;
 }
+
 .qbox.done {
-  background: #ccc;
+  background: #ccc !important;
 }
 
-/* ===== SECTION BOX ===== */
+/* ===== SECTION BOX (judul SOAL MENDENGAR / MEMBACA) ===== */
+/* Tinggi disamakan persis dengan qbox: 30px */
 .section-box {
-  height: 70px !important;           /* paksa tinggi 30px */
-  min-height: 30px !important;
-  max-height: 30px !important;
-  line-height: 30px !important;      /* teks center vertikal */
-  padding: 0 8px !important;         /* padding samping kecil aja */
-  margin: 0 0 15px 0 !important;     /* jarak ke grid di bawah */
+  height: 30px !important;
+  line-height: 30px !important;
+  padding: 0 8px !important;
+  margin: 0 0 15px 0 !important;
   font-weight: bold;
   border-radius: 0;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  font-size: 13px !important;        /* kecilkan font biar muat sempurna */
+  font-size: 13px !important;
   text-align: center;
-  overflow: hidden;                  /* kalau teks kepanjangan, dipotong rapi */
-  white-space: nowrap;               /* teks nggak wrap ke baris baru */
-  text-overflow: ellipsis;           /* tambah ... kalau kepanjangan */
+  overflow: hidden !important;
+  white-space: nowrap !important;
+  text-overflow: ellipsis !important;
 }
 
-/* Warna tetap */
 .section-box.listening {
   background: rgba(59, 130, 246, 0.2) !important;
   color: #2b6cb0 !important;
@@ -131,7 +134,7 @@ input, button {
   display: flex;
   gap: 20px;
   margin-top: 80px;
-  padding-bottom: 120px; /* Extra ruang bawah biar konten aman dari nav */
+  padding-bottom: 120px;
   min-height: calc(100vh - 80px);
 }
 
@@ -187,7 +190,7 @@ input, button {
   display: flex;
   align-items: flex-start;
   gap: 10px;
-  margin: 4px 0; /* ← ini yang paling pengaruh */
+  margin: 4px 0;
   padding: 2px 0;
 }
 
@@ -269,7 +272,6 @@ input, button {
 .col-right h3 {
   margin: 0 0 10px 15px;
 }
-
 .dialog-box {
   background: #f2ebed;
   padding: 18px 20px;
