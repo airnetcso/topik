@@ -90,7 +90,7 @@ input, button {
   align-items: center;
   justify-content: center;
   font-size: 1.4em;          /* opsional: nomor lebih besar biar proporsional dengan tinggi baru */
-  font-weight: bold;
+
 }
 .qbox.done {
   background: #ccc;
