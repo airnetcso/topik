@@ -87,13 +87,12 @@ input, button {
   cursor: pointer;
   border-radius: 0;
   
-  height: 30px !important;           /* tinggi sama persis dengan section-box */
+  height: 50px !important;           /* tinggi sama persis dengan section-box */
   line-height: 30px !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
   font-size: 1.3em !important;
-  font-weight: bold;
   box-sizing: border-box !important;
 }
 
@@ -104,8 +103,8 @@ input, button {
 /* ===== SECTION BOX (judul SOAL MENDENGAR / MEMBACA) ===== */
 /* Tinggi disamakan persis dengan qbox: 30px */
 .section-box {
-  height: 30px !important;
-  line-height: 30px !important;
+  height: 50px !important;
+  line-height: 50px !important;
   padding: 0 8px !important;
   margin: 0 0 15px 0 !important;
   font-weight: bold;
