@@ -87,8 +87,8 @@ input, button {
   cursor: pointer;
   border-radius: 0;
   
-  height: 50px !important;           /* tinggi sama persis dengan section-box */
-  line-height: 30px !important;
+  height: 60px !important;           /* tinggi sama persis dengan section-box */
+  line-height: 60px !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -103,8 +103,8 @@ input, button {
 /* ===== SECTION BOX (judul SOAL MENDENGAR / MEMBACA) ===== */
 /* Tinggi disamakan persis dengan qbox: 30px */
 .section-box {
-  height: 50px !important;
-  line-height: 50px !important;
+  height: 60px !important;
+  line-height: 60px !important;
   padding: 0 8px !important;
   margin: 0 0 15px 0 !important;
   font-weight: bold;
