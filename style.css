@@ -98,25 +98,32 @@ input, button {
 
 /* ===== SECTION BOX ===== */
 .section-box {
-  height: 30px;                     /* ← tinggi tetap 30px */
-  line-height: 30px;                /* teks vertikal center sempurna */
-  padding: 0 10px;                  /* padding samping tetap, atas-bawah 0 biar sesuai height */
+  height: 30px !important;           /* paksa tinggi 30px */
+  min-height: 30px !important;
+  max-height: 30px !important;
+  line-height: 30px !important;      /* teks center vertikal */
+  padding: 0 8px !important;         /* padding samping kecil aja */
+  margin: 0 0 15px 0 !important;     /* jarak ke grid di bawah */
   font-weight: bold;
   border-radius: 0;
-  margin-bottom: 10px;
-  display: flex;                    /* biar teks rapi di tengah */
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;                  /* opsional: kecilkan font biar muat di 30px */
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 13px !important;        /* kecilkan font biar muat sempurna */
   text-align: center;
+  overflow: hidden;                  /* kalau teks kepanjangan, dipotong rapi */
+  white-space: nowrap;               /* teks nggak wrap ke baris baru */
+  text-overflow: ellipsis;           /* tambah ... kalau kepanjangan */
 }
+
+/* Warna tetap */
 .section-box.listening {
-  background: rgba(59, 130, 246, 0.2);
-  color: #2b6cb0;
+  background: rgba(59, 130, 246, 0.2) !important;
+  color: #2b6cb0 !important;
 }
 .section-box.reading {
-  background: rgba(72, 187, 120, 0.2);
-  color: #2f855a;
+  background: rgba(72, 187, 120, 0.2) !important;
+  color: #2f855a !important;
 }
 
 /* ===== HALAMAN SOAL ===== */
