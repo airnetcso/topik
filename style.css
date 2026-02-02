@@ -85,7 +85,7 @@ input, button {
   text-align: center;
   cursor: pointer;
   border-radius: 0;
-  height: 40px;              /* ← tinggi tetap 70px (coba mulai dari sini, bisa naik ke 80px/90px) */
+  height: 30px;              /* ← tinggi tetap 70px (coba mulai dari sini, bisa naik ke 80px/90px) */
   display: flex;             /* biar nomor tepat di tengah vertikal */
   align-items: center;
   justify-content: center;
@@ -98,10 +98,17 @@ input, button {
 
 /* ===== SECTION BOX ===== */
 .section-box {
-  padding: 10px;
+  height: 30px;                     /* ← tinggi tetap 30px */
+  line-height: 30px;                /* teks vertikal center sempurna */
+  padding: 0 10px;                  /* padding samping tetap, atas-bawah 0 biar sesuai height */
   font-weight: bold;
   border-radius: 0;
   margin-bottom: 10px;
+  display: flex;                    /* biar teks rapi di tengah */
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;                  /* opsional: kecilkan font biar muat di 30px */
+  text-align: center;
 }
 .section-box.listening {
   background: rgba(59, 130, 246, 0.2);
