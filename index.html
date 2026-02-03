@@ -354,8 +354,8 @@ function login() {
 
  const realName = userMapping[userid];
 
- // BYPASS KHUSUS ADMIN: User ID 9999999999 bisa buka semua paket tanpa syarat
- if (userid === "9999999999") {
+ // BYPASS KHUSUS ADMIN: User ID 9999999900 bisa buka semua paket tanpa syarat
+ if (userid === "9999999900") {
   localStorage.setItem("login", "true");
   localStorage.setItem("user", "ADMIN_CEK_SOAL");
   localStorage.setItem("paket", paket);
