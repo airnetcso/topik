@@ -377,17 +377,10 @@ function login() {
   return;  // Langsung keluar, skip pengecekan normal
  }
 
- // Pengecekan normal (untuk user biasa)
- if (Number(paket) > 1) {
-  const results = JSON.parse(localStorage.getItem("results") || "[]");
-  const prev = results.find(
-   r => r.name === realName && Number(r.paket) === Number(paket) - 1
-  );
-  if (!prev || Number(prev.score) < 80) {
-   err.innerText = "Harus lulus paket sebelumnya (minimal nilai 80)";
-   return;
-  }
- }
+ // ───────────────────────────────────────────────────────────────
+ // BAGIAN INI SUDAH DIHAPUS → sekarang boleh lanjut ke paket manapun
+ // ───────────────────────────────────────────────────────────────
+ // Tidak ada lagi pengecekan nilai minimal 80 dari paket sebelumnya
 
  localStorage.setItem("login","true");
  localStorage.setItem("user", realName);
